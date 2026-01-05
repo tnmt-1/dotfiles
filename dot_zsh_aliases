@@ -1,0 +1,26 @@
+# .zsh_aliases
+# エイリアス定義ファイル
+# .zshrcから読み込まれる
+
+# ========================================
+# common
+# ========================================
+alias ls='ls -AFG'
+alias ll='ls -hlt'
+alias history='history -Di'
+alias reload='exec $SHELL -l'
+alias apap='brew update && brew upgrade && mise up && brew cleanup'
+
+# ========================================
+# eza
+# ========================================
+if command -v eza >/dev/null 2>&1; then
+    alias ls='eza $eza_params'
+    alias l='eza --git-ignore $eza_params'
+    alias ll='eza --all --header --long $eza_params'
+    alias llm='eza --all --header --long --sort=modified $eza_params'
+    alias la='eza -lbhHigUmuSa'
+    alias lx='eza -lbhHigUmuSa@'
+    alias lt='eza --tree $eza_params'
+    alias tree='eza --tree $eza_params'
+fi
