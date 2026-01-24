@@ -15,13 +15,13 @@ config.font_size = 16
 config.color_scheme = 'Catppuccin Mocha'
 
 -- my custom
-config.font = wezterm.font("FirgeNerd Console")
+--config.font = wezterm.font("FirgeNerd Console", { weight = 'Regular' })
+config.font = wezterm.font_with_fallback { 'JetBrains Mono', '源柔ゴシックL' }
 config.use_ime = true
 config.automatically_reload_config = true
 config.window_background_opacity = 0.85
 config.macos_window_background_blur = 10
--- config.default_prog = { '/opt/homebrew/bin/nu' }
-config.default_prog = { '/bin/zsh', '--login', '-c', 'exec /opt/homebrew/bin/nu' }
+-- config.default_prog = { '/bin/zsh', '--login', '-c', 'exec /opt/homebrew/bin/nu' }
 
 -- Finally, return the configuration to wezterm:
 return config
