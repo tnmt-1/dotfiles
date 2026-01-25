@@ -1,5 +1,6 @@
 [tools]
 "aqua:openai/codex" = "latest"
+bat = "latest"
 chezmoi = "latest"
 colima = "latest"
 delta = "latest"

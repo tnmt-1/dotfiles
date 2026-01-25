@@ -88,7 +88,7 @@
   (completion-category-overrides '((file (styles basic partial-completion)))))
 
 ;; 今見ているバッファを削除する
-(global-set-key (kbd "C-x k") 'kill-this-buffer)
+;; (global-set-key (kbd "C-x k") 'kill-this-buffer)
 
 ;; terminal( -nw )でもマウスイベントを受け取れるようにする
 (xterm-mouse-mode t)
