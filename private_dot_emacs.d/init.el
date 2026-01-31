@@ -101,3 +101,17 @@
 (setq select-enable-clipboard t)
 (setq select-enable-primary t)
 
+;; emacsclient
+(setq server-name "main")
+(setq server-socket-dir (expand-file-name "server" user-emacs-directory))
+
+(require 'server)
+
+(unless (file-directory-p server-socket-dir)
+  (make-directory server-socket-dir t))
+
+;; 「server ディレクトリが他人から見えると起動拒否」対策
+(set-file-modes server-socket-dir #o700)
+
+(unless (server-running-p)
+  (server-start))

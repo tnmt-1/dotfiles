@@ -5,6 +5,7 @@ chezmoi = "latest"
 colima = "latest"
 delta = "latest"
 eza = "latest"
+fd = "latest"
 fzf = "latest"
 gemini = "latest"
 gh = "latest"
@@ -29,4 +30,7 @@ ls = "eza --time-style=long-iso --hyperlink -F always --git --icons auto"
 ll = "ls -lhg"
 la = "ls -lhga"
 lt = "ls --tree --git-ignore"
+et='emacsclient -s main -t'
+
+[env]
 
