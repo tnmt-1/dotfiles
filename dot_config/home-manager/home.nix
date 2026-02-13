@@ -1,6 +1,8 @@
 { config, pkgs, ... }:
 
 {
+  home.username = "tnmt";
+  home.homeDirectory = "/Users/tnmt";
   home.stateVersion = "25.11"; # Please read the comment before changing.
 
   # nixpkgs の設定
@@ -47,7 +49,9 @@
     gettext
     mise
     ripgrep
-  ];
+    github-copilot-cli
+    httpie
+];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
@@ -82,6 +86,7 @@
   #
   home.sessionVariables = {
     EDITOR = "emacs";
+    PATH = "$HOME/.local/bin:/opt/homebrew/opt/mysql@8.0/bin:$PATH";
   };
 
   # Let Home Manager install and manage itself.
@@ -153,7 +158,7 @@
       lx = "ls -lhga@";
       lt = "ls --tree";
       tree = "lt";
-      et = "emacsclient -s main -t";
+      et = "emacsclient -s ~/.emacs.d/server/main -t";
     };
 
     # Powerlevel10k設定ファイルを読み込み
