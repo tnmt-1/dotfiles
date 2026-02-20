@@ -1,8 +1,6 @@
 { config, pkgs, ... }:
 
 {
-  home.username = "tnmt";
-  home.homeDirectory = "/Users/tnmt";
   home.stateVersion = "25.11"; # Please read the comment before changing.
 
   # nixpkgs の設定
@@ -43,14 +41,13 @@
     sqlite
     zellij
     tig
-    nodePackages.vercel
     uv
     zoxide
     gettext
     mise
     ripgrep
-    github-copilot-cli
     httpie
+    awscli2
 ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
@@ -85,7 +82,7 @@
   #  /etc/profiles/per-user/mah/etc/profile.d/hm-session-vars.sh
   #
   home.sessionVariables = {
-    EDITOR = "emacs";
+    EDITOR = "et";
     PATH = "$HOME/.local/bin:/opt/homebrew/opt/mysql@8.0/bin:$PATH";
   };
 
@@ -113,7 +110,7 @@
     #defaultOptions = [ "--height 40%" "--layout=reverse" ];
   };
 
-  # zoxide の設定  
+  # zoxide の設定
   programs.zoxide = {
     enable = true;
     enableZshIntegration = true;  # eval "$(zoxide init zsh)" と同等
@@ -162,7 +159,12 @@
     };
 
     # Powerlevel10k設定ファイルを読み込み
-    initExtra = ''
+    initContent = ''
+      # Nix configuration
+      if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+        . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+      fi
+
       # p10k instant promptを有効化（オプション）
       if [[ -r "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh" ]]; then
         source "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh"

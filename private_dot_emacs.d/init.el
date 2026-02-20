@@ -20,6 +20,19 @@
   (setq catppuccin-flavor 'mocha) ; 'latte, 'frappe, 'macchiato, or 'mocha
   (load-theme 'catppuccin t))
 
+(defun my/apply-catppuccin-on-frame (frame)
+  "新しいフレームごとに Catppuccin を適用し直す。"
+  (with-selected-frame frame
+    ;; 他のテーマが混ざらないように全部無効化
+    (mapc #'disable-theme custom-enabled-themes)
+    (load-theme 'catppuccin t)))
+
+;; 既存フレームにも適用
+(my/apply-catppuccin-on-frame (selected-frame))
+
+;; daemon 起動後に作られるフレーム（GUI / TTY 両方）に対して適用
+(add-hook 'after-make-frame-functions #'my/apply-catppuccin-on-frame)
+
 ;; ルーラーを表示
 (setq-default fill-column 80) ; 境界にする列数
 (global-display-fill-column-indicator-mode t)
