@@ -48,6 +48,7 @@
     ripgrep
     httpie
     awscli2
+    micro
 ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
@@ -82,7 +83,7 @@
   #  /etc/profiles/per-user/mah/etc/profile.d/hm-session-vars.sh
   #
   home.sessionVariables = {
-    EDITOR = "et";
+    EDITOR = "micro";
     PATH = "$HOME/.local/bin:/opt/homebrew/opt/mysql@8.0/bin:$PATH";
   };
 
