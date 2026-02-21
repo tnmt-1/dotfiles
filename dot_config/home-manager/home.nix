@@ -19,7 +19,7 @@
     codex
     colima
     delta
-    emacs
+    emacs-nox
     eza
     fd
     ffmpeg
