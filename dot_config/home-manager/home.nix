@@ -50,6 +50,7 @@
     awscli2
     micro
     yazi
+    nb
 ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
@@ -158,6 +159,7 @@
       lt = "ls --tree";
       tree = "lt";
       et = "emacsclient -s ~/.emacs.d/server/main -t";
+      m = "micro";
     };
 
     # Powerlevel10k設定ファイルを読み込み
