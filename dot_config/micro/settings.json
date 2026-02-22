@@ -1,5 +1,17 @@
 {
+  // base
   "showchars": "space=·,tab=→,ispace=·,itab=→",
   "tabstospaces": true,
-  "tabsize": 4
+  "tabsize": 4,
+  "colorscheme": "catppuccin-mocha-transparent",
+
+  // lsp
+  "lsp.server": "python=uvx --from python-lsp-server pylsp",
+  "lsp.formatOnSave": true,
+  "lsp.tabcompletion": true,
+
+  // filemanaer
+  "filemanager-openonstart": true,
+  "filemanager-foldersfirst": true,
+  "filemanager-showdotfiles": true
 }
