@@ -42,6 +42,8 @@
     nb
     pandoc
     aerospace
+    docker
+    docker-buildx
   ];
 
   # Home Manager is pretty good at managing dotfiles.
