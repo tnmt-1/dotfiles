@@ -30,13 +30,19 @@ config.send_composed_key_when_left_alt_is_pressed  = false
 config.send_composed_key_when_right_alt_is_pressed = false
 
 -- パネル分割
-config.leader = { key = 'a', mods = 'CTRL', timeout_milliseconds = 1000 }
 config.keys = {
-  -- 横方向に分割（左右に並ぶ）
-  { key = 'RightArrow', mods = 'LEADER', action = act.SplitHorizontal { domain = 'CurrentPaneDomain' } },
-
-  -- 縦方向に分割（上下に並ぶ）
-  { key = 'DownArrow', mods = 'LEADER', action = act.SplitVertical { domain = 'CurrentPaneDomain' } },
+  -- 水平分割（左右に分割）
+  {
+    key = "d",
+    mods = "CMD",
+    action = act.SplitHorizontal { domain = "CurrentPaneDomain" },
+  },
+  -- 垂直分割（上下に分割）
+  {
+    key = "d",
+    mods = "CMD|SHIFT",
+    action = act.SplitVertical { domain = "CurrentPaneDomain" },
+  },
 }
 
 -- Finally, return the configuration to wezterm:
