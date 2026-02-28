@@ -5,3 +5,9 @@ render = "all"
 
 [keys.insert]
 "C-[" = "normal_mode"
+
+[editor.soft-wrap]
+enable = false
+
+[keys.normal]
+"A-z" = ":toggle soft-wrap.enable"
