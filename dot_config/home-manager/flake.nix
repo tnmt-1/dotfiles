@@ -76,6 +76,7 @@
                 "vivaldi"
                 "wezterm"
                 "zed"
+                "cmux"
               ];
             };
           })
