@@ -49,13 +49,14 @@
     aerospace
     docker
     docker-buildx
+    helix
   ];
 
   # Home Manager is pretty good at managing dotfiles.
   home.file = {};
 
   home.sessionVariables = {
-    EDITOR = "micro";
+    EDITOR = "hx";
     PATH = "$HOME/.local/bin:/opt/homebrew/opt/mysql@8.0/bin:$PATH";
   };
 
@@ -163,6 +164,12 @@
       zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
       source ${./zsh-functions.zsh}
+    '';
+
+    loginExtra = ''
+      if [ -x /opt/homebrew/bin/brew ]; then
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+      fi
     '';
   };
 }

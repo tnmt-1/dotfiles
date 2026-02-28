@@ -47,6 +47,9 @@
               onActivation.upgrade = true;
               brews = [
                 "mysql@8.0"
+                "difi"
+                "gettext"
+                "glow"
               ];
               casks = [
                 "alt-tab"

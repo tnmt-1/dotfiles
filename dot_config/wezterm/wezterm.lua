@@ -1,5 +1,6 @@
 -- Pull in the wezterm API
 local wezterm = require 'wezterm'
+local act = wezterm.action
 
 -- This will hold the configuration.
 local config = wezterm.config_builder()
@@ -27,6 +28,16 @@ config.macos_window_background_blur = 10
 -- 左右どちらの Option も「記号合成せず、普通の Alt(meta)」として扱いたい場合
 config.send_composed_key_when_left_alt_is_pressed  = false
 config.send_composed_key_when_right_alt_is_pressed = false
+
+-- パネル分割
+config.leader = { key = 'a', mods = 'CTRL', timeout_milliseconds = 1000 }
+config.keys = {
+  -- 横方向に分割（左右に並ぶ）
+  { key = 'RightArrow', mods = 'LEADER', action = act.SplitHorizontal { domain = 'CurrentPaneDomain' } },
+
+  -- 縦方向に分割（上下に並ぶ）
+  { key = 'DownArrow', mods = 'LEADER', action = act.SplitVertical { domain = 'CurrentPaneDomain' } },
+}
 
 -- Finally, return the configuration to wezterm:
 return config

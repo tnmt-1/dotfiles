@@ -9,8 +9,6 @@
   ];
 
   home-manager.users.${config.system.primaryUser} = {
-    home.packages = with pkgs; [
-      gettext
-    ];
+    home.packages = with pkgs; [];
   };
 }

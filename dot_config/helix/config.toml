@@ -1,0 +1,7 @@
+theme = "catppuccin_mocha"
+
+[editor.whitespace]
+render = "all"
+
+[keys.insert]
+"C-[" = "normal_mode"
