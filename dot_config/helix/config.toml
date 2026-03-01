@@ -1,13 +1,20 @@
 theme = "catppuccin_mocha"
 
+[editor]
+clipboard-provider = "pasteboard"
+
 [editor.whitespace]
 render = "all"
-
-[keys.insert]
-"C-[" = "normal_mode"
 
 [editor.soft-wrap]
 enable = false
 
 [keys.normal]
 "A-z" = ":toggle soft-wrap.enable"
+y = ["yank", "yank_to_clipboard"]
+
+[keys.insert]
+"C-[" = "normal_mode"
+
+[keys.select]
+y = ["yank", "yank_to_clipboard"]
