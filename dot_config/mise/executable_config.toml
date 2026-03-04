@@ -3,3 +3,7 @@ node = "latest"
 "npm:@github/copilot" = "latest"
 python = "latest"
 yarn = "1"
+"npm:difit" = "latest"
+
+[settings]
+idiomatic_version_file_enable_tools = ["python", "node"]

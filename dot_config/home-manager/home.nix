@@ -50,6 +50,7 @@
     docker
     docker-buildx
     helix
+    felix-fm
   ];
 
   # Home Manager is pretty good at managing dotfiles.
