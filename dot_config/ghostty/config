@@ -24,3 +24,6 @@ font-family = "FirgeNerd Console"
 
 # 左右両方の Option を Alt として認識します
 macos-option-as-alt = true
+
+# ctrl + j を無視する
+keybind = ctrl+j=ignore
