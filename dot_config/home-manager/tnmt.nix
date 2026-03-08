@@ -9,6 +9,8 @@
   ];
 
   home-manager.users.${config.system.primaryUser} = {
-    home.packages = with pkgs; [];
+    home.packages = with pkgs; [
+      mongosh
+    ];
   };
 }

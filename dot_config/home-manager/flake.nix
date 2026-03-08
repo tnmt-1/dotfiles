@@ -77,6 +77,8 @@
                 "wezterm"
                 "zed"
                 "cmux"
+                "rectangle"
+                "macskk"
               ];
             };
           })
