@@ -1,0 +1,49 @@
+# --- Session Variables (from home.sessionVariables) ---
+export DOCKER_HOST="unix:///Users/$USER/.colima/default/docker.sock"
+
+# --- Powerlevel10k Instant Prompt ---
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+# --- Plugins (Homebrew installed paths) ---
+# Note: These paths assume you ran 'brew bundle' with the Brewfile above
+source "$(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+source "$(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+source "$(brew --prefix)/share/powerlevel10k/powerlevel10k.zsh-theme"
+
+# --- Aliases (from programs.zsh.shellAliases) ---
+alias history="history -Di"
+alias reload="exec $SHELL -l"
+alias ls="eza --time-style=long-iso --hyperlink -F always --icons auto"
+alias l="ls --git-ignore"
+alias ll="ls -lhg"
+alias la="ls -lhga"
+alias lx="ls -lhga@"
+alias lt="ls --tree"
+alias tree="lt"
+
+# --- Program Integrations (from programs.fzf/zoxide/mise) ---
+eval "$(fzf --zsh)"
+eval "$(zoxide init zsh)"
+eval "$(mise activate zsh)"
+
+# --- Completion Settings (from initContent) ---
+autoload -Uz compinit && compinit
+zstyle ':completion:*:default' menu select=1
+zstyle ':completion:*:descriptions' format '[%d]'
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+
+# --- Custom Functions (original zsh-functions.zsh) ---
+# .config/home-manager/zsh-functions.zsh を読み込む場合
+if [ -f "$HOME/.config/home-manager/zsh-functions.zsh" ]; then
+  source "$HOME/.config/home-manager/zsh-functions.zsh"
+fi
+
+# --- p10k Config ---
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# .zsh_aliases の読み込み
+if [ -f ~/.zsh_aliases ]; then
+  source ~/.zsh_aliases
+fi
