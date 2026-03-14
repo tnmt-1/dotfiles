@@ -1,0 +1,203 @@
+tap "felixkratz/formulae"
+tap "nikitabobko/tap"
+tap "romkatv/powerlevel10k"
+# Automatic configure script builder
+brew "autoconf"
+# Cryptography and SSL/TLS Toolkit
+brew "openssl@3"
+# Command-line interface for SQLite
+brew "sqlite"
+# Official Amazon AWS command-line interface
+brew "awscli"
+# Clone of cat(1) with syntax highlighting and Git integration
+brew "bat"
+# Freely available high-quality data compressor
+brew "bzip2"
+# Manage your dotfiles across multiple diverse machines, securely
+brew "chezmoi"
+# Container runtimes on MacOS (and Linux) with minimal setup
+brew "colima", restart_service: :changed
+# Pixel-perfect terminal diff viewer
+brew "difi"
+# Pack, ship and run any application as a lightweight container
+brew "docker"
+# Docker CLI plugin for extended build capabilities with BuildKit
+brew "docker-buildx"
+# Modern, maintained replacement for ls
+brew "eza"
+# Simple, fast and user-friendly alternative to find
+brew "fd"
+# Play, record, convert, and stream select audio and video codecs
+brew "ffmpeg"
+# Command-line fuzzy finder written in Go
+brew "fzf"
+# GNU internationalization (i18n) and localization (l10n) library
+brew "gettext"
+# GitHub command-line tool
+brew "gh"
+# Remote repository management made easy
+brew "ghq"
+# Syntax-highlighting pager for git and diff output
+brew "git-delta"
+# Render markdown on the CLI
+brew "glow"
+# Post-modern modal text editor
+brew "helix"
+# Improved top (interactive process viewer)
+brew "htop"
+# User-friendly cURL replacement (command-line HTTP client)
+brew "httpie"
+# Lightweight and flexible command-line JSON processor
+brew "jq"
+# Simple terminal UI for git commands
+brew "lazygit"
+# Polyglot runtime manager (asdf rust clone)
+brew "mise"
+# Swiss-army knife of markup format conversion
+brew "pandoc"
+# Search tool like grep and The Silver Searcher
+brew "ripgrep"
+# Text interface for Git repositories
+brew "tig"
+# Command-line and local web note-taking, bookmarking, and archiving
+brew "nb"
+# Network Kanji code conversion Filter (NKF)
+brew "nkf"
+# Execute binaries from Python packages in isolated environments
+brew "pipx"
+# Theme for zsh
+brew "powerlevel10k"
+# Extremely fast Python package installer and resolver, written in Rust
+brew "uv"
+# Blazing fast terminal file manager written in Rust, based on async I/O
+brew "yazi"
+# Pluggable terminal workspace, with terminal multiplexer as the base feature
+brew "zellij"
+# Shell extension to navigate your filesystem faster
+brew "zoxide"
+# Fish-like fast/unobtrusive autosuggestions for zsh
+brew "zsh-autosuggestions"
+# Fish shell like syntax highlighting for zsh
+brew "zsh-syntax-highlighting"
+# Custom macOS statusbar with shell plugin, interaction and graph support
+brew "felixkratz/formulae/sketchybar"
+# AeroSpace is an i3-like tiling window manager for macOS
+cask "nikitabobko/tap/aerospace"
+# Enable Windows-like alt-tab
+cask "alt-tab"
+# AI Coding Agent IDE
+cask "antigravity"
+# Application uninstaller
+cask "appcleaner"
+# Terminal-based AI coding assistant
+cask "claude-code"
+# Ghostty-based terminal with vertical tabs and notifications for AI coding agents
+cask "cmux"
+# Web browser with integrated AI assistant
+cask "comet"
+# Plain-text editor for web pages, program source codes and more
+cask "coteditor"
+# Online diagram software
+cask "drawio"
+# Web browser
+cask "firefox"
+# Privacy-focused Firefox-based browser
+cask "floorp"
+cask "font-hack-nerd-font"
+# Terminal emulator that uses platform-native UI and GPU acceleration
+cask "ghostty"
+# Web browser
+cask "google-chrome"
+# Japanese input software
+cask "google-japanese-ime"
+# Keyboard customiser
+cask "karabiner-elements"
+# Agent-centric IDE with spec-driven development
+cask "kiro"
+# SKK Input Method
+cask "macskk"
+# App to write, plan, collaborate, and get organised
+cask "notion"
+# Knowledge base that works on top of a local folder of plain text Markdown files
+cask "obsidian"
+# Control your tools with a few keystrokes
+cask "raycast"
+# Move and resize windows using keyboard shortcuts or snap areas
+cask "rectangle"
+# Open-source code editor
+cask "visual-studio-code"
+# Web browser with built-in email client focusing on customization and control
+cask "vivaldi"
+# GPU-accelerated cross-platform terminal emulator and multiplexer
+cask "wezterm"
+# Multiplayer code editor
+cask "zed"
+vscode "adpyke.vscode-sql-formatter"
+vscode "antfu.goto-alias"
+vscode "arjun.swagger-viewer"
+vscode "batisteo.vscode-django"
+vscode "bierner.github-markdown-preview"
+vscode "bierner.markdown-checkbox"
+vscode "bierner.markdown-emoji"
+vscode "bierner.markdown-footnotes"
+vscode "bierner.markdown-mermaid"
+vscode "bierner.markdown-preview-github-styles"
+vscode "bierner.markdown-yaml-preamble"
+vscode "billaferd.vscode-deflist"
+vscode "biomejs.biome"
+vscode "bmewburn.vscode-intelephense-client"
+vscode "catppuccin.catppuccin-vsc"
+vscode "catppuccin.catppuccin-vsc-icons"
+vscode "charliermarsh.ruff"
+vscode "davidanson.vscode-markdownlint"
+vscode "dbaeumer.vscode-eslint"
+vscode "donjayamanne.githistory"
+vscode "editorconfig.editorconfig"
+vscode "esbenp.prettier-vscode"
+vscode "formulahendry.auto-close-tag"
+vscode "github.copilot-chat"
+vscode "github.github-vscode-theme"
+vscode "github.vscode-github-actions"
+vscode "google.gemini-cli-vscode-ide-companion"
+vscode "grapecity.gc-excelviewer"
+vscode "hediet.vscode-drawio"
+vscode "humao.rest-client"
+vscode "kevinrose.vsc-python-indent"
+vscode "ms-ceintl.vscode-language-pack-ja"
+vscode "ms-python.debugpy"
+vscode "ms-python.flake8"
+vscode "ms-python.mypy-type-checker"
+vscode "ms-python.python"
+vscode "ms-python.vscode-pylance"
+vscode "ms-python.vscode-python-envs"
+vscode "ms-toolsai.jupyter"
+vscode "ms-toolsai.jupyter-keymap"
+vscode "ms-toolsai.jupyter-renderers"
+vscode "ms-toolsai.vscode-jupyter-cell-tags"
+vscode "ms-toolsai.vscode-jupyter-slideshow"
+vscode "ms-vscode-remote.remote-containers"
+vscode "ms-vsliveshare.vsliveshare"
+vscode "njpwerner.autodocstring"
+vscode "nuxt.mdc"
+vscode "nuxtr.nuxt-vscode-extentions"
+vscode "nuxtr.nuxtr-vscode"
+vscode "octref.vetur"
+vscode "oderwat.indent-rainbow"
+vscode "pkief.material-icon-theme"
+vscode "rvest.vs-code-prettier-eslint"
+vscode "seatonjiang.gitmoji-vscode"
+vscode "sgryjp.japanese-word-handler"
+vscode "shardulm94.trailing-spaces"
+vscode "shuworks.vscode-table-formatter"
+vscode "streetsidesoftware.code-spell-checker"
+vscode "stylelint.vscode-stylelint"
+vscode "syler.sass-indented"
+vscode "tomoki1207.pdf"
+vscode "vincaslt.highlight-matching-tag"
+vscode "vue.volar"
+vscode "wix.vscode-import-cost"
+vscode "yahyabatulu.vscode-markdown-alert"
+vscode "yzhang.markdown-all-in-one"
+cargo "cargo-make"
+uv "-"
+uv "virtualenv"

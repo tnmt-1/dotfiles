@@ -4,6 +4,8 @@ node = "latest"
 python = "latest"
 yarn = "1"
 "npm:difit" = "latest"
+rust = "latest"
+"npm:@google/gemini-cli" = "latest"
 
 [settings]
 idiomatic_version_file_enable_tools = ["python", "node"]
