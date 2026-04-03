@@ -6,6 +6,8 @@ yarn = "1"
 "npm:difit" = "latest"
 rust = "latest"
 "npm:@google/gemini-cli" = "latest"
+"npm:safe-rm" = "latest"
+"npm:opencode-ai" = "latest"
 
 [settings]
 idiomatic_version_file_enable_tools = ["python", "node"]

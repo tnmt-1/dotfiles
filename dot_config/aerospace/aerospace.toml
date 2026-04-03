@@ -7,12 +7,18 @@ config-version = 2
 
 # You can use it to add commands that run after AeroSpace startup.
 # Available commands : https://nikitabobko.github.io/AeroSpace/commands
-after-startup-command = ['exec-and-forget sketchybar']
+#after-startup-command = ['exec-and-forget a-bar']
 
 # Notify Sketchybar about workspace change
 #exec-on-workspace-change = ['Users/tnmt/.config/sketchybar/plugins/aerospace.sh']
-exec-on-workspace-change = ['/bin/bash', '-c',
-    'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE'
+on-focus-changed = [
+  "exec-and-forget osascript -e 'tell application \"a-bar\" to refresh \"aerospace\"'",
+]
+
+exec-on-workspace-change = [
+  '/bin/zsh',
+  '-c',
+  '/usr/bin/osascript -e "tell application \"a-bar\" to refresh \"aerospace\""',
 ]
 
 # Start AeroSpace at login
@@ -77,17 +83,17 @@ on-mode-changed = []
     inner.horizontal = 10
     inner.vertical =   4
     outer.left =       4
-#    outer.bottom =     4
+    outer.bottom =     12
 #    outer.top =        4
     outer.right =      4
     outer.top = [
         { monitor.main = 4 },
         40
     ]
-    outer.bottom = [
-        { monitor.main = 4 },
-        12
-    ]
+#    outer.bottom = [
+#        { monitor.main = 12 },
+#        12
+#    ]
 
 # 'main' binding mode declaration
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
@@ -231,3 +237,62 @@ on-mode-changed = []
     alt-shift-j = ['join-with down', 'mode main']
     alt-shift-k = ['join-with up', 'mode main']
     alt-shift-l = ['join-with right', 'mode main']
+
+# ----------------------------------------
+# on-window-detected: appごとのワークスペース割り当て
+# ----------------------------------------
+
+# Vivaldi → workspace 1
+[[on-window-detected]]
+if.app-id = 'com.vivaldi.Vivaldi'
+run = 'move-node-to-workspace 1'
+
+# Floorp → workspace 1
+[[on-window-detected]]
+if.app-id = 'org.mozilla.floorp'
+run = 'move-node-to-workspace 1'
+
+# Cmux → workspace 2
+[[on-window-detected]]
+if.app-id = 'com.cmuxterm.app'
+run = 'move-node-to-workspace 2'
+
+# iTerm2 → workspace 2
+[[on-window-detected]]
+if.app-id = 'com.googlecode.iterm2'
+run = 'move-node-to-workspace 2'
+
+# kitty → workspace 2
+[[on-window-detected]]
+if.app-id = 'net.kovidgoyal.kitty'
+run = 'move-node-to-workspace 2'
+
+# VS Code → workspace 3
+[[on-window-detected]]
+if.app-id = 'com.microsoft.VSCode'
+run = 'move-node-to-workspace 3'
+
+# CotEditor → workspace 4
+[[on-window-detected]]
+if.app-id = 'com.coteditor.CotEditor'
+run = 'move-node-to-workspace 4'
+
+# DBeaver → workspace 4
+[[on-window-detected]]
+if.app-id = 'org.jkiss.dbeaver.core.product'
+run = 'move-node-to-workspace 4'
+
+# Zed → workspace 3
+[[on-window-detected]]
+if.app-id = 'dev.zed.Zed'
+run = 'move-node-to-workspace 3'
+
+# OpenCode → workspace o
+[[on-window-detected]]
+if.app-id = 'ai.opencode.desktop'
+run = 'move-node-to-workspace o'
+
+# それ以外のすべて → workspace 9
+[[on-window-detected]]
+# ここでは app-id 条件を付けないことで「その他全部」にマッチさせる
+run = 'move-node-to-workspace 9'

@@ -1,4 +1,6 @@
-theme = "catppuccin_mocha"
+#theme = "catppuccin_mocha"
+#theme = "catppuccin_frappe"
+theme = "catppuccin_frappe_transparent"
 
 [editor]
 clipboard-provider = "pasteboard"

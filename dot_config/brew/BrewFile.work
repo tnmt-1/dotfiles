@@ -1,12 +1,22 @@
 tap "felixkratz/formulae"
+tap "jean-tinland/a-bar"
 tap "nikitabobko/tap"
+tap "olets/tap"
 tap "romkatv/powerlevel10k"
+# Improved shell history for zsh, bash, fish and nushell
+brew "atuin"
 # Automatic configure script builder
 brew "autoconf"
+# Automatically restart SSH sessions and tunnels
+brew "autossh"
 # Command-line interface for SQLite
 brew "sqlite"
 # Official Amazon AWS command-line interface
 brew "awscli"
+# GNU internationalization (i18n) and localization (l10n) library
+brew "gettext"
+# Bourne-Again SHell, a UNIX command interpreter
+brew "bash"
 # Clone of cat(1) with syntax highlighting and Git integration
 brew "bat"
 # Freely available high-quality data compressor
@@ -21,8 +31,6 @@ brew "difi"
 brew "docker"
 # Docker CLI plugin for extended build capabilities with BuildKit
 brew "docker-buildx"
-# GNU internationalization (i18n) and localization (l10n) library
-brew "gettext"
 # GNU Emacs text editor
 brew "emacs"
 # Modern, maintained replacement for ls
@@ -31,10 +39,10 @@ brew "eza"
 brew "fd"
 # Play, record, convert, and stream select audio and video codecs
 brew "ffmpeg"
-# User-friendly command-line shell for UNIX-like operating systems
-brew "fish"
 # Command-line fuzzy finder written in Go
 brew "fzf"
+# Cat alternative written in Go
+brew "gat"
 # GitHub command-line tool
 brew "gh"
 # Remote repository management made easy
@@ -49,16 +57,14 @@ brew "helix"
 brew "htop"
 # User-friendly cURL replacement (command-line HTTP client)
 brew "httpie"
-# Configurable static site generator
-brew "hugo"
 # Lightweight and flexible command-line JSON processor
 brew "jq"
 # Simple terminal UI for git commands
 brew "lazygit"
-# Modern and intuitive terminal-based text editor
-brew "micro"
 # Polyglot runtime manager (asdf rust clone)
 brew "mise"
+# Open source relational database management system
+brew "mysql-client"
 # Open source relational database management system
 brew "mysql@8.0", restart_service: :changed
 # Swiss-army knife of markup format conversion
@@ -73,10 +79,16 @@ brew "nb"
 brew "nkf"
 # Execute binaries from Python packages in isolated environments
 brew "pipx"
+# Package compiler and linker metadata toolkit
+brew "pkgconf"
 # Theme for zsh
 brew "powerlevel10k"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.12"
 # Extremely fast Python package installer and resolver, written in Rust
 brew "uv"
+# Internet file retriever
+brew "wget"
 # Blazing fast terminal file manager written in Rust, based on async I/O
 brew "yazi"
 # Pluggable terminal workspace, with terminal multiplexer as the base feature
@@ -87,10 +99,14 @@ brew "zoxide"
 brew "zsh-autosuggestions"
 # Fish shell like syntax highlighting for zsh
 brew "zsh-syntax-highlighting"
-# Custom macOS statusbar with shell plugin, interaction and graph support
-brew "felixkratz/formulae/sketchybar"
+# Auto-expanding abbreviations manager for zsh, inspired by fish
+brew "olets/tap/zsh-abbr"
 # Password manager that keeps all passwords secure behind one password
 cask "1password"
+# Command-line interface for 1Password
+cask "1password-cli"
+# Status bar working on top of yabai and AeroSpace written in Swift
+cask "jean-tinland/a-bar/a-bar"
 # AeroSpace is an i3-like tiling window manager for macOS
 cask "nikitabobko/tap/aerospace"
 # Enable Windows-like alt-tab
@@ -99,6 +115,10 @@ cask "alt-tab"
 cask "antigravity"
 # Application uninstaller
 cask "appcleaner"
+# Japanese input method
+cask "azookey"
+# Compact TeX distribution as alternative to the full TeX Live / MacTeX
+cask "basictex"
 # Terminal-based AI coding assistant
 cask "claude-code"
 # Clipboard extension app
@@ -126,24 +146,28 @@ cask "ghostty"
 cask "google-chrome"
 # Japanese input software
 cask "google-japanese-ime"
+# Terminal emulator as alternative to Apple's Terminal app
+cask "iterm2"
 # Keyboard customiser
 cask "karabiner-elements"
 # Agent-centric IDE with spec-driven development
 cask "kiro"
+# GPU-based terminal emulator
+cask "kitty"
 # Open source code editor written in Rust
 cask "lapce"
-# SKK Input Method
-cask "macskk"
 # Interactive tool for analyzing MongoDB data
 cask "mongodb-compass"
 # App to write, plan, collaborate, and get organised
 cask "notion"
 # Knowledge base that works on top of a local folder of plain text Markdown files
 cask "obsidian"
+# AI coding agent desktop client
+cask "opencode-desktop"
 # Control your tools with a few keystrokes
 cask "raycast"
-# Move and resize windows using keyboard shortcuts or snap areas
-cask "rectangle"
+# Screenshot measurement and annotation tool
+cask "shottr"
 # Team communication and collaboration software
 cask "slack"
 # CSV editor
@@ -206,5 +230,6 @@ vscode "tomoki1207.pdf"
 vscode "vincaslt.highlight-matching-tag"
 vscode "vue.volar"
 vscode "yahyabatulu.vscode-markdown-alert"
+vscode "yzhang.markdown-all-in-one"
 uv "-"
 uv "virtualenv"

@@ -12,7 +12,7 @@ PLUGIN_DIR="$CONFIG_DIR/plugins"
 # If you are looking for other colors, see the color picker:
 # https://felixkratz.github.io/SketchyBar/config/tricks#color-picker
 
-sketchybar --bar position=top height=40 blur_radius=30 color=0x40000000
+sketchybar --bar position=top height=30 blur_radius=30 color=0x40000000
 
 ##### Changing Defaults #####
 # We now change some default values, which are applied to all further items.
@@ -61,6 +61,26 @@ sketchybar --default "${default[@]}"
 # We add some regular items to the left side of the bar, where
 # only the properties deviating from the current defaults need to be set
 
+# aerospaceとの連携
+sketchybar --add event aerospace_workspace_change
+
+# 1〜9 の数字アイテムを左側に追加
+for sid in {1..9}; do
+  sketchybar --add item space.$sid left \
+    --subscribe space.$sid aerospace_workspace_change \
+    --set space.$sid \
+      label="$sid" \
+      label.align=center \
+      label.padding_left=0 \
+      label.padding_right=10 \
+      background.color=0x44ffffff \
+      background.corner_radius=5 \
+      background.height=20 \
+      background.drawing=off \
+      click_script="aerospace workspace $sid" \
+      script="$CONFIG_DIR/plugins/aerospace.sh $sid"
+done
+
 sketchybar --add item chevron left \
            --set chevron icon= label.drawing=off \
            --add item front_app left \
@@ -87,39 +107,23 @@ sketchybar --add item clock right \
            --set battery update_freq=120 script="$PLUGIN_DIR/battery.sh" \
            --subscribe battery system_woke power_source_change
 
-##### Force all scripts to run the first time (never do this in a script) #####
-sketchybar --update
+# 天気表示
+sketchybar --add item weather right \
+  --set weather \
+    icon= \
+    icon.font="Hack Nerd Font:Bold:14.0" \
+    icon.color=0xfff5bde6 \
+    label.color=0xfff5f5f5 \
+    update_freq=1800 \
+    script="$PLUGIN_DIR/weather.sh" \
+  --subscribe weather system_woke
 
 ##### My Custom Configs
-# aerospaceとの連携
-sketchybar --add event aerospace_workspace_change
 
-# ウィンドウが存在するワークスペースだけを列挙
-ACTIVE_WORKSPACES=$(
-  aerospace list-windows --all --format '%{workspace}' \
-    | sort -u
-)
+AEROSPACE="/opt/homebrew/bin/aerospace"
+FOCUSED=$("$AEROSPACE" list-workspaces --focused 2>/dev/null || echo "1")
+sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE="$FOCUSED"
 
-for sid in $ACTIVE_WORKSPACES; do
-  sketchybar --add item space.$sid left \
-    --subscribe space.$sid aerospace_workspace_change \
-    --set space.$sid \
-      label="$sid" \
-      label.align=center \
-      label.padding_left=0 \
-      label.padding_right=10 \
-      background.color=0x44ffffff \
-      background.corner_radius=5 \
-      background.height=20 \
-      click_script="aerospace workspace $sid" \
-      script="$CONFIG_DIR/plugins/aerospace.sh $sid"
-done
 
-# UI調整
-bar=(
-  height=28
-  position=top
-  display=all
-  # もしくは display=main / display=1 など
-)
-sketchybar --bar "${bar[@]}"
+##### Force all scripts to run the first time (never do this in a script) #####
+sketchybar --update
