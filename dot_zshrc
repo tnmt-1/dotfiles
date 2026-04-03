@@ -1,5 +1,6 @@
 # --- Session Variables (from home.sessionVariables) ---
 export DOCKER_HOST="unix:///Users/$USER/.colima/default/docker.sock"
+export ABBR_QUIETER=1
 
 # --- Powerlevel10k Instant Prompt ---
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
@@ -11,22 +12,30 @@ fi
 source "$(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 source "$(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 source "$(brew --prefix)/share/powerlevel10k/powerlevel10k.zsh-theme"
-
-# --- Aliases (from programs.zsh.shellAliases) ---
-alias history="history -Di"
-alias reload="exec $SHELL -l"
-alias ls="eza --time-style=long-iso --hyperlink -F always --icons auto"
-alias l="ls --git-ignore"
-alias ll="ls -lhg"
-alias la="ls -lhga"
-alias lx="ls -lhga@"
-alias lt="ls --tree"
-alias tree="lt"
+source "$(brew --prefix)/share/zsh-abbr/zsh-abbr.zsh"
 
 # --- Program Integrations (from programs.fzf/zoxide/mise) ---
 eval "$(fzf --zsh)"
 eval "$(zoxide init zsh)"
 eval "$(mise activate zsh)"
+eval "$(atuin init zsh)"
+eval "$(/usr/libexec/path_helper)"
+
+# --- Aliases (from programs.zsh.shellAliases) ---
+abbr -S history="history -Di"
+abbr -S reload="exec $SHELL -l"
+abbr -S tree="lt"
+
+abbr -f -S grep="rg"
+abbr -f -S find="fd"
+abbr -f -S ls="eza --time-style=long-iso --hyperlink -F always --icons auto"
+abbr -f -S l="eza --time-style=long-iso --hyperlink -F always --icons auto --git-ignore"
+abbr -f -S ll="eza --time-style=long-iso --hyperlink -F always --icons auto -lhg"
+abbr -f -S la="eza --time-style=long-iso --hyperlink -F always --icons auto -lhga"
+abbr -f -S lx="eza --time-style=long-iso --hyperlink -F always --icons auto -lhga@"
+abbr -f -S lt="eza --time-style=long-iso --hyperlink -F always --icons auto --tree"
+abbr -f -S cat="gat -c --theme catppuccin-mocha"
+abbr -f -S glow="glow -p -w 0"
 
 # --- Completion Settings (from initContent) ---
 autoload -Uz compinit && compinit
@@ -34,16 +43,56 @@ zstyle ':completion:*:default' menu select=1
 zstyle ':completion:*:descriptions' format '[%d]'
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
-# --- Custom Functions (original zsh-functions.zsh) ---
-# .config/home-manager/zsh-functions.zsh を読み込む場合
-if [ -f "$HOME/.config/home-manager/zsh-functions.zsh" ]; then
-  source "$HOME/.config/home-manager/zsh-functions.zsh"
-fi
-
 # --- p10k Config ---
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-# .zsh_aliases の読み込み
+# --- .zsh_aliases の読み込み --
 if [ -f ~/.zsh_aliases ]; then
   source ~/.zsh_aliases
 fi
+
+# --- Functions --
+# 動画の品質調整（上書き保存）
+ffq() {
+  if [ -z "$1" ]; then
+    echo "使用法: ffq filename.mov"
+    return 1
+  fi
+
+  local input="$1"
+  local output="${input%.*}.mp4"
+
+  if [ "$input" = "$output" ]; then
+    output="${input%.*}_compressed.mp4"
+  fi
+
+  ffmpeg -i "$input" -vcodec libx264 -crf 20 -preset slow "$output"
+
+  if [ $? -eq 0 ]; then
+    echo "変換が完了しました！"
+    echo "元ファイル（維持）: $input"
+    echo "新規作成ファイル: $output✨"
+  else
+    echo "エラーが発生しました。処理を中断します。"
+  fi
+}
+
+# 履歴検索 Ctrl + R
+# fzfで過去のコマンド履歴をインクリメンタル検索します
+function fzf-select-history() {
+    BUFFER=$(history -n 1 | tail -r | fzf --query "$LBUFFER")
+    CURSOR=$#BUFFER
+    zle clear-screen
+}
+zle -N fzf-select-history
+bindkey '^r' fzf-select-history
+
+# yazi のエイリアス
+# yaziの終了時に、最後にいたディレクトリにシェルを移動させる
+function y() {
+  local tmp="$(mktemp -t 'yazi-cwd.XXXXXX')" cwd
+  command yazi "$@" --cwd-file="$tmp"
+  IFS= read -r -d '' cwd < "$tmp"
+  [ "$cwd" != "$PWD" ] && [ -d "$cwd" ] && builtin cd -- "$cwd"
+  rm -f -- "$tmp"
+}
