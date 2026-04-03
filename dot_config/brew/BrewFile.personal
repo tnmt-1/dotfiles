@@ -1,6 +1,10 @@
 tap "felixkratz/formulae"
+tap "jean-tinland/a-bar"
 tap "nikitabobko/tap"
+tap "olets/tap"
 tap "romkatv/powerlevel10k"
+# Improved shell history for zsh, bash, fish and nushell
+brew "atuin"
 # Automatic configure script builder
 brew "autoconf"
 # Cryptography and SSL/TLS Toolkit
@@ -31,6 +35,8 @@ brew "fd"
 brew "ffmpeg"
 # Command-line fuzzy finder written in Go
 brew "fzf"
+# Cat alternative written in Go
+brew "gat"
 # GNU internationalization (i18n) and localization (l10n) library
 brew "gettext"
 # GitHub command-line tool
@@ -79,8 +85,10 @@ brew "zoxide"
 brew "zsh-autosuggestions"
 # Fish shell like syntax highlighting for zsh
 brew "zsh-syntax-highlighting"
-# Custom macOS statusbar with shell plugin, interaction and graph support
-brew "felixkratz/formulae/sketchybar"
+# Auto-expanding abbreviations manager for zsh, inspired by fish
+brew "olets/tap/zsh-abbr"
+# Status bar working on top of yabai and AeroSpace written in Swift
+cask "jean-tinland/a-bar/a-bar"
 # AeroSpace is an i3-like tiling window manager for macOS
 cask "nikitabobko/tap/aerospace"
 # Enable Windows-like alt-tab
