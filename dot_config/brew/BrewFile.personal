@@ -59,20 +59,18 @@ brew "jq"
 brew "lazygit"
 # Polyglot runtime manager (asdf rust clone)
 brew "mise"
-# Swiss-army knife of markup format conversion
-brew "pandoc"
-# Search tool like grep and The Silver Searcher
-brew "ripgrep"
-# Text interface for Git repositories
-brew "tig"
-# Command-line and local web note-taking, bookmarking, and archiving
-brew "nb"
 # Network Kanji code conversion Filter (NKF)
 brew "nkf"
+# Swiss-army knife of markup format conversion
+brew "pandoc"
 # Execute binaries from Python packages in isolated environments
 brew "pipx"
 # Theme for zsh
 brew "powerlevel10k"
+# Search tool like grep and The Silver Searcher
+brew "ripgrep"
+# Text interface for Git repositories
+brew "tig"
 # Extremely fast Python package installer and resolver, written in Rust
 brew "uv"
 # Blazing fast terminal file manager written in Rust, based on async I/O
@@ -91,18 +89,16 @@ brew "olets/tap/zsh-abbr"
 cask "jean-tinland/a-bar/a-bar"
 # AeroSpace is an i3-like tiling window manager for macOS
 cask "nikitabobko/tap/aerospace"
-# Enable Windows-like alt-tab
-cask "alt-tab"
 # AI Coding Agent IDE
 cask "antigravity"
 # Application uninstaller
 cask "appcleaner"
+# Japanese input method
+cask "azookey"
 # Terminal-based AI coding assistant
 cask "claude-code"
 # Ghostty-based terminal with vertical tabs and notifications for AI coding agents
 cask "cmux"
-# Web browser with integrated AI assistant
-cask "comet"
 # Plain-text editor for web pages, program source codes and more
 cask "coteditor"
 # Online diagram software
@@ -122,8 +118,10 @@ cask "google-japanese-ime"
 cask "karabiner-elements"
 # Agent-centric IDE with spec-driven development
 cask "kiro"
-# SKK Input Method
-cask "macskk"
+# Tool to control external monitor brightness & volume
+cask "monitorcontrol"
+# VPN client for secure internet access and private browsing
+cask "nordvpn"
 # App to write, plan, collaborate, and get organised
 cask "notion"
 # Knowledge base that works on top of a local folder of plain text Markdown files
