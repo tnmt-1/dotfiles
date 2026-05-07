@@ -34,8 +34,6 @@ abbr -f -S ll="eza --time-style=long-iso --hyperlink -F always --icons auto -lhg
 abbr -f -S la="eza --time-style=long-iso --hyperlink -F always --icons auto -lhga"
 abbr -f -S lx="eza --time-style=long-iso --hyperlink -F always --icons auto -lhga@"
 abbr -f -S lt="eza --time-style=long-iso --hyperlink -F always --icons auto --tree"
-abbr -f -S cat="gat -c --theme catppuccin-mocha"
-abbr -f -S glow="glow -p -w 0"
 
 # --- Completion Settings (from initContent) ---
 autoload -Uz compinit && compinit
@@ -96,3 +94,6 @@ function y() {
   [ "$cwd" != "$PWD" ] && [ -d "$cwd" ] && builtin cd -- "$cwd"
   rm -f -- "$tmp"
 }
+
+# nanobrew
+export PATH="/opt/nanobrew/prefix/bin:$PATH"
