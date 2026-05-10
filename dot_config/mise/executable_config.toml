@@ -9,6 +9,8 @@ rust = "latest"
 "npm:safe-rm" = "latest"
 "npm:opencode-ai" = "latest"
 "npm:oh-my-opencode" = "latest"
+"npm:oh-my-openagent" = "latest"
+uv = "latest"
 
 [settings]
 idiomatic_version_file_enable_tools = ["python", "node"]

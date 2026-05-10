@@ -8,24 +8,44 @@
 // command palette (cmd-shift-p / ctrl-shift-p)
 
 {
+  "outline_panel": {
+    "dock": "right"
+  },
+  "collaboration_panel": {
+    "dock": "right"
+  },
+  "diff_view_style": "split",
   "agent_servers": {
+    "opencode": {
+      "favorite_config_option_values": {
+        "model": [
+          "github-copilot/gpt-5.4/xhigh",
+          "github-copilot/gpt-5.4-mini/xhigh",
+          "github-copilot/claude-sonnet-4.6/high"
+        ]
+      },
+      "type": "registry",
+    },
     "gemini": {
       "type": "registry"
     },
     "github-copilot-cli": {
       "type": "registry",
-    }
+    },
   },
   "agent": {
     "inline_assistant_model": {
       "provider": "copilot_chat",
       "model": "claude-sonnet-4.6",
-      "enable_thinking": false,
+      "enable_thinking": true,
+      "effort": "high",
     },
-    "dock": "right",
+    "dock": "left",
     "default_model": {
       "provider": "copilot_chat",
       "model": "claude-sonnet-4.6",
+      "enable_thinking": true,
+      "effort": "high",
     },
     "model_parameters": [],
   },
@@ -35,10 +55,12 @@
     },
   },
   "base_keymap": "VSCode",
-  "buffer_font_fallbacks": ["Gen Jyuu GothicL", "FirgeNerd Console"],
+  "buffer_font_fallbacks": ["HackGen", "Firge"],
   "buffer_font_family": "JetBrains Mono",
   "buffer_font_size": 16,
-  "buffer_line_height": "comfortable",
+  "buffer_line_height": {
+    "custom": 1.7999999523162842
+  },
   "context_servers": {
     "serena-context-server": {
       "enabled": true,
@@ -57,9 +79,6 @@
   },
   "edit_predictions": {
     "mode": "subtle",
-    "sweep": {
-      "privacy_mode": true,
-    },
     "provider": "copilot",
   },
   "experimental.theme_overrides": {
@@ -72,7 +91,7 @@
   },
   "format_on_save": "off",
   "git_panel": {
-    "dock": "left",
+    "dock": "right",
     "collapse_untracked_diff": false,
     "button": true,
   },
@@ -103,6 +122,7 @@
     "show": "always",
   },
   "project_panel": {
+    "dock": "right",
     "git_status": true,
   },
   "show_whitespaces": "all",
@@ -115,7 +135,7 @@
   "theme": {
     "mode": "system",
     "light": "One Light",
-    "dark": "Catppuccin Macchiato",
+    "dark": "Fleet Dark",
   },
-  "ui_font_size": 16,
+  "ui_font_size": 18.0,
 }

@@ -1,5 +1,5 @@
 # 端末固有の alias を管理する
 abbr -S kabep='ssh kabe -D localhost:1080 -N -C tnmt@kabe.beproud.jp'
-abbr -S spectacular='poetry run python src/manage.py compilemessages && poetry run src/manage.py spectacular --file schema.yml --lang ja'
+abbr -S spectacular='cd src && poetry run python manage.py makemessages -l ja && poetry run python manage.py makemessages -l en && poetry run python manage.py compilemessages && poetry run python manage.py spectacular --file ../schema.yml && cd ../'
 abbr -S apap="brew update && brew upgrade && brew autoremove && mise up"
 
