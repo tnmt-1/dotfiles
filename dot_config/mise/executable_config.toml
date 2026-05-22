@@ -5,12 +5,13 @@ python = "latest"
 yarn = "1"
 "npm:difit" = "latest"
 rust = "latest"
-"npm:@google/gemini-cli" = "latest"
 "npm:safe-rm" = "latest"
-"npm:opencode-ai" = "latest"
-"npm:oh-my-opencode" = "latest"
-"npm:oh-my-openagent" = "latest"
 uv = "latest"
+"npm:oh-my-opencode-slim" = "latest"
+bun = "latest"
+"npm:pyright" = "latest"
+"npm:opencode-ai" = "latest"
+"npm:ccusage" = "latest"
 
 [settings]
 idiomatic_version_file_enable_tools = ["python", "node"]

@@ -1,5 +1,7 @@
-export EDITOR="hx"
+export ZDOTDIR="$HOME/.config/zsh"
+export DOCKER_HOST="unix:///Users/$USER/.config/tcolima/default/docker.sock"
 
-if [ -f ~/.zshenv.local ]; then
-  source ~/.zshenv.local
+if [ -f ~/.config/zsh/.zshenv ]; then
+  source ~/.config/zsh/.zshenv
 fi
+

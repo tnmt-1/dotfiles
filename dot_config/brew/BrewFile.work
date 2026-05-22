@@ -1,5 +1,8 @@
 tap "felixkratz/formulae"
 tap "jean-tinland/a-bar"
+tap "jnsahaj/lumen"
+tap "k1low/tap"
+tap "muxy-app/tap"
 tap "nikitabobko/tap"
 tap "olets/tap"
 tap "romkatv/powerlevel10k"
@@ -41,52 +44,56 @@ brew "fd"
 brew "ffmpeg"
 # Command-line fuzzy finder written in Go
 brew "fzf"
-# Cat alternative written in Go
-brew "gat"
 # GitHub command-line tool
 brew "gh"
+# Interpreter for PostScript and PDF
+brew "ghostscript"
 # Remote repository management made easy
 brew "ghq"
 # Syntax-highlighting pager for git and diff output
 brew "git-delta"
-# Render markdown on the CLI
-brew "glow"
 # Post-modern modal text editor
 brew "helix"
 # Improved top (interactive process viewer)
 brew "htop"
 # User-friendly cURL replacement (command-line HTTP client)
 brew "httpie"
+# Tools and libraries to manipulate images in select formats
+brew "imagemagick"
 # Lightweight and flexible command-line JSON processor
 brew "jq"
 # Simple terminal UI for git commands
 brew "lazygit"
+# Library to render SVG files using Cairo
+brew "librsvg"
 # Polyglot runtime manager (asdf rust clone)
 brew "mise"
 # Open source relational database management system
 brew "mysql-client"
 # Open source relational database management system
 brew "mysql@8.0", restart_service: :changed
-# Swiss-army knife of markup format conversion
-brew "pandoc"
-# Search tool like grep and The Silver Searcher
-brew "ripgrep"
-# Text interface for Git repositories
-brew "tig"
-# Command-line and local web note-taking, bookmarking, and archiving
-brew "nb"
+# Ambitious Vim-fork focused on extensibility and agility
+brew "neovim"
 # Network Kanji code conversion Filter (NKF)
 brew "nkf"
+# Swiss-army knife of markup format conversion
+brew "pandoc"
 # Execute binaries from Python packages in isolated environments
 brew "pipx"
 # Package compiler and linker metadata toolkit
 brew "pkgconf"
+# PNG image optimizing utility
+brew "pngquant"
 # Theme for zsh
 brew "powerlevel10k"
 # Interpreted, interactive, object-oriented programming language
 brew "python@3.12"
-# Extremely fast Python package installer and resolver, written in Rust
-brew "uv"
+# Search tool like grep and The Silver Searcher
+brew "ripgrep"
+# Cross-shell prompt for astronauts
+brew "starship"
+# Text interface for Git repositories
+brew "tig"
 # Internet file retriever
 brew "wget"
 # Blazing fast terminal file manager written in Rust, based on async I/O
@@ -99,6 +106,10 @@ brew "zoxide"
 brew "zsh-autosuggestions"
 # Fish shell like syntax highlighting for zsh
 brew "zsh-syntax-highlighting"
+# lumen is a command-line tool that can show pretty diff, generate commit messages with AI, summarise diffs / commits, and more without requiring an API key.
+brew "jnsahaj/lumen/lumen"
+# mo is a Markdown viewer that opens .md files in a browser.
+brew "k1low/tap/mo"
 # Auto-expanding abbreviations manager for zsh, inspired by fish
 brew "olets/tap/zsh-abbr"
 # Password manager that keeps all passwords secure behind one password
@@ -109,10 +120,6 @@ cask "1password-cli"
 cask "jean-tinland/a-bar/a-bar"
 # AeroSpace is an i3-like tiling window manager for macOS
 cask "nikitabobko/tap/aerospace"
-# Enable Windows-like alt-tab
-cask "alt-tab"
-# AI Coding Agent IDE
-cask "antigravity"
 # Application uninstaller
 cask "appcleaner"
 # Japanese input method
@@ -121,16 +128,14 @@ cask "azookey"
 cask "basictex"
 # Terminal-based AI coding assistant
 cask "claude-code"
-# Clipboard extension app
-cask "clipy"
 # Ghostty-based terminal with vertical tabs and notifications for AI coding agents
 cask "cmux"
-# Web browser with integrated AI assistant
-cask "comet"
 # Plain-text editor for web pages, program source codes and more
 cask "coteditor"
-# Universal database tool and SQL client
-cask "dbeaver-community"
+# Write, edit, and chat about your code with AI
+cask "cursor"
+# Database manager for MySQL, PostgreSQL, SQL Server, MongoDB, SQLite and others
+cask "dbgate"
 # Online diagram software
 cask "drawio"
 # Web browser
@@ -144,20 +149,12 @@ cask "gcloud-cli"
 cask "ghostty"
 # Web browser
 cask "google-chrome"
-# Japanese input software
-cask "google-japanese-ime"
-# Terminal emulator as alternative to Apple's Terminal app
-cask "iterm2"
 # Keyboard customiser
 cask "karabiner-elements"
-# Agent-centric IDE with spec-driven development
-cask "kiro"
 # GPU-based terminal emulator
 cask "kitty"
-# Open source code editor written in Rust
-cask "lapce"
-# Interactive tool for analyzing MongoDB data
-cask "mongodb-compass"
+# Terminal multiplexer for macOS
+cask "muxy-app/tap/muxy"
 # App to write, plan, collaborate, and get organised
 cask "notion"
 # Knowledge base that works on top of a local folder of plain text Markdown files
@@ -182,14 +179,9 @@ cask "wezterm"
 cask "zed"
 # Video communication and virtual meeting platform
 cask "zoom"
-vscode "antfu.goto-alias"
-vscode "arjun.swagger-viewer"
 vscode "batisteo.vscode-django"
 vscode "bierner.github-markdown-preview"
-vscode "bierner.markdown-checkbox"
-vscode "bierner.markdown-emoji"
 vscode "bierner.markdown-footnotes"
-vscode "bierner.markdown-mermaid"
 vscode "bierner.markdown-preview-github-styles"
 vscode "bierner.markdown-yaml-preamble"
 vscode "billaferd.vscode-deflist"
@@ -197,39 +189,27 @@ vscode "catppuccin.catppuccin-vsc"
 vscode "catppuccin.catppuccin-vsc-icons"
 vscode "charliermarsh.ruff"
 vscode "davidanson.vscode-markdownlint"
-vscode "dbaeumer.vscode-eslint"
 vscode "donjayamanne.githistory"
+vscode "eamodio.gitlens"
 vscode "editorconfig.editorconfig"
-vscode "esbenp.prettier-vscode"
-vscode "github.copilot-chat"
 vscode "github.vscode-github-actions"
-vscode "hediet.vscode-drawio"
 vscode "kevinrose.vsc-python-indent"
 vscode "ms-ceintl.vscode-language-pack-ja"
-vscode "ms-python.debugpy"
 vscode "ms-python.flake8"
 vscode "ms-python.mypy-type-checker"
 vscode "ms-python.python"
 vscode "ms-python.vscode-pylance"
 vscode "ms-python.vscode-python-envs"
-vscode "ms-vscode-remote.remote-containers"
-vscode "ms-vsliveshare.vsliveshare"
 vscode "njpwerner.autodocstring"
-vscode "nuxt.mdc"
-vscode "nuxtr.nuxt-vscode-extentions"
-vscode "nuxtr.nuxtr-vscode"
-vscode "octref.vetur"
 vscode "oderwat.indent-rainbow"
-vscode "rvest.vs-code-prettier-eslint"
-vscode "seatonjiang.gitmoji-vscode"
 vscode "sgryjp.japanese-word-handler"
 vscode "shardulm94.trailing-spaces"
 vscode "shuworks.vscode-table-formatter"
+vscode "sst-dev.opencode"
 vscode "streetsidesoftware.code-spell-checker"
 vscode "tomoki1207.pdf"
-vscode "vincaslt.highlight-matching-tag"
-vscode "vue.volar"
 vscode "yahyabatulu.vscode-markdown-alert"
 vscode "yzhang.markdown-all-in-one"
 uv "-"
 uv "virtualenv"
+npm "pnpm"

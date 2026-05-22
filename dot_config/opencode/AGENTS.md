@@ -127,13 +127,15 @@ Obsidianのvault root(=この運用での`{repo root}`)配下の`research`に保
 
 ### 実行方法
 
-`obsidian`CLIでvault rootを取得し、`research`配下へ出力する。
-ファイル作成は`obsidian create`を使う。
+`obsidian-cli`でvault rootを取得し、`research`配下へ出力する。
+`obsidian`コマンドはアプリを起動してしまうことがあるため使わず、CLI用途では`obsidian-cli`を使う。
+ファイル作成は`obsidian-cli create`を使う。
 
 ```bash
+VAULT_ROOT="$(obsidian-cli vault info=path)"
 FILENAME="$(date +%Y%m%d)-<調査対象を表すkebab-case>.md"
 CONTENT=$'---\ntags:\n  - research\n  - <topic>\n  - <tech-or-domain>\n---\n\n...内容...\n'
-obsidian create path="research/$FILENAME" content="$CONTENT" overwrite
+obsidian-cli create path="research/$FILENAME" content="$CONTENT" overwrite
 ```
 
 ### 注意事項

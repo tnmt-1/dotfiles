@@ -1,0 +1,50 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "serena": {
+      "type": "local",
+      "enabled": true,
+      "command": [
+        "uvx",
+        "--from",
+        "git+https://github.com/oraios/serena",
+        "serena",
+        "start-mcp-server",
+        "--enable-web-dashboard",
+        "False"
+      ],
+      "environment": {}
+    },
+    "context7": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "@upstash/context7-mcp@latest"
+      ],
+      "enabled": true,
+      "environment": {}
+    }
+  },
+  "plugin": [
+    //"oh-my-openagent@latest",
+    //"superpowers@git+https://github.com/obra/superpowers.git",
+    "oh-my-opencode-slim"
+  ],
+  "agent": {
+    "explore": {
+      "disable": true
+    },
+    "general": {
+      "disable": true
+    }
+  },
+  "lsp": false,
+  "permission": {
+    "external_directory": {
+      "~/Documents/chiraura/**": "allow",
+      "~/dev/**": "allow",
+      "~/.config/**": "allow"
+    }
+  }
+}
