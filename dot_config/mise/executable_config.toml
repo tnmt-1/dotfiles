@@ -12,6 +12,7 @@ bun = "latest"
 "npm:pyright" = "latest"
 "npm:opencode-ai" = "latest"
 "npm:ccusage" = "latest"
+"github:can1357/oh-my-pi" = "latest"
 
 [settings]
 idiomatic_version_file_enable_tools = ["python", "node"]
