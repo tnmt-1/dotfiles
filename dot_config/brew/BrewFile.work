@@ -126,8 +126,6 @@ cask "appcleaner"
 cask "azookey"
 # Compact TeX distribution as alternative to the full TeX Live / MacTeX
 cask "basictex"
-# Terminal-based AI coding assistant
-cask "claude-code"
 # Ghostty-based terminal with vertical tabs and notifications for AI coding agents
 cask "cmux"
 # Plain-text editor for web pages, program source codes and more

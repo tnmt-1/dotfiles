@@ -1,6 +1,5 @@
 [tools]
 node = "latest"
-"npm:@github/copilot" = "latest"
 python = "latest"
 yarn = "1"
 "npm:difit" = "latest"
