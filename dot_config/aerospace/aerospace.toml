@@ -301,9 +301,9 @@ run = 'move-node-to-workspace 1'
 if.app-id = 'com.cmuxterm.app'
 run = 'move-node-to-workspace 2'
 
-# iTerm2 → workspace 2
+# Muxy → workspace 2
 [[on-window-detected]]
-if.app-id = 'com.googlecode.iterm2'
+if.app-id = 'com.muxy.app'
 run = 'move-node-to-workspace 2'
 
 # kitty → workspace 2
@@ -316,15 +316,20 @@ run = 'move-node-to-workspace 2'
 if.app-id = 'com.microsoft.VSCode'
 run = 'move-node-to-workspace 3'
 
-# CotEditor → workspace 4
+# Cursor → workspace 3
 [[on-window-detected]]
-if.app-id = 'com.coteditor.CotEditor'
-run = 'move-node-to-workspace 4'
+if.app-id = 'com.todesktop.230313mzl4w4u92'
+run = 'move-node-to-workspace 3'
 
 # Zed → workspace 3
 [[on-window-detected]]
 if.app-id = 'dev.zed.Zed'
 run = 'move-node-to-workspace 3'
+
+# Notion → workspace N
+[[on-window-detected]]
+if.app-id = 'notion.id'
+run = 'move-node-to-workspace N'
 
 # OpenCode → workspace O
 [[on-window-detected]]
