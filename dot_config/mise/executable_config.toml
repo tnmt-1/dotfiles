@@ -9,7 +9,20 @@ uv = "latest"
 "npm:oh-my-opencode-slim" = "latest"
 bun = "latest"
 "npm:pyright" = "latest"
-"npm:opencode-ai" = "latest"
+"npm:opencode-ai" = { version = "latest", postinstall = """
+set -eu
+NODE_BIN="$(mise which node)"
+for pkg in "$MISE_TOOL_INSTALL_PATH/node_modules/opencode-ai" "$MISE_TOOL_INSTALL_PATH/lib/node_modules/opencode-ai"
+do
+  if [ -f "$pkg/postinstall.mjs" ]; then
+    cd "$pkg"
+    "$NODE_BIN" postinstall.mjs
+    exit 0
+  fi
+done
+echo "opencode-ai postinstall.mjs not found under: $MISE_TOOL_INSTALL_PATH" >&2
+exit 1
+""" }
 "npm:ccusage" = "latest"
 "github:can1357/oh-my-pi" = "latest"
 

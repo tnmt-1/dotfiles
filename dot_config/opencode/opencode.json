@@ -3,7 +3,7 @@
   "mcp": {
     "serena": {
       "type": "local",
-      "enabled": true,
+      "enabled": false,
       "command": [
         "uvx",
         "--from",
@@ -22,14 +22,14 @@
         "-y",
         "@upstash/context7-mcp@latest"
       ],
-      "enabled": true,
+      "enabled": false,
       "environment": {}
     }
   },
   "plugin": [
     //"oh-my-openagent@latest",
     //"superpowers@git+https://github.com/obra/superpowers.git",
-    "oh-my-opencode-slim"
+    //"oh-my-opencode-slim"
   ],
   "agent": {
     "explore": {
