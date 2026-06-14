@@ -1,13 +1,10 @@
-tap "felixkratz/formulae"
-tap "jean-tinland/a-bar"
-tap "jnsahaj/lumen"
-tap "k1low/tap"
-tap "muxy-app/tap"
-tap "nikitabobko/tap"
-tap "olets/tap"
-tap "romkatv/powerlevel10k"
-# Improved shell history for zsh, bash, fish and nushell
-brew "atuin"
+tap "felixkratz/formulae", trusted: true
+tap "jean-tinland/a-bar", trusted: true
+tap "jnsahaj/lumen", trusted: true
+tap "k1low/tap", trusted: true
+tap "muxy-app/tap", trusted: true
+tap "nikitabobko/tap", trusted: true
+tap "olets/tap", trusted: true
 # Automatic configure script builder
 brew "autoconf"
 # Automatically restart SSH sessions and tunnels
@@ -27,7 +24,7 @@ brew "bzip2"
 # Manage your dotfiles across multiple diverse machines, securely
 brew "chezmoi"
 # Container runtimes on MacOS (and Linux) with minimal setup
-brew "colima", restart_service: :changed
+brew "colima"
 # Pixel-perfect terminal diff viewer
 brew "difi"
 # Pack, ship and run any application as a lightweight container
@@ -84,8 +81,6 @@ brew "pipx"
 brew "pkgconf"
 # PNG image optimizing utility
 brew "pngquant"
-# Theme for zsh
-brew "powerlevel10k"
 # Interpreted, interactive, object-oriented programming language
 brew "python@3.12"
 # Search tool like grep and The Silver Searcher
@@ -110,8 +105,6 @@ brew "zsh-syntax-highlighting"
 brew "jnsahaj/lumen/lumen"
 # mo is a Markdown viewer that opens .md files in a browser.
 brew "k1low/tap/mo"
-# Auto-expanding abbreviations manager for zsh, inspired by fish
-brew "olets/tap/zsh-abbr"
 # Password manager that keeps all passwords secure behind one password
 cask "1password"
 # Command-line interface for 1Password
@@ -126,6 +119,8 @@ cask "appcleaner"
 cask "azookey"
 # Compact TeX distribution as alternative to the full TeX Live / MacTeX
 cask "basictex"
+# Screen capturing and editing tool
+cask "bettershot"
 # Ghostty-based terminal with vertical tabs and notifications for AI coding agents
 cask "cmux"
 # Plain-text editor for web pages, program source codes and more
@@ -161,8 +156,6 @@ cask "obsidian"
 cask "opencode-desktop"
 # Control your tools with a few keystrokes
 cask "raycast"
-# Screenshot measurement and annotation tool
-cask "shottr"
 # Team communication and collaboration software
 cask "slack"
 # CSV editor
@@ -171,17 +164,19 @@ cask "smoothcsv"
 cask "visual-studio-code"
 # Web browser with built-in email client focusing on customization and control
 cask "vivaldi"
+# Rust-based terminal
+cask "warp"
 # GPU-accelerated cross-platform terminal emulator and multiplexer
 cask "wezterm"
 # Multiplayer code editor
 cask "zed"
 # Video communication and virtual meeting platform
 cask "zoom"
+vscode "arcticicestudio.nord-visual-studio-code"
 vscode "batisteo.vscode-django"
 vscode "bierner.github-markdown-preview"
 vscode "bierner.markdown-footnotes"
 vscode "bierner.markdown-preview-github-styles"
-vscode "bierner.markdown-yaml-preamble"
 vscode "billaferd.vscode-deflist"
 vscode "catppuccin.catppuccin-vsc"
 vscode "catppuccin.catppuccin-vsc-icons"
@@ -210,4 +205,3 @@ vscode "yahyabatulu.vscode-markdown-alert"
 vscode "yzhang.markdown-all-in-one"
 uv "-"
 uv "virtualenv"
-npm "pnpm"
