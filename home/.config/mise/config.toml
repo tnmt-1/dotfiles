@@ -6,7 +6,6 @@ yarn = "1"
 rust = "latest"
 "npm:safe-rm" = "latest"
 uv = "latest"
-"npm:oh-my-opencode-slim" = "latest"
 bun = "latest"
 "npm:pyright" = "latest"
 "npm:opencode-ai" = { version = "latest", postinstall = """
@@ -24,7 +23,7 @@ echo "opencode-ai postinstall.mjs not found under: $MISE_TOOL_INSTALL_PATH" >&2
 exit 1
 """ }
 "npm:ccusage" = "latest"
-"github:can1357/oh-my-pi" = "latest"
+"cargo:yui-cli" = "latest"
 
 [settings]
 idiomatic_version_file_enable_tools = ["python", "node"]
