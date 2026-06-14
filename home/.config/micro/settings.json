@@ -1,0 +1,10 @@
+{
+    "colorscheme": "catppuccin-mocha-transparent",
+    "diffgutter": true,
+    "filemanager-foldersfirst": true,
+    "filemanager-openonstart": true,
+    "filemanager-showdotfiles": true,
+    "lsp.server": "python=uvx --from python-lsp-server pylsp",
+    "showchars": "space=·,tab=→,ispace=·,itab=→",
+    "tabstospaces": true
+}

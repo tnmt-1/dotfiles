@@ -1,1 +1,10 @@
 flake.lock
+
+# yui per-machine state and backups (added by `yui init`).
+/.yui/state.json
+/.yui/state.json.tmp
+/.yui/backup/
+config.local.toml
+
+# >>> yui rendered (auto-managed, do not edit) >>>
+# <<< yui rendered (auto-managed) <<<

@@ -1,0 +1,13 @@
+# yui config — see https://github.com/yukimemi/yui
+
+# [link]
+# file_mode = "auto"   # auto | symlink | hardlink
+# dir_mode  = "auto"   # auto | symlink | junction
+
+[mount]
+default_strategy = "marker"
+
+[[mount.entry]]
+src = "home"
+# `~` expands to $HOME / $USERPROFILE per OS at apply time, no Tera needed.
+dst = "~"

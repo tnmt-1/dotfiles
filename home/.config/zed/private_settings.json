@@ -1,0 +1,141 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run `zed: open default settings` from the
+// command palette (cmd-shift-p / ctrl-shift-p)
+
+{
+  "outline_panel": {
+    "dock": "right"
+  },
+  "collaboration_panel": {
+    "dock": "right"
+  },
+  "diff_view_style": "split",
+  "agent_servers": {
+    "opencode": {
+      "favorite_config_option_values": {
+        "model": [
+          "github-copilot/gpt-5.4/xhigh",
+          "github-copilot/gpt-5.4-mini/xhigh",
+          "github-copilot/claude-sonnet-4.6/high"
+        ]
+      },
+      "type": "registry",
+    },
+    "gemini": {
+      "type": "registry"
+    },
+    "github-copilot-cli": {
+      "type": "registry",
+    },
+  },
+  "agent": {
+    "inline_assistant_model": {
+      "provider": "copilot_chat",
+      "model": "claude-sonnet-4.6",
+      "enable_thinking": true,
+      "effort": "high",
+    },
+    "dock": "left",
+    "default_model": {
+      "provider": "copilot_chat",
+      "model": "claude-sonnet-4.6",
+      "enable_thinking": true,
+      "effort": "high",
+    },
+    "model_parameters": [],
+  },
+  "autosave": {
+    "after_delay": {
+      "milliseconds": 1000,
+    },
+  },
+  "base_keymap": "VSCode",
+  "buffer_font_fallbacks": ["HackGen", "Firge"],
+  "buffer_font_family": "JetBrains Mono",
+  "buffer_font_size": 16,
+  "buffer_line_height": {
+    "custom": 1.7999999523162842
+  },
+  "context_servers": {
+    "serena-context-server": {
+      "enabled": true,
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/oraios/serena",
+        "serena",
+        "start-mcp-server",
+        "serena==latest",
+        "--enable-web-dashboard",
+        "false"
+      ],
+      "env": {}
+    }
+  },
+  "edit_predictions": {
+    "mode": "subtle",
+    "provider": "copilot",
+  },
+  "experimental.theme_overrides": {
+    "background.appearance": "blurred",
+    "background": "#00000066",
+    "editor.background": "#00000000",
+    "panel.background": "#00000000",
+    "tab_bar.background": "#00000000",
+    "terminal.background": "#00000000",
+  },
+  "format_on_save": "off",
+  "git_panel": {
+    "dock": "right",
+    "collapse_untracked_diff": false,
+    "button": true,
+  },
+  "icon_theme": "Catppuccin Mocha",
+  "languages": {
+    "Markdown": {
+      "tab_size": 4,
+      "formatter": {
+        "external": {
+          "command": "npx",
+          "arguments": [
+            "-y",
+            "markdownlint-cli2",
+            "--config",
+            "/Users/tnmt/.config/markdownlint/.markdownlint.jsonc",
+            "--format",
+            "{buffer_path}",
+          ],
+        },
+      },
+    },
+    "Diff": {
+      "show_whitespaces": "all",
+      "tab_size": 4,
+    },
+  },
+  "minimap": {
+    "show": "always",
+  },
+  "project_panel": {
+    "dock": "right",
+    "git_status": true,
+  },
+  "show_whitespaces": "all",
+  "terminal": {
+    "font_size": 16,
+    "option_as_meta": true,
+    "font_family": "JetBrains Mono NL",
+    "font_fallbacks": ["Gen Jyuu GothicL", "FirgeNerd Console"],
+  },
+  "theme": {
+    "mode": "system",
+    "light": "One Light",
+    "dark": "Fleet Dark",
+  },
+  "ui_font_size": 18.0,
+}

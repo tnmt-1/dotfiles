@@ -1,0 +1,10 @@
+'$schema' = 'https://starship.rs/config-schema.json'
+
+format = '$all'
+
+[package]
+disabled = true
+
+[gcloud]
+disabled = true
+
