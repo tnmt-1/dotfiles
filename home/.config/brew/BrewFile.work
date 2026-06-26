@@ -1,7 +1,7 @@
-tap "felixkratz/formulae", trusted: true
-tap "jean-tinland/a-bar", trusted: true
+tap "felixkratz/formulae", "https://github.com/FelixKratz/homebrew-formulae", trusted: true
+tap "jean-tinland/a-bar", "https://github.com/Jean-Tinland/homebrew-a-bar", trusted: true
 tap "jnsahaj/lumen", trusted: true
-tap "k1low/tap", trusted: true
+tap "k1low/tap", "https://github.com/k1LoW/homebrew-tap", trusted: true
 tap "muxy-app/tap", trusted: true
 tap "nikitabobko/tap", trusted: true
 tap "olets/tap", trusted: true
@@ -82,17 +82,27 @@ brew "pkgconf"
 # PNG image optimizing utility
 brew "pngquant"
 # Interpreted, interactive, object-oriented programming language
+brew "python@3.10"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.11"
+# Interpreted, interactive, object-oriented programming language
 brew "python@3.12"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.9"
 # Search tool like grep and The Silver Searcher
 brew "ripgrep"
 # Cross-shell prompt for astronauts
 brew "starship"
 # Text interface for Git repositories
 brew "tig"
+# Program that allows you to count code, quickly
+brew "tokei"
 # Internet file retriever
 brew "wget"
 # Blazing fast terminal file manager written in Rust, based on async I/O
 brew "yazi"
+# Process YAML, JSON, XML, CSV and properties documents from the CLI
+brew "yq"
 # Pluggable terminal workspace, with terminal multiplexer as the base feature
 brew "zellij"
 # Shell extension to navigate your filesystem faster
@@ -121,6 +131,8 @@ cask "azookey"
 cask "basictex"
 # Screen capturing and editing tool
 cask "bettershot"
+# OpenAI's official ChatGPT desktop app
+cask "chatgpt"
 # Ghostty-based terminal with vertical tabs and notifications for AI coding agents
 cask "cmux"
 # Plain-text editor for web pages, program source codes and more
@@ -201,6 +213,7 @@ vscode "shuworks.vscode-table-formatter"
 vscode "sst-dev.opencode"
 vscode "streetsidesoftware.code-spell-checker"
 vscode "tomoki1207.pdf"
+vscode "vue.volar"
 vscode "yahyabatulu.vscode-markdown-alert"
 vscode "yzhang.markdown-all-in-one"
 uv "-"

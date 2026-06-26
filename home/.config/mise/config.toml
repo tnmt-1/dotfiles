@@ -8,7 +8,7 @@ rust = "latest"
 uv = "latest"
 bun = "latest"
 "npm:pyright" = "latest"
-"npm:opencode-ai" = { version = "latest", postinstall = """
+"npm:opencode-ai" = { version = "latest", args = ["--ignore-scripts=false"], postinstall = """
 set -eu
 NODE_BIN="$(mise which node)"
 for pkg in "$MISE_TOOL_INSTALL_PATH/node_modules/opencode-ai" "$MISE_TOOL_INSTALL_PATH/lib/node_modules/opencode-ai"
@@ -24,6 +24,9 @@ exit 1
 """ }
 "npm:ccusage" = "latest"
 "cargo:yui-cli" = "latest"
+"npm:@helpfeel/cosense-cli" = "latest"
+"npm:@earendil-works/pi-coding-agent" = "latest"
+"npm:markdownlint-cli" = "latest"
 
 [settings]
 idiomatic_version_file_enable_tools = ["python", "node"]

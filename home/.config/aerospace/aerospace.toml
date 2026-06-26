@@ -341,6 +341,26 @@ run = 'move-node-to-workspace O'
 if.app-id = 'com.google.GeminiMacOS'
 run = 'move-node-to-workspace G'
 
+# Gemini(Vivaldi for work) → workspace G
+[[on-window-detected]]
+if.app-id = 'com.vivaldi.Vivaldi.app.fmmnebhfbmkgniidljedahpdhmladhod'
+run = 'move-node-to-workspace G'
+
+# Slack(Vivaldi for work) → workspace S
+[[on-window-detected]]
+if.app-id = 'com.vivaldi.Vivaldi.app.kmobppamafbflhhbfbonccdeaocfdllj'
+run = 'move-node-to-workspace S'
+
+# Slack → workspace S
+[[on-window-detected]]
+if.app-id = 'com.tinyspeck.slackmacgap'
+run = 'move-node-to-workspace S'
+
+# Zoom → workspace Z
+[[on-window-detected]]
+if.app-id = 'us.zoom.xos'
+run = 'move-node-to-workspace Z'
+
 # それ以外のすべて → workspace 9
 [[on-window-detected]]
 # ここでは app-id 条件を付けないことで「その他全部」にマッチさせる
