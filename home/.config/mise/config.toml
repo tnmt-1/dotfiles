@@ -2,31 +2,24 @@
 node = "latest"
 python = "latest"
 yarn = "1"
-"npm:difit" = "latest"
 rust = "latest"
 "npm:safe-rm" = "latest"
 uv = "latest"
 bun = "latest"
 "npm:pyright" = "latest"
-"npm:opencode-ai" = { version = "latest", args = ["--ignore-scripts=false"], postinstall = """
-set -eu
-NODE_BIN="$(mise which node)"
-for pkg in "$MISE_TOOL_INSTALL_PATH/node_modules/opencode-ai" "$MISE_TOOL_INSTALL_PATH/lib/node_modules/opencode-ai"
-do
-  if [ -f "$pkg/postinstall.mjs" ]; then
-    cd "$pkg"
-    "$NODE_BIN" postinstall.mjs
-    exit 0
-  fi
-done
-echo "opencode-ai postinstall.mjs not found under: $MISE_TOOL_INSTALL_PATH" >&2
-exit 1
-""" }
 "npm:ccusage" = "latest"
 "cargo:yui-cli" = "latest"
 "npm:@helpfeel/cosense-cli" = "latest"
-"npm:@earendil-works/pi-coding-agent" = "latest"
+"npm:@earendil-works/pi-coding-agent" = { version = "latest", minimum_release_age = "0s" }
+"github:can1357/oh-my-pi" = { version = "latest", minimum_release_age = "0s" }
 "npm:markdownlint-cli" = "latest"
+aws-cli = { version = "latest", symlink_bins = "true" }
+gcloud = "latest"
+"pipx:httpie" = "latest"
+"pipx:headroom-ai" = { version = "latest", extras = ["all"] }
+"pipx:poetry" = "latest"
+redis = "latest"
+"npm:@opencode-ai/cli" = "next"
 
 [settings]
 idiomatic_version_file_enable_tools = ["python", "node"]

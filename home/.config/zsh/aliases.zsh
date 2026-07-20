@@ -50,6 +50,7 @@ alias gadog='PAGER="less -F -X" git log --all --decorate --oneline --graph'
 
 alias history="history -Di"
 alias reload="exec $SHELL -l"
+alias mdfixclip='pbpaste > /tmp/clipboard.md && markdownlint --fix --config ~/.config/markdownlint/.markdownlint.jsonc /tmp/clipboard.md && pbcopy < /tmp/clipboard.md'
 
 # --- .aliases の読み込み ---
 if [ -f "$ZDOTDIR/aliases.local.zsh" ]; then

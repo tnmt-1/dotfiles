@@ -1,6 +1,7 @@
 #theme = "catppuccin_mocha"
 #theme = "catppuccin_frappe"
-theme = "catppuccin_frappe_transparent"
+#theme = "catppuccin_frappe_transparent"
+theme = "nordic"
 
 [editor]
 clipboard-provider = "pasteboard"
@@ -17,6 +18,15 @@ y = ["yank", "yank_to_clipboard"]
 
 [keys.insert]
 "C-[" = "normal_mode"
+# Emacs-like bindings
+"C-a" = "goto_line_start"
+"C-e" = "goto_line_end_newline"
+"C-f" = "move_char_right"
+"C-b" = "move_char_left"
+"A-f" = "move_next_word_end"
+"A-b" = "move_prev_word_start"
+"C-p" = "move_line_up"
+"C-n" = "move_line_down"
 
 [keys.select]
 y = ["yank", "yank_to_clipboard"]

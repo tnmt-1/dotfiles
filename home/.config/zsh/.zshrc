@@ -40,7 +40,6 @@ set -o emacs
 # Smart directory navigation
 # =========================================================
 
-eval "$(mise activate zsh)"
 eval "$(fzf --zsh)"
 eval "$(zoxide init zsh)"
 
@@ -107,10 +106,16 @@ source "$ZDOTDIR/functions.zsh"
 # =========================================================
 # Paths
 # =========================================================
-# mise の precmd hook 後に再整列し、~/.local/bin と homebrew を優先
 _reorder_path() {
   typeset -gU PATH
   PATH="${HOME}/.local/bin:${PATH}"
-  PATH="/opt/homebrew/bin:/opt/homebrew/sbin:${PATH}"
 }
 add-zsh-hook precmd _reorder_path
+
+# =========================================================
+# Smart directory navigation
+# =========================================================
+
+eval "$(mise activate zsh)"
+eval "$(omp completions zsh)"
+
