@@ -1,0 +1,195 @@
+{
+    "[markdown]": {
+        "editor.defaultFormatter": "DavidAnson.vscode-markdownlint",
+        "editor.tabSize": 4,
+        "editor.insertSpaces": true
+    },
+    "chat.agent.maxRequests": 100,
+    "chat.editor.fontSize": 14,
+    "chat.fontSize": 15,
+    "chat.hookFilesLocations": {
+        ".claude/hooks": true
+    },
+    "chat.mcp.gallery.enabled": true,
+    "chat.useAgentSkills": true,
+    "chat.useClaudeHooks": true,
+    "cSpell.userWords": [
+        "Authlete",
+        "excinfo",
+        "invokable",
+        "Nuxt",
+        "PKCE",
+        "REISSUABLE",
+        "uniikey",
+        "Vuetify"
+    ],
+    "editor.fontFamily": "JetBrains Mono NL, Firge, Menlo, Monaco, 'Courier New', monospace",
+    "editor.fontSize": 16,
+    "editor.formatOnSave": true,
+    "editor.gotoLocation.multipleDefinitions": "goto",
+    "editor.renderWhitespace": "all",
+    "editor.stickyScroll.enabled": false,
+    "files.associations": {
+        "*.md": "markdown"
+    },
+    "files.autoSave": "afterDelay",
+    "github.copilot.chat.agent.autoFix": true,
+    "github.copilot.chat.anthropic.tools.websearch.enabled": true,
+    "github.copilot.chat.codesearch.enabled": true,
+    "github.copilot.chat.newWorkspace.useContext7": true,
+    "github.copilot.nextEditSuggestions.enabled": true,
+    "indentRainbow.colorOnWhiteSpaceOnly": true,
+    "markdown.extension.list.indentationSize": "inherit",
+    "markdown.preview.breaks": true,
+    "markdown.preview.fontSize": 15,
+    "scm.repositories.selectionMode": "single",
+    "tableformatter.common.centerAlignedHeader": false,
+    "terminal.integrated.cursorBlinking": true,
+    "terminal.integrated.fontFamily": "JetBrains Mono NL, FirgeNerd Console",
+    "terminal.integrated.gpuAcceleration": "off",
+    "terminal.integrated.lineHeight": 1.3,
+    "terminal.integrated.suggest.enabled": false,
+    "workbench.activityBar.location": "top",
+    "workbench.iconTheme": "catppuccin-mocha",
+    "workbench.secondarySideBar.defaultVisibility": "visible",
+    "indentRainbow.ignoreErrorLanguages": [
+        "markdown",
+        "python"
+    ],
+    // 一時的な処置: Poetryを使用しているプロジェクトで、Python環境が正しく認識されない問題を回避するための設定
+    "python-envs.defaultEnvManager": "ms-python.python:poetry",
+    "python-envs.defaultPackageManager": "ms-python.python:poetry",
+    "files.defaultLanguage": "markdown",
+    "chat.tips.enabled": false,
+    "chat.viewSessions.orientation": "stacked",
+    "security.workspace.trust.untrustedFiles": "open",
+    "terminal.integrated.fontSize": 15,
+    "python.terminal.activateEnvironment": false,
+    "terminal.integrated.shellIntegration.enabled": false,
+    "[yaml]": {
+        "diffEditor.ignoreTrimWhitespace": true
+    },
+    "python.analysis.referencesCodeLens": true,
+    "accessibility.signals.clear": {
+        "sound": "off",
+        "announcement": "auto"
+    },
+    "accessibility.signals.codeActionApplied": {
+        "sound": "off"
+    },
+    "accessibility.signals.codeActionTriggered": {
+        "sound": "off"
+    },
+    "accessibility.signals.terminalQuickFix": {
+        "sound": "off",
+        "announcement": "auto"
+    },
+    "accessibility.signals.terminalCommandFailed": {
+        "sound": "off",
+        "announcement": "auto"
+    },
+    "accessibility.signals.terminalCommandSucceeded": {
+        "sound": "off",
+        "announcement": "auto"
+    },
+    "accessibility.signals.terminalBell": {
+        "sound": "off",
+        "announcement": "auto"
+    },
+    "accessibility.signals.taskCompleted": {
+        "sound": "off",
+        "announcement": "auto"
+    },
+    "accessibility.signals.taskFailed": {
+        "sound": "off",
+        "announcement": "auto"
+    },
+    "accessibility.signals.chatUserActionRequired": {
+        "sound": "off",
+        "announcement": "auto"
+    },
+    "accessibility.signals.chatResponseReceived": {
+        "sound": "off"
+    },
+    "accessibility.signals.chatRequestSent": {
+        "sound": "off",
+        "announcement": "auto"
+    },
+    "accessibility.signals.notebookCellCompleted": {
+        "sound": "off",
+        "announcement": "auto"
+    },
+    "accessibility.signals.notebookCellFailed": {
+        "sound": "off",
+        "announcement": "auto"
+    },
+    "accessibility.signals.onDebugBreak": {
+        "sound": "off",
+        "announcement": "auto"
+    },
+    "accessibility.signals.positionHasError": {
+        "sound": "off",
+        "announcement": "auto"
+    },
+    "accessibility.signals.positionHasWarning": {
+        "sound": "off",
+        "announcement": "auto"
+    },
+    "accessibility.signals.voiceRecordingStarted": {
+        "sound": "off"
+    },
+    "accessibility.signals.voiceRecordingStopped": {
+        "sound": "off"
+    },
+    "accessibility.signals.noInlayHints": {
+        "sound": "off",
+        "announcement": "auto"
+    },
+    "accessibility.signals.lineHasInlineSuggestion": {
+        "sound": "off"
+    },
+    "accessibility.signals.lineHasError": {
+        "sound": "off",
+        "announcement": "auto"
+    },
+    "accessibility.signals.lineHasBreakpoint": {
+        "sound": "off",
+        "announcement": "auto"
+    },
+    "accessibility.signals.lineHasWarning": {
+        "sound": "off",
+        "announcement": "auto"
+    },
+    "accessibility.signals.lineHasFoldedArea": {
+        "sound": "off",
+        "announcement": "auto"
+    },
+    "accessibility.signals.diffLineDeleted": {
+        "sound": "off"
+    },
+    "accessibility.signals.diffLineInserted": {
+        "sound": "off"
+    },
+    "accessibility.signals.nextEditSuggestion": {
+        "sound": "off",
+        "announcement": "auto"
+    },
+    "accessibility.signals.progress": {
+        "sound": "off",
+        "announcement": "off"
+    },
+    "accessibility.signals.chatEditModifiedFile": {
+        "sound": "off"
+    },
+    "accessibility.signals.diffLineModified": {
+        "sound": "off"
+    },
+    "accessibility.signals.editsUndone": {
+        "sound": "off",
+        "announcement": "auto"
+    },
+    "accessibility.signals.editsKept": {
+        "sound": "off",
+        "announcement": "auto"
+    },
+}
