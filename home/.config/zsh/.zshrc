@@ -117,5 +117,12 @@ add-zsh-hook precmd _reorder_path
 # =========================================================
 
 eval "$(mise activate zsh)"
-eval "$(omp completions zsh)"
+# omp completions は出力が決定論的なのでキャッシュして読み込む（初回のみ生成）
+_omp_comp="$XDG_CACHE_HOME/zsh/omp-completions.zsh"
+if [[ ! -f "$_omp_comp" ]] || [[ "$(command -v omp)" -nt "$_omp_comp" ]]; then
+  omp completions zsh > "$_omp_comp"
+fi
+source "$_omp_comp"
+unset _omp_comp
+
 
