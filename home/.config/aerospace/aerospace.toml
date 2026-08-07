@@ -311,6 +311,16 @@ run = 'move-node-to-workspace 2'
 if.app-id = 'net.kovidgoyal.kitty'
 run = 'move-node-to-workspace 2'
 
+# otty → workspace 2
+[[on-window-detected]]
+if.app-id = 'io.appmakes.otty'
+run = 'move-node-to-workspace 2'
+
+# kero → workspace 2
+[[on-window-detected]]
+if.app-id = 'sh.kero'
+run = 'move-node-to-workspace 2'
+
 # VS Code → workspace 3
 [[on-window-detected]]
 if.app-id = 'com.microsoft.VSCode'
@@ -344,6 +354,11 @@ run = 'move-node-to-workspace G'
 # Gemini(Vivaldi for work) → workspace G
 [[on-window-detected]]
 if.app-id = 'com.vivaldi.Vivaldi.app.fmmnebhfbmkgniidljedahpdhmladhod'
+run = 'move-node-to-workspace G'
+
+# Claude Desktop → workspace G
+[[on-window-detected]]
+if.app-id = 'com.anthropic.claudefordesktop'
 run = 'move-node-to-workspace G'
 
 # Slack(Vivaldi for work) → workspace S
