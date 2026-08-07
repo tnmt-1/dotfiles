@@ -11,41 +11,29 @@
         ],
         "disabled": false
       }
-      // "serena": {
-      //   "type": "local",
-      //   "disabled": true,
-      //   "command": [
-      //     "uvx",
-      //     "--from",
-      //     "git+https://github.com/oraios/serena",
-      //     "serena",
-      //     "start-mcp-server",
-      //     "--enable-web-dashboard",
-      //     "False"
-      //   ],
-      //   "environment": {}
-      // },
-      // "context7": {
-      //   "type": "local",
-      //   "command": [
-      //     "npx",
-      //     "-y",
-      //     "@upstash/context7-mcp@latest"
-      //   ],
-      //   "disabled": true,
-      //   "environment": {}
-      // }
     }
   },
   "plugins": [
-    //"@knikolov/opencode-plugin-simple-memory",
     "@tarquinen/opencode-dcp",
     "opencode-mem",
+    "oh-my-openagent@latest"
   ],
   "lsp": false,
   "permissions": [
-    { "action": "read", "resource": "~/Documents/chiraura/**", "effect": "allow" },
-    { "action": "read", "resource": "~/dev/**", "effect": "allow" },
-    { "action": "read", "resource": "~/.config/**", "effect": "allow" },
-  ],
+    {
+      "action": "read",
+      "resource": "~/Documents/chiraura/**",
+      "effect": "allow"
+    },
+    {
+      "action": "read",
+      "resource": "~/dev/**",
+      "effect": "allow"
+    },
+    {
+      "action": "read",
+      "resource": "~/.config/**",
+      "effect": "allow"
+    }
+  ]
 }
