@@ -126,3 +126,5 @@ source "$_omp_comp"
 unset _omp_comp
 
 
+# opencode
+export PATH=/Users/tnmt/.opencode/bin:$PATH
