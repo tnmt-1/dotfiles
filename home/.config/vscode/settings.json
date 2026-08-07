@@ -23,7 +23,7 @@
         "uniikey",
         "Vuetify"
     ],
-    "editor.fontFamily": "JetBrains Mono NL, Firge, Menlo, Monaco, 'Courier New', monospace",
+    "editor.fontFamily": "JetBrains Mono NL, \"源柔ゴシックL\", Gen Interface JP, Hack Nerd Font Mono, monospace",
     "editor.fontSize": 16,
     "editor.formatOnSave": true,
     "editor.gotoLocation.multipleDefinitions": "goto",
@@ -45,7 +45,6 @@
     "scm.repositories.selectionMode": "single",
     "tableformatter.common.centerAlignedHeader": false,
     "terminal.integrated.cursorBlinking": true,
-    "terminal.integrated.fontFamily": "JetBrains Mono NL, FirgeNerd Console",
     "terminal.integrated.gpuAcceleration": "off",
     "terminal.integrated.lineHeight": 1.3,
     "terminal.integrated.suggest.enabled": false,
@@ -192,4 +191,6 @@
         "sound": "off",
         "announcement": "auto"
     },
+    "workbench.experimental.modernUI": true,
+    "workbench.colorTheme": "Nord",
 }
