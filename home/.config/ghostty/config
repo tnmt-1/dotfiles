@@ -18,9 +18,9 @@ font-size = 15
 
 # フォント
 # 上から優先的に使用される（フォールバック）
-font-family = "JetBrains Mono"
-font-family = "源柔ゴシックL"
-font-family = "FirgeNerd Console"
+#font-family = "JetBrains Mono"
+#font-family = "源柔ゴシックL"
+#font-family = "FirgeNerd Console"
 
 # 左右両方の Option を Alt として認識します
 macos-option-as-alt = left
