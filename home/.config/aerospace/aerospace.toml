@@ -296,6 +296,11 @@ run = 'move-node-to-workspace 1'
 if.app-id = 'app.floorp.Floorp'
 run = 'move-node-to-workspace 1'
 
+# Firefox → workspace 1
+[[on-window-detected]]
+if.app-id = 'org.mozilla.firefox'
+run = 'move-node-to-workspace 1'
+
 # Cmux → workspace 2
 [[on-window-detected]]
 if.app-id = 'com.cmuxterm.app'
@@ -336,6 +341,11 @@ run = 'move-node-to-workspace 3'
 if.app-id = 'dev.zed.Zed'
 run = 'move-node-to-workspace 3'
 
+# PyCharm → workspace 3
+[[on-window-detected]]
+if.app-id = 'com.jetbrains.pycharm'
+run = 'move-node-to-workspace 3'
+
 # Notion → workspace N
 [[on-window-detected]]
 if.app-id = 'notion.id'
@@ -351,9 +361,9 @@ run = 'move-node-to-workspace O'
 if.app-id = 'com.google.GeminiMacOS'
 run = 'move-node-to-workspace G'
 
-# Gemini(Vivaldi for work) → workspace G
+# ChatGPT → workspace G
 [[on-window-detected]]
-if.app-id = 'com.vivaldi.Vivaldi.app.fmmnebhfbmkgniidljedahpdhmladhod'
+if.app-id = 'com.openai.codex'
 run = 'move-node-to-workspace G'
 
 # Claude Desktop → workspace G
