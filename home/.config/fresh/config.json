@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "theme": "dracula",
+  "locale": "ja",
+  "active_keybinding_map": "vscode",
+  "lsp": {
+    "python": {
+      "command": "pylsp",
+      "enabled": true,
+      "auto_start": true
+    }
+  },
+  "file_explorer": {
+    "show_hidden": true
+  },
+  "keybindings": [
+    {
+      "key": "Left",
+      "modifiers": [
+        "cmd",
+        "shift"
+      ],
+      "action": "navigate_back",
+      "when": "normal"
+    },
+    {
+      "key": "Right",
+      "modifiers": [
+        "cmd",
+        "shift"
+      ],
+      "action": "navigate_forward",
+      "when": "normal"
+    },
+    {
+      "key": "w",
+      "modifiers": [
+        "ctrl"
+      ],
+      "action": "close_tab",
+      "when": "normal"
+    },
+    {
+      "key": "`",
+      "modifiers": [
+        "ctrl"
+      ],
+      "action": "open_terminal",
+      "when": "normal"
+    }
+  ]
+}

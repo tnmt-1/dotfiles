@@ -4,6 +4,37 @@
         "editor.tabSize": 4,
         "editor.insertSpaces": true
     },
+    "[python]": {
+        "editor.defaultFormatter": "charliermarsh.ruff",
+        "editor.formatOnSave": false,
+        "editor.codeActionsOnSave": {
+            "source.fixAll.ruff": "explicit",
+            "source.organizeImports.ruff": "explicit"
+        }
+    },
+    "ruff.configuration": {
+        "target-version": "py311",
+        "src": [
+            "src"
+        ],
+        "line-length": 108,
+        "lint": {
+            "select": [
+                "C9",
+                "E",
+                "F",
+                "W",
+                "I",
+                "AIR"
+            ],
+            "ignore": [
+                "E501"
+            ],
+            "mccabe": {
+                "max-complexity": 15
+            }
+        }
+    },
     "chat.agent.maxRequests": 100,
     "chat.editor.fontSize": 14,
     "chat.fontSize": 15,
@@ -191,6 +222,36 @@
         "sound": "off",
         "announcement": "auto"
     },
-    "workbench.experimental.modernUI": true,
     "workbench.colorTheme": "Nord",
+    "terminal.integrated.profiles.osx": {
+        "bash": {
+            "path": "bash",
+            "args": [
+                "-l"
+            ],
+            "icon": "terminal-bash"
+        },
+        "zsh": {
+            "path": "zsh",
+            "args": [
+                "-l"
+            ]
+        },
+        "fish": {
+            "path": "/opt/homebrew/bin/fish",
+            "args": [
+                "-l"
+            ]
+        },
+        "tmux": {
+            "path": "tmux",
+            "icon": "terminal-tmux"
+        },
+        "pwsh": {
+            "path": "pwsh",
+            "icon": "terminal-powershell"
+        }
+    },
+    "terminal.integrated.defaultProfile.osx": "fish",
+    "workbench.experimental.modernUI": false,
 }
