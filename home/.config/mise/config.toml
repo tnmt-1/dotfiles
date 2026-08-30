@@ -9,9 +9,8 @@ bun = "latest"
 "npm:pyright" = "latest"
 "npm:ccusage" = "latest"
 "cargo:yui-cli" = "latest"
-"npm:@helpfeel/cosense-cli" = "latest"
+# "npm:@helpfeel/cosense-cli" = "latest"
 "npm:@earendil-works/pi-coding-agent" = { version = "latest", minimum_release_age = "0s" }
-"github:can1357/oh-my-pi" = { version = "latest", minimum_release_age = "0s" }
 "npm:markdownlint-cli" = "latest"
 aws-cli = { version = "latest", symlink_bins = "true" }
 gcloud = "latest"
@@ -19,7 +18,11 @@ gcloud = "latest"
 "pipx:headroom-ai" = { version = "latest", extras = ["all"] }
 "pipx:poetry" = "latest"
 redis = "latest"
-"npm:@opencode-ai/cli" = "next"
+"npm:@opencode-ai/cli" = "1"
+micro = "latest"
+pnpm = "latest"
+"github:can1357/oh-my-pi" = { version = "latest", minimum_release_age = "0s" }
+"npm:@robzolkos/lazypi" = "latest"
 
 [settings]
 idiomatic_version_file_enable_tools = ["python", "node"]
