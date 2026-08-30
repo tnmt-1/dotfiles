@@ -31,6 +31,11 @@ export STARSHIP_CONFIG="$ZDOTDIR/starship.toml"
 # Personal binaries/scripts
 export PATH="$HOME/.local/bin:$PATH"
 
+# ---------- Unicode width ----------
+# CJKロケールでも曖昧幅文字(East Asian Ambiguous)を半角として扱う
+# go-runewidth系ツール(micro等)とghosttyの描画幅を一致させる
+export RUNEWIDTH_EASTASIAN=0
+
 # ---------- Local overrides ----------
 # Load local overrides if the file exists
 if [[ -f "$ZDOTDIR/.zshenv.local" ]]; then
