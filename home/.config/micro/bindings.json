@@ -11,5 +11,8 @@
 
     // 単語移動 (Emacs 風、vi の w/b に相当)
     "Alt-f": "WordRight",
-    "Alt-b": "WordLeft"
+    "Alt-b": "WordLeft",
+
+    // 保存（Ctrl-s はフロー制御に奪われるため Alt に避難）
+    "Alt-s": "Save"
 }

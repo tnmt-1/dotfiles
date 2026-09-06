@@ -1,0 +1,15 @@
+{
+  "plugins": {
+    "@ryan_nookpi/pi-extension-headroom": {
+      "version": "0.1.5",
+      "enabledFeatures": null,
+      "enabled": true
+    },
+    "omp-fff": {
+      "version": "0.1.0",
+      "enabledFeatures": null,
+      "enabled": true
+    }
+  },
+  "settings": {}
+}

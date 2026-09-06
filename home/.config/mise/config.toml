@@ -18,11 +18,10 @@ gcloud = "latest"
 "pipx:headroom-ai" = { version = "latest", extras = ["all"] }
 "pipx:poetry" = "latest"
 redis = "latest"
-"npm:@opencode-ai/cli" = "1"
+"npm:@opencode-ai/cli" = "latest"
 micro = "latest"
 pnpm = "latest"
 "github:can1357/oh-my-pi" = { version = "latest", minimum_release_age = "0s" }
-"npm:@robzolkos/lazypi" = "latest"
 
 [settings]
 idiomatic_version_file_enable_tools = ["python", "node"]

@@ -1,0 +1,74 @@
+{
+  "lastChangelogVersion": "0.85.0",
+  "theme": "dark/dark",
+  "defaultProvider": "oc-sdk-go",
+  "defaultModel": "deepseek-v4-flash",
+  "defaultThinkingLevel": "high",
+  "packages": [
+    "npm:pi-opencode-bridge",
+    "npm:pi-observational-memory",
+    "npm:@ryan_nookpi/pi-extension-headroom",
+    "npm:pi-subagents",
+    "npm:pi-intercom",
+    "npm:pi-add-dir",
+    "npm:pi-web-access",
+    "npm:pi-simplify",
+    "npm:pi-permission-system",
+    "npm:pi-hermes-memory",
+    "npm:@bacnh85/pi-rtk@0.1.12",
+    "npm:@ff-labs/pi-fff",
+    "npm:pi-context-view",
+    "npm:pi-ask-user",
+    "npm:@devkade/pi-plan",
+    "npm:pi-slopchop",
+    "npm:@tmustier/pi-usage-extension",
+    "npm:@tmustier/pi-raw-paste",
+    "npm:pi-interactive-shell",
+    "npm:@ogulcancelik/pi-minimal-footer"
+  ],
+  "collapseChangelog": true,
+  "treeFilterMode": "default",
+  "steeringMode": "one-at-a-time",
+  "extensions": [],
+  "permissions": {
+    "*": "allow",
+    "bash": {
+      "rm *": "ask"
+    }
+  },
+  "hideThinkingBlock": false,
+  "markdown": {
+    "mermaid": "final"
+  },
+  "defaultProjectTrust": "ask",
+  "doubleEscapeAction": "tree",
+  "tuiMode": "fullscreen",
+  "fullscreenScrollbar": "auto",
+  "compaction": {
+    "enabled": true
+  },
+  "outputPad": 1,
+  "editorPaddingX": 0,
+  "subagents": {
+    "agentOverrides": {
+      "context-builder": {
+        "model": ""
+      },
+      "planner": {
+        "model": ""
+      },
+      "researcher": {
+        "model": ""
+      },
+      "reviewer": {
+        "model": ""
+      },
+      "scout": {
+        "model": ""
+      },
+      "worker": {
+        "model": ""
+      }
+    }
+  }
+}

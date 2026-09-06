@@ -1,0 +1,13 @@
+
+{
+  "defaultPolicy": {
+    "tools": "allow",
+    "bash": "allow",
+    "mcp": "allow",
+    "skills": "allow",
+    "special": "allow"
+  },
+  "bash": {
+    "rm *": "ask"
+  }
+}

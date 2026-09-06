@@ -1,0 +1,197 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run `zed: open default settings` from the
+// command palette (cmd-shift-p / ctrl-shift-p)
+
+{
+  "language_models": {
+    "opencode": {
+      "show_free_models": false,
+      "show_zen_models": false,
+      "show_go_models": true
+    }
+  },
+  "cli_default_open_behavior": "existing_window",
+  "theme": {
+    "mode": "dark",
+    "light": "Fleet Light",
+    "dark": "Nord Dark"
+  },
+  "debugger": {
+    "save_breakpoints": false
+  },
+  "outline_panel": {
+    "dock": "right"
+  },
+  "collaboration_panel": {
+    "dock": "right"
+  },
+  "diff_view_style": "split",
+  "agent_servers": {
+    "opencode": {
+      "favorite_config_option_values": {
+        "model": [
+          "github-copilot/gpt-5.4/xhigh",
+          "github-copilot/gpt-5.4-mini/xhigh",
+          "github-copilot/claude-sonnet-4.6/high"
+        ]
+      },
+      "type": "registry",
+    },
+    "gemini": {
+      "type": "registry"
+    },
+    "github-copilot-cli": {
+      "type": "registry",
+    },
+  },
+  "agent": {
+    "tool_permissions": {
+      "tools": {
+        "mcp:serena-context-server:find_symbol": {
+          "default": "allow"
+        },
+        "mcp:serena-context-server:find_file": {
+          "default": "allow"
+        },
+        "mcp:serena-context-server:execute_shell_command": {
+          "default": "allow"
+        },
+        "skill": {
+          "default": "allow"
+        },
+        "terminal": {
+          "always_allow": [
+            {
+              "pattern": "^poetry\\s+run(\\s|$)"
+            },
+            {
+              "pattern": "^tail\\b"
+            },
+            {
+              "pattern": "^poetry\\s+env(\\s|$)"
+            }
+          ]
+        },
+        "move_path": {
+          "default": "allow"
+        },
+        "mcp:serena-context-server:find_referencing_symbols": {
+          "default": "allow"
+        },
+        "mcp:serena-context-server:activate_project": {
+          "default": "allow"
+        }
+      }
+    },
+    "inline_assistant_model": {
+      "provider": "copilot_chat",
+      "model": "claude-sonnet-4.6",
+      "enable_thinking": true,
+      "effort": "high",
+    },
+    "dock": "left",
+    "default_model": {
+      "provider": "copilot_chat",
+      "model": "gpt-5.5",
+      "enable_thinking": true,
+      "effort": "high",
+    },
+    "model_parameters": [],
+  },
+  "autosave": {
+    "after_delay": {
+      "milliseconds": 1000,
+    },
+  },
+  "base_keymap": "VSCode",
+  "buffer_font_family": "JetBrains Mono NL",
+  "buffer_font_fallbacks": ["Gen Interface JP", "Firge"],
+  "buffer_font_size": 16.0,
+  "buffer_line_height": {
+    "custom": 1.7999999523162842
+  },
+  "context_servers": {
+    "mcp-server-github": {
+      "enabled": true,
+      "remote": false,
+      "settings": {}
+    },
+    "serena-context-server": {
+      "enabled": true,
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/oraios/serena",
+        "serena",
+        "start-mcp-server",
+        "serena==latest",
+        "--enable-web-dashboard",
+        "false"
+      ],
+      "env": {}
+    }
+  },
+  "edit_predictions": {
+    "open_ai_compatible_api": {
+      "api_url": "",
+      "model": ""
+    },
+    "mode": "subtle",
+    "provider": "copilot",
+  },
+  // "experimental.theme_overrides": {
+  //   "background.appearance": "blurred",
+  //   "background": "#00000066",
+  //   "editor.background": "#00000000",
+  //   "panel.background": "#00000000",
+  //   "tab_bar.background": "#00000000",
+  //   "terminal.background": "#00000000",
+  // },
+  "format_on_save": "off",
+  "git_panel": {
+    "dock": "right",
+    "collapse_untracked_diff": false,
+    "button": true,
+  },
+  "languages": {
+    "Markdown": {
+      "formatter": {
+        "external": {
+          "command": "npx",
+          "arguments": [
+            "-y",
+            "markdownlint-cli2",
+            "--config",
+            "/Users/tnmt/.config/markdownlint/.markdownlint.jsonc",
+            "--format",
+            "{buffer_path}",
+          ],
+        },
+      },
+    },
+    "Diff": {
+      "show_whitespaces": "all",
+      "tab_size": 4,
+    },
+  },
+  "minimap": {
+    "show": "always",
+  },
+  "project_panel": {
+    "dock": "left",
+    "git_status": true,
+  },
+  "show_whitespaces": "all",
+  "terminal": {
+    "font_size": 16.0,
+    "option_as_meta": true,
+    "font_family": "JetBrains Mono NL",
+    "font_fallbacks": ["FirgeNerd Console"],
+  },
+  "ui_font_size": 16.0,
+}

@@ -133,7 +133,6 @@
                     },
                     {
                         "description": "spaceをバックスペースにする",
-                        "enabled": false,
                         "manipulators": [
                             {
                                 "from": {

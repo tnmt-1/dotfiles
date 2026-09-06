@@ -346,6 +346,11 @@ run = 'move-node-to-workspace 3'
 if.app-id = 'com.jetbrains.pycharm'
 run = 'move-node-to-workspace 3'
 
+# Bruno → workspace B
+[[on-window-detected]]
+if.app-id = 'com.usebruno.app'
+run = 'move-node-to-workspace B'
+
 # Notion → workspace N
 [[on-window-detected]]
 if.app-id = 'notion.id'

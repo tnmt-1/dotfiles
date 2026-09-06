@@ -1,0 +1,26 @@
+[user]
+	name = tnmt
+	email = masashi.tanimoto@beproud.jp
+
+[pager]
+	pager = delta
+
+[interactive]
+	diffFilter = delta --color-only
+
+[core]
+	excludesfile = /Users/tnmt/.config/git/ignore
+	hooksPath = /Users/tnmt/.git-hooks
+
+[ghq]
+	root = ~/dev
+
+[delta]
+	side-by-side = true
+	line-numbers = true
+	navigate = true
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true

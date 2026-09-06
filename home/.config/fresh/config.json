@@ -3,13 +3,6 @@
   "theme": "dracula",
   "locale": "ja",
   "active_keybinding_map": "vscode",
-  "lsp": {
-    "python": {
-      "command": "pylsp",
-      "enabled": true,
-      "auto_start": true
-    }
-  },
   "file_explorer": {
     "show_hidden": true
   },
@@ -47,6 +40,24 @@
       ],
       "action": "open_terminal",
       "when": "normal"
+    },
+    {
+      "key": "s",
+      "modifiers": [
+        "alt"
+      ],
+      "action": "save",
+      "when": "normal"
     }
-  ]
+  ],
+  "lsp": {
+    "python": {
+      "command": "pyright-langserver",
+      "args": [
+        "--stdio"
+      ],
+      "enabled": true,
+      "auto_start": true
+    }
+  }
 }

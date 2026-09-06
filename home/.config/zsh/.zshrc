@@ -116,7 +116,27 @@ add-zsh-hook precmd _reorder_path
 # Smart directory navigation
 # =========================================================
 
-eval "$(mise activate zsh)"
+# mise activate は出力をバックグラウンドで生成し、初回コマンド実行時に適用する
+# 起動とプロンプト表示のクリティカルパスから mise のバイナリ起動を除外する
+if command -v mise > /dev/null; then
+  _mise_act_file="${TMPDIR:-/tmp}/zsh-mise-activate.$$.zsh"
+  ( command mise activate zsh > "$_mise_act_file" 2>/dev/null ) &!
+  # コマンド実行前に適用されずに終了する場合（Ctrl-Dなど）のゴミ掃除
+  trap 'rm -f "$_mise_act_file"' EXIT
+  _mise_apply() {
+    add-zsh-hook -d preexec _mise_apply
+    unfunction _mise_apply
+    local i
+    # 生成完了を待つ（通常はコマンド入力中に完了済みでループは回らない）
+    for i in {1..30}; do
+      [[ -s "$_mise_act_file" ]] && break
+      command sleep 0.1
+    done
+    [[ -s "$_mise_act_file" ]] && source "$_mise_act_file"
+    rm -f "$_mise_act_file"
+  }
+  add-zsh-hook preexec _mise_apply
+fi
 # omp completions は出力が決定論的なのでキャッシュして読み込む（初回のみ生成）
 _omp_comp="$XDG_CACHE_HOME/zsh/omp-completions.zsh"
 if command -v omp > /dev/null; then
@@ -127,7 +147,6 @@ if command -v omp > /dev/null; then
 fi
 [[ -f "$_omp_comp" ]] && source "$_omp_comp"
 unset _omp_comp
-
 
 # opencode
 export PATH=/Users/tnmt/.opencode/bin:$PATH
