@@ -12,3 +12,7 @@ cookies.*
 
 
 **/.claude/settings.local.json
+
+my/
+.muxy-tasks/
+.txt/

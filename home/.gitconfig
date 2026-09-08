@@ -10,7 +10,6 @@
 
 [core]
 	excludesfile = /Users/tnmt/.config/git/ignore
-	hooksPath = /Users/tnmt/.git-hooks
 
 [ghq]
 	root = ~/dev

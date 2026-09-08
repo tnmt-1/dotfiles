@@ -16,12 +16,13 @@ aws-cli = { version = "latest", symlink_bins = "true" }
 gcloud = "latest"
 "pipx:httpie" = "latest"
 "pipx:headroom-ai" = { version = "latest", extras = ["all"] }
-"pipx:poetry" = "latest"
+"pipx:poetry" = "1.8"
 redis = "latest"
 "npm:@opencode-ai/cli" = "latest"
 micro = "latest"
 pnpm = "latest"
 "github:can1357/oh-my-pi" = { version = "latest", minimum_release_age = "0s" }
+pitchfork = "latest"
 
 [settings]
 idiomatic_version_file_enable_tools = ["python", "node"]

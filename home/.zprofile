@@ -8,6 +8,6 @@
 
 # brew
 #eval "$(/opt/homebrew/bin/brew shellenv)"
-#
+
 #alias kabep='ssh kabe -D localhost:1080 -N -C tnmt@kabe.beproud.jp'
 #alias ncg='nix-collect-garbage -d'
