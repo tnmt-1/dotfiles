@@ -1,0 +1,19 @@
+{
+  "plugins": ["@textlint/textlint-plugin-markdown"],
+  "rules": {
+    "preset-jtf-style": {
+      "2.1.6.カタカナの長音": {},
+      "2.2.1.ひらがなと漢字の使い分け": {}
+    },
+    "preset-ja-technical-writing": {
+      "max-kanji-continuous-len": false,
+      "arabic-kanji-numbers": false,
+      "no-mix-dearu-desumasu": {
+        "preferInHeader": "である",
+        "preferInBody": "ですます",
+        "preferInList": "ですます",
+        "strict": true
+      }
+    }
+  }
+}

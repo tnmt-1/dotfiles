@@ -1,0 +1,13 @@
+{
+  "name": "bunfmt",
+  "private": true,
+  "version": "1.0.0",
+  "description": "JTCA向け実用文の表記を textlint で検査する",
+  "license": "ISC",
+  "dependencies": {
+    "@textlint/textlint-plugin-markdown": "^15.8.0",
+    "textlint": "^15.8.0",
+    "textlint-rule-preset-ja-technical-writing": "^12.0.2",
+    "textlint-rule-preset-jtf-style": "^3.0.3"
+  }
+}
