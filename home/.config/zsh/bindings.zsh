@@ -13,5 +13,10 @@ ZVM_VI_HIGHLIGHT_FOREGROUND=none
 ZVM_VI_HIGHLIGHT_EXTRASTYLE=none
 
 # Emacs風カーソル移動
+bindkey -e
 bindkey -M viins '^A' beginning-of-line # Ctrl+A で行頭へ
 bindkey -M viins '^E' end-of-line       # Ctrl+E で行末へ
+
+# オリジナル
+bindkey '^[[1;3D' backward-word   # Alt+←
+bindkey '^[[1;3C' forward-word    # Alt+→

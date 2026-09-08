@@ -1,0 +1,13 @@
+[[language]]
+name = "python"
+language-servers = ["pyright", "ruff"]
+auto-format = false
+
+[language-server.pyright.config.python.analysis]
+typeCheckingMode = "off"
+
+[[language]]
+name = "markdown"
+indent = { tab-width = 4, unit = "    " }
+formatter = { command = "npx", args = ["-y", "markdownlint-cli2", "--config", "/Users/tnmt/.config/markdownlint/.markdownlint.jsonc", "--format"] }
+auto-format = true

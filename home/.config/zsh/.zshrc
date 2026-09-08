@@ -156,3 +156,12 @@ export PATH=/Users/tnmt/.opencode/bin:$PATH
 
 # tty
 [[ -t 0 ]] && stty -ixon
+
+# =========================================================
+# Zellij
+# =========================================================
+# zellijを起動する。既存セッションがあれば自動でアタッチする
+#eval "$(zellij setup --generate-auto-start zsh)"
+
+# kitty 使うと claude code 終了時にハングするのでそのための処置
+claude() { command claude "$@"; printf '\e[<u'; }

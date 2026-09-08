@@ -1,17 +1,23 @@
 # Better ls
-alias ls='eza --icons'
+#alias ls='eza --icons'
 
 # Detailed listing
-alias ll='eza -lh --icons --git --time-style=long-iso'
+#alias ll='eza -lh --icons --git --time-style=long-iso'
 
 # Detailed listing including hidden files
-alias la='eza -lah --icons --git --time-style=long-iso'
+#alias la='eza -lah --icons --git --time-style=long-iso'
 
 # Tree view
-alias tree='eza --tree --icons'
+#alias tree='eza --tree --icons'
 
 # Reuse ls completions for eza (avoids defining a separate completion function)
-compdef eza=ls
+#compdef eza=ls
+
+# Plain ls (BSD ls: -G enables color)
+alias ls='ls -G'
+alias ll='ls -lhL'
+alias la='ls -lAhL'
+alias l='ls -CF'
 
 # Better cat
 alias cat='bat'
@@ -51,6 +57,7 @@ alias gadog='PAGER="less -F -X" git log --all --decorate --oneline --graph'
 alias history="history -Di"
 alias reload="exec $SHELL -l"
 alias mdfixclip='pbpaste > /tmp/clipboard.md && markdownlint --fix --config ~/.config/markdownlint/.markdownlint.jsonc /tmp/clipboard.md && pbcopy < /tmp/clipboard.md'
+alias zl="zellij"
 
 # --- .aliases の読み込み ---
 if [ -f "$ZDOTDIR/aliases.local.zsh" ]; then

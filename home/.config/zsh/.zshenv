@@ -9,8 +9,8 @@ export XDG_STATE_HOME="$HOME/.local/state"
 
 # ---------- Editor ----------
 # Default editor used by git, crontab, etc.
-export EDITOR="txt"
-export VISUAL="txt"
+export EDITOR="micro"
+export VISUAL="micro"
 #bindkey -e
 
 # ---------- Pager ----------

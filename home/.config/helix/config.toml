@@ -1,10 +1,10 @@
-#theme = "catppuccin_mocha"
-#theme = "catppuccin_frappe"
-#theme = "catppuccin_frappe_transparent"
 theme = "nordic"
 
 [editor]
 clipboard-provider = "pasteboard"
+default-yank-register = "+"
+trim-trailing-whitespace = true
+bufferline = "multiple"
 
 [editor.whitespace]
 render = "all"
@@ -12,9 +12,16 @@ render = "all"
 [editor.soft-wrap]
 enable = false
 
+[editor.auto-save]
+focus-lost = true
+after-delay.enable = true
+after-delay.timeout = 1000
+
+[editor.indent-guides]
+render = true
+
 [keys.normal]
 "A-z" = ":toggle soft-wrap.enable"
-y = ["yank", "yank_to_clipboard"]
 
 [keys.insert]
 "C-[" = "normal_mode"
@@ -27,6 +34,3 @@ y = ["yank", "yank_to_clipboard"]
 "A-b" = "move_prev_word_start"
 "C-p" = "move_line_up"
 "C-n" = "move_line_down"
-
-[keys.select]
-y = ["yank", "yank_to_clipboard"]

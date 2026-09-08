@@ -13,7 +13,6 @@ bun = "latest"
 "npm:@earendil-works/pi-coding-agent" = { version = "latest", minimum_release_age = "0s" }
 "npm:markdownlint-cli" = "latest"
 aws-cli = { version = "latest", symlink_bins = "true" }
-gcloud = "latest"
 "pipx:httpie" = "latest"
 "pipx:headroom-ai" = { version = "latest", extras = ["all"] }
 "pipx:poetry" = "1.8"
