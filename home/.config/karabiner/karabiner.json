@@ -68,7 +68,6 @@
                     },
                     {
                         "description": "Change Alt+¥ to ¥",
-                        "enabled": false,
                         "manipulators": [
                             {
                                 "from": {
@@ -82,7 +81,6 @@
                     },
                     {
                         "description": "Change ¥ to Alt+¥",
-                        "enabled": false,
                         "manipulators": [
                             {
                                 "from": { "key_code": "international3" },
@@ -394,6 +392,19 @@
                 },
                 {
                     "identifiers": { "is_keyboard": true },
+                    "simple_modifications": [
+                        {
+                            "from": { "key_code": "right_command" },
+                            "to": [{ "key_code": "right_option" }]
+                        }
+                    ]
+                },
+                {
+                    "identifiers": {
+                        "is_keyboard": true,
+                        "product_id": 9760,
+                        "vendor_id": 6645
+                    },
                     "simple_modifications": [
                         {
                             "from": { "key_code": "right_command" },
