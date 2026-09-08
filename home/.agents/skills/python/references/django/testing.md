@@ -7,7 +7,7 @@
 ## テストクラス
 
 | 用途 | 基底クラス |
-|---|---|
+| --- | --- |
 | DBアクセスあり | `django.test.TestCase` |
 | DBアクセスなし | `django.test.SimpleTestCase` |
 | DRF APIテスト | `rest_framework.test.APITestCase`または`TestCase + APIClient` |
@@ -72,7 +72,7 @@ class QueryCountTests(TestCase):
 ## そのほかのテスト手法
 
 | 対象 | 方法 |
-|---|---|
+| --- | --- |
 | Management Command | `call_command("command_name", *args)` |
 | Signal | `unittest.mock.patch`でハンドラを検証 |
 | 外部API呼び出し | `unittest.mock.patch`で境界を切る |
@@ -85,18 +85,22 @@ class QueryCountTests(TestCase):
 
 ## 実行方法
 
-```text
-# djangoのテストランナー
-poetry run python src/manage.py test {module}
+テストは`django.test.TestCase`系で書く。
+実行コマンドは環境に`pytest`と`pytest-django`が入っているかで切り替える。
+`poetry run pytest --version`が成功すれば入っている。
 
-# pytest (pytest-django)
+```text
+# pytestとpytest-djangoが入っている環境
 poetry run pytest {module} -v
+
+# 入っていない環境（djangoのテストランナー）
+poetry run python src/manage.py test {module}
 ```
 
 ## よく使う対応表
 
 | シチュエーション | 使うもの |
-|---|---|
+| --- | --- |
 | DBありのテスト | `django.test.TestCase` |
 | DBなしのテスト | `django.test.SimpleTestCase` |
 | DRF APIテスト | `APITestCase`または`APIClient` |

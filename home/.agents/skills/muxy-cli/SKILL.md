@@ -29,7 +29,7 @@ Every command talks to the running app over a local Unix socket — except openi
 muxy list-panes >/dev/null 2>&1 || { echo "Muxy not running"; exit 1; }
 ```
 
-If `muxy` itself is not found, it has not been installed — the user installs it from **Muxy → Install CLI** (it lands in `/usr/local/bin`, or `~/bin` / `~/.local/bin` as a fallback). You cannot install it for them.
+If `muxy` itself is not found, check for `/usr/local/bin/muxy`, `~/bin/muxy`, and `~/.local/bin/muxy`, then verify that its directory is on `$PATH`. If none exists, the user installs it from **Muxy → Install CLI**. The installed wrapper follows Muxy app updates automatically; the app migrates older standalone installs and requests approval when administrator access is required. You cannot install it for them.
 
 `muxy --help` lists every command; `muxy <command> --help` (or `-h`) prints that command's options.
 
@@ -52,7 +52,9 @@ For the other surfaces, list and parse the **tab-separated** output (the first c
 | `muxy list-panes` | `<pane-id>  <title>  <cwd>  <focused>` |
 | `muxy list-projects` | `<project-id>  <name>  <path>  <active>` |
 | `muxy list-worktrees [project]` | `<worktree-id>  <name>  <path>  <branch>  <active>` |
+| `muxy list-workspaces` | `<workspace-id>  <name>  <project-count>  <active>` |
 | `muxy list-tabs` | `<index>  <tab-id>  <kind>  <title>  <active>` |
+| `muxy list-sessions` | `<session-id>  <shell-pid>  <cwd>  <attached>  <title>  <project-id>  <worktree-id>  <tab-id>` |
 
 ```bash
 PANE=$(muxy list-panes | awk -F'\t' '$2=="Tests"{print $1; exit}')
@@ -83,6 +85,16 @@ muxy read-screen --pane "$WEB" --lines 20
 
 If you need more history than is on screen, that is a sign the work should write to a file you can read directly, not be scraped from a terminal.
 
+## Background sessions
+
+If the user has **Settings → Terminal → Background sessions** on, terminals keep running after Muxy quits. `muxy list-sessions` shows them, along with the tab, project, and worktree each one belongs to, and `muxy kill-session --session <id>` stops one plus everything running inside it:
+
+```bash
+muxy kill-session --session "$SESSION"
+```
+
+Take the ID from the first column: it matches the pane ID only until a tab adopts another session. Closing a session's tab already ends it, so reach for `kill-session` only for a session that outlived its tab. Never kill a session you did not create — it is someone's running work, and it is gone for good.
+
 ## Worktrees and projects
 
 ```bash
@@ -93,6 +105,41 @@ muxy refresh-worktrees
 ```
 
 `create-worktree <name>` defaults the branch to `<name>` and creates it; pass `--existing` to check out an existing branch, `--base <branch>` to fork from a specific base, and `--path`/`--project` to place or target it. Without `--path`, Muxy uses the project's worktree path template or folder setting and resolves the required `{branch}` variable from the requested branch. After Git operations done outside Muxy, `refresh-worktrees` re-reads worktrees from Git.
+
+## Workspaces
+
+Workspaces are named filters for the sidebar. A project can belong to one workspace at a time.
+
+```bash
+muxy list-workspaces                   # <id>  <name>  <project-count>  <active>
+muxy create-workspace "My Workspace"   # creates, returns the workspace ID
+muxy switch-workspace "My Workspace"   # filter sidebar to that workspace
+muxy rename-workspace <id> "New Name"
+muxy delete-workspace <id>
+```
+
+Workspaces resolve by UUID or exact case-insensitive name.
+
+## Projects
+
+`create-project` attaches an existing directory as a project, or with `--create` creates a new one:
+
+```bash
+muxy create-project ~/code/my-app                      # attach existing directory
+muxy create-project ~/code/new-project --create         # create directory then attach
+muxy create-project ~/code/my-app --workspace "Work"    # attach and move to a workspace
+muxy create-project ~/code/my-app --name "My App"       # set custom name
+```
+
+Move a project between workspaces:
+
+```bash
+muxy attach-project "My App" --workspace "Work"   # move project into workspace
+muxy detach-project "My App"                      # remove from all workspaces
+```
+
+Non-home local and device-backed remote projects can join local workspaces. The Home project and projects owned by an
+SSH workspace cannot be moved to a local workspace.
 
 ## Tabs
 
@@ -181,6 +228,15 @@ muxy browser list --worktree feature/login
 ```
 
 Run `browser open` with no URL to open the configured home page (blank by default). Capture the tab ID from `browser open` (or `browser list`) and reuse it; never guess it. After navigating, give the page a moment to load (`wait-for`, `wait-for-navigation`, or a `wait` condition) before reading. Cookies are shared by all tabs on the same profile. If the built-in browser is disabled in Settings, browser actions return an error and `browser list` returns no tabs.
+
+## Backup configuration
+
+```bash
+muxy config export ~/Backups/muxy.muxy
+muxy config import ~/Backups/muxy.muxy
+```
+
+`config export` writes a full Muxy backup (settings, projects, worktrees, workspaces, key bindings, shortcuts, and Ghostty config) with secrets such as SSH keys and paired devices stripped. `config import` replaces current Muxy data, creates a pre-import backup first, applies the imported settings, and restarts Muxy. Paths resolve relative to the calling shell's working directory. Backup commands wait up to 610 seconds by default; set `MUXY_BACKUP_TIMEOUT` to override the timeout.
 
 ## Install the skills into your AI harnesses
 

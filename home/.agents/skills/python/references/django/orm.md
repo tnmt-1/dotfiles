@@ -4,42 +4,44 @@
 
 - QuerySet chaining
 - CustomManagers
-- Fat Modelsの段階的適用
 - Django ORMとの付き合い方
 
-## Fat Modelsの段階的適用
+## Modelに置くものと置かないもの
 
-新規実装ではビジネスロジックをModelやManager、QuerySetへ置く。
-既存コードは即時移動せず、新規追加分から原則を適用する。
+Modelは永続化の層として扱う。
+置くのはフィールド定義、DB制約、再利用する絞り込み条件の名前付けまでにとどめる。
+判定や状態遷移、複数モデルへの書き込みはServiceに置く。
+層ごとの責務と依存方向は`references/django/implementation.md`の「ビジネスロジックはServiceに置く」を参照する。
 
-### 配置の優先順位
+### DB制約で整合性を担保する
 
-- 行レベルの操作はModelメソッド
-- テーブル全体のフィルタや集計はCustomManager
-- 複数テーブルにまたがる結合や集計はCustomQuerySet
-- リクエスト依存や副作用はViewまたはService
+アプリケーション側だけで整合性を守ろうとせず、`constraints`や`unique`でDB側にも制約を置く。
+DBの制約を厳しくするほど、アプリケーションコードの分岐と運用時の確認が減る。
+フィールドの`default=`は、可能な限り付けない。デフォルト値はNULL許可と同じく状態の組み合わせを増やすためである。
+初期値が必要ならマイグレーションで設定する。
+
+### Manager / QuerySetに置くのは絞り込み条件の名前付けまで
+
+同じ絞り込み条件を複数箇所で使うなら、CustomQuerySetのメソッドとして名前を付ける。
+どの条件で絞るかを決める判定はServiceが持ち、QuerySetは条件を表現するだけにする。
+1か所でしか使わない絞り込みは、Serviceの中に直接書いてよい。
 
 ```python
-class Order(models.Model):
-    status = models.CharField(max_length=20)
-    items: models.QuerySet[OrderItem]
-
-    def can_cancel(self) -> bool:
-        return self.status in ("pending", "confirmed")
-
-    def cancel(self) -> None:
-        if not self.can_cancel():
-            raise ValidationError("Cannot cancel order")
-        self.status = "cancelled"
-        self.save(update_fields=["status"])
-
-
 class OrderQuerySet(models.QuerySet["Order"]):
     def paid_in_month(self, year: int, month: int) -> "OrderQuerySet":
         return self.filter(paid_at__year=year, paid_at__month=month)
 
     def with_items(self) -> "OrderQuerySet":
         return self.prefetch_related("items")
+```
+
+```python
+# services/order.py
+def cancel_order(order: Order) -> None:
+    if order.status not in ("pending", "confirmed"):
+        raise OrderCannotBeCancelled(order.id)
+    order.status = "cancelled"
+    order.save(update_fields=["status"])
 ```
 
 ## N+1クエリ防止
@@ -67,7 +69,7 @@ orders = Order.objects.prefetch_related(
 
 ## QuerySet設計
 
-ビジネスロジックに関わる絞り込みは**CustomQuerySet**に切り出す。
+複数箇所で使う絞り込み条件は**CustomQuerySet**に切り出す。
 大きいモデルでは`only()`や`defer()`を検討する。
 複雑な条件は`Q()`、DB側演算は`F()`を使う。
 
