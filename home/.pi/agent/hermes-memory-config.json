@@ -1,3 +1,4 @@
 {
-  "llmModelOverride": "github-copilot/gpt-6-luna"
+  "llmModelOverride": "github-copilot/gpt-6-luna",
+  "flushOnShutdown": false
 }

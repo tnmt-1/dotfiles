@@ -72,7 +72,6 @@ export default function (pi: ExtensionAPI) {
     );
   };
   let latestBody = "Session completed";
-  let fallback: ReturnType<typeof setTimeout> | undefined;
   let turnActive = false;
 
   const extractBody = (messages: any[]) => {
@@ -97,31 +96,20 @@ export default function (pi: ExtensionAPI) {
   const finish = async () => {
     if (!turnActive) return;
     turnActive = false;
-    if (fallback) clearTimeout(fallback);
-    fallback = undefined;
     await sendEvent("finished", "Pi", latestBody);
   };
 
   pi.on("agent_start", () => {
-    if (fallback) clearTimeout(fallback);
-    fallback = undefined;
     turnActive = true;
     latestBody = "Session completed";
     return sendEvent("working");
   });
 
-  pi.on("agent_end", async (event, _ctx) => {
+  pi.on("agent_end", (event) => {
     try {
       latestBody = extractBody(event.messages ?? []);
     } catch {}
-    if ((event as any).willRetry) return;
-    if (fallback) clearTimeout(fallback);
-    fallback = setTimeout(() => {
-      void finish();
-    }, 1500);
   });
 
-  try {
-    (pi as any).on("agent_settled", finish);
-  } catch {}
+  pi.on("agent_settled", finish);
 }

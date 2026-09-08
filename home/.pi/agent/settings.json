@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "1.0.2",
+  "lastChangelogVersion": "1.2.0",
   "theme": "dark/dark",
   "defaultProvider": "claude-bridge",
   "defaultModel": "claude-opus-5-5",
@@ -8,15 +8,6 @@
     "npm:pi-opencode-bridge",
     "npm:pi-observational-memory",
     "npm:@ryan_nookpi/pi-extension-headroom",
-    {
-      "source": "npm:pi-subagents",
-      "extensions": [
-        "-index.ts"
-      ],
-      "skills": [
-        "-skills/pi-subagents/SKILL.md"
-      ]
-    },
     "npm:pi-intercom",
     "npm:pi-add-dir",
     "npm:pi-web-access",
@@ -27,22 +18,27 @@
     "npm:@ff-labs/pi-fff",
     "npm:pi-context-view",
     "npm:pi-ask-user",
-    "npm:@devkade/pi-plan",
-    "npm:@tmustier/pi-usage-extension",
     "npm:@tmustier/pi-raw-paste",
     "npm:pi-interactive-shell",
-    "npm:@ogulcancelik/pi-minimal-footer",
     "git:github.com/DietrichGebert/ponytail",
-    "npm:pi-compact-ui",
+    {
+      "source": "npm:pi-compact-ui",
+      "extensions": [
+        "+index.ts"
+      ]
+    },
     "npm:pi-review",
     "https://github.com/ayghri/i-have-adhd",
     "npm:@akepka/pi-cursor-cli-provider",
-    "npm:pi-claude-bridge"
+    "git:github.com/elidickinson/pi-claude-bridge"
   ],
   "collapseChangelog": true,
   "treeFilterMode": "default",
   "steeringMode": "one-at-a-time",
-  "extensions": [],
+  "extensions": [
+    "-extensions/muxy-notify.ts",
+    "-extensions/meta-cognitive-hooks.ts"
+  ],
   "permissions": {
     "*": "allow",
     "bash": {
@@ -55,7 +51,7 @@
   },
   "defaultProjectTrust": "ask",
   "doubleEscapeAction": "tree",
-  "tuiMode": "fullscreen",
+  "tuiMode": "regular",
   "fullscreenScrollbar": "auto",
   "compaction": {
     "enabled": true
@@ -88,7 +84,14 @@
     "-skills/sdd/SKILL.md",
     "-skills/hunk-review/SKILL.md",
     "-skills/find-skills/SKILL.md",
-    "-skills/code-review/SKILL.md"
+    "-skills/code-review/SKILL.md",
+    "-skills/muxy-delegation/SKILL.md",
+    "-skills/muxy-extension/SKILL.md",
+    "-skills/orca-cli/SKILL.md",
+    "-skills/orchestration/SKILL.md",
+    "+skills/kosshi/SKILL.md",
+    "+skills/muxy-cli/SKILL.md",
+    "+skills/write-commit-message/SKILL.md"
   ],
   "enabledModels": [
     "github-copilot/gemini-3.8-flash",
@@ -98,9 +101,10 @@
     "claude-bridge/claude-sonnet-5-5"
   ],
   "modelThinkingLevels": {
-    "github-copilot/gpt-6-luna": "high",
-    "github-copilot/gemini-3.8-flash": "medium",
-    "cursor/grok-4.7": "medium"
+    "github-copilot/gpt-6-luna": "max",
+    "github-copilot/gemini-3.8-flash": "high",
+    "cursor/grok-4.7": "high",
+    "claude-bridge/claude-opus-5-5": "high"
   },
   "terminal": {
     "clearOnShrink": false,
@@ -112,7 +116,8 @@
   "observational-memory": {
     "model": {
       "provider": "github-copilot",
-      "id": "gpt-6-luna"
+      "id": "gpt-6-luna",
+      "thinking": "low"
     }
   }
 }
