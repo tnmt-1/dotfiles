@@ -12,29 +12,31 @@
             "source.organizeImports.ruff": "explicit"
         }
     },
-    "ruff.configuration": {
-        "target-version": "py311",
-        "src": [
-            "src"
-        ],
-        "line-length": 108,
-        "lint": {
-            "select": [
-                "C9",
-                "E",
-                "F",
-                "W",
-                "I",
-                "AIR"
-            ],
-            "ignore": [
-                "E501"
-            ],
-            "mccabe": {
-                "max-complexity": 15
-            }
-        }
-    },
+    "python.analysis.typeCheckingMode": "off",
+    "python.analysis.diagnosticMode": "openFilesOnly",
+    // "ruff.configuration": {
+    //     "target-version": "py311",
+    //     "src": [
+    //         "src"
+    //     ],
+    //     "line-length": 108,
+    //     "lint": {
+    //         "select": [
+    //             "C9",
+    //             "E",
+    //             "F",
+    //             "W",
+    //             "I",
+    //             "AIR"
+    //         ],
+    //         "ignore": [
+    //             "E501"
+    //         ],
+    //         "mccabe": {
+    //             "max-complexity": 15
+    //         }
+    //     }
+    // },
     "chat.agent.maxRequests": 100,
     "chat.editor.fontSize": 14,
     "chat.fontSize": 15,
@@ -87,8 +89,8 @@
         "python"
     ],
     // 一時的な処置: Poetryを使用しているプロジェクトで、Python環境が正しく認識されない問題を回避するための設定
-    "python-envs.defaultEnvManager": "ms-python.python:poetry",
-    "python-envs.defaultPackageManager": "ms-python.python:poetry",
+    // "python-envs.defaultEnvManager": "ms-python.python:poetry",
+    // "python-envs.defaultPackageManager": "ms-python.python:poetry",
     "files.defaultLanguage": "markdown",
     "chat.tips.enabled": false,
     "chat.viewSessions.orientation": "stacked",
@@ -232,7 +234,7 @@
             "icon": "terminal-bash"
         },
         "zsh": {
-            "path": "zsh",
+            "path": "/bin/zsh",
             "args": [
                 "-l"
             ]
@@ -252,6 +254,7 @@
             "icon": "terminal-powershell"
         }
     },
-    "terminal.integrated.defaultProfile.osx": "fish",
-    "workbench.experimental.modernUI": false,
+    "terminal.integrated.defaultProfile.osx": "zsh",
+    "workbench.experimental.modernUI": true,
+    "workbench.browser.showInTitleBar": true,
 }

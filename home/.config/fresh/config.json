@@ -40,14 +40,6 @@
       ],
       "action": "open_terminal",
       "when": "normal"
-    },
-    {
-      "key": "s",
-      "modifiers": [
-        "alt"
-      ],
-      "action": "save",
-      "when": "normal"
     }
   ],
   "lsp": {

@@ -1,11 +1,13 @@
 {
-    "colorscheme": "catppuccin-mocha",
+    //"colorscheme": "catppuccin-mocha",
+    "colorscheme": "atom-dark",
     "diffgutter": true,
     "filemanager-foldersfirst": true,
     "filemanager-openonstart": true,
     "filemanager-showdotfiles": true,
     "lsp.server": "python=pyright-langserver --stdio",
     "showchars": "space=·,tab=→,ispace=·,itab=→",
+    "softwrap": true,
     "tabstospaces": true,
     "xterm": true
 }

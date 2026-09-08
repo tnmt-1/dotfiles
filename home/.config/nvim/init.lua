@@ -80,5 +80,8 @@ vim.api.nvim_create_user_command("MyCheckLsp", function()
   print("checkhealth run")
 end, {})
 
+-- 行頭・行末で左右移動を次の行につなげる
+vim.opt.whichwrap:append("h,l,<,>")
+
 -- 必要ならここに補完（nvim-cmp）や null-ls/conform の設定を追加してください
 

@@ -30,7 +30,7 @@
   "collaboration_panel": {
     "dock": "right"
   },
-  "diff_view_style": "split",
+  "diff_view_style": "unified",
   "agent_servers": {
     "opencode": {
       "favorite_config_option_values": {
