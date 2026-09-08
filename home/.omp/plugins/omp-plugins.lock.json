@@ -9,6 +9,16 @@
       "version": "0.1.0",
       "enabledFeatures": null,
       "enabled": true
+    },
+    "@dietrichgebert/ponytail": {
+      "version": "4.9.0",
+      "enabledFeatures": null,
+      "enabled": true
+    },
+    "i-have-adhd": {
+      "version": "0.3.0",
+      "enabledFeatures": null,
+      "enabled": true
     }
   },
   "settings": {}
