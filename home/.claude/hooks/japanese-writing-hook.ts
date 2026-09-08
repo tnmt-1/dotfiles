@@ -27,6 +27,7 @@ const JAPANESE_WRITING_POLICY = `## 日本語の出力品質
 - 翻訳調の語順、不自然な漢語、曖昧な指示語を避ける。
 - 同じ主張の言い換え、空虚な前置き、不要な総括を加えない。
 - 用語と文末表現の揺れを減らす。
+- 用語は初出と同じ正式名称で呼び続ける。英語の the pool のような照応を訳して、「ユーザープール」を「プール」のような一般名詞に縮めない。
 - 根拠のない断定を避け、確認できていないことは未確認として扱う。
 - 推敲過程やこの規則自体は説明せず、完成した回答だけを出す。
 - コード、ログ、設定、引用、JSONの内容は文体規則で改変しない。
@@ -75,9 +76,19 @@ function stripQuotedMentions(text: string): string {
 	return text.replace(/「[^「」\n]*」/gu, " ");
 }
 
+const KANJI = /^[㐀-鿿]/u;
+
 function findNgWords(text: string, entries: NgWordEntry[]): NgWordEntry[] {
 	const auditable = stripQuotedMentions(text);
-	return entries.filter((entry) => auditable.includes(entry.word));
+	return entries.filter((entry) => {
+		let index = auditable.indexOf(entry.word);
+		while (index !== -1) {
+			// 漢字で始まる語は直前も漢字なら熟語の一部とみなす(「派生値」の「生値」など)
+			if (!KANJI.test(entry.word) || !KANJI.test(auditable[index - 1] ?? "")) return true;
+			index = auditable.indexOf(entry.word, index + 1);
+		}
+		return false;
+	});
 }
 
 function buildNgWordsPolicy(entries: NgWordEntry[]): string {
@@ -98,6 +109,8 @@ const STRUCTURED_LINE =
 
 interface AuditableText {
 	prose: string;
+	// インラインコードを残した本文。消すと表の行やリスト項目が同じ文字列になり、重複と誤検出する
+	proseWithCode: string;
 	hasUnclosedFence: boolean;
 }
 
@@ -216,11 +229,12 @@ function collectAuditableText(text: string): AuditableText {
 			continue;
 		}
 
-		proseLines.push(stripInlineCode(line));
+		proseLines.push(line);
 	}
 
 	return {
-		prose: proseLines.join("\n"),
+		prose: proseLines.map(stripInlineCode).join("\n"),
+		proseWithCode: proseLines.join("\n"),
 		hasUnclosedFence: fenceChar !== undefined,
 	};
 }
@@ -279,11 +293,11 @@ function findObviousIssues(text: string, ngWords: NgWordEntry[]): string[] {
 		issues.push("コードフェンスが閉じていない");
 	}
 
-	if (findRepeatedProseLines(auditable.prose)) {
+	if (findRepeatedProseLines(auditable.proseWithCode)) {
 		issues.push("同じ文章が隣接して重複している");
 	}
 
-	if (findRepeatedSentences(auditable.prose)) {
+	if (findRepeatedSentences(auditable.proseWithCode)) {
 		issues.push("同じ文が重複している");
 	}
 
@@ -369,11 +383,16 @@ async function handleStop(): Promise<void> {
 	// 二重発火(この検査が要求した書き直し後のStop)では再検査しない
 	if (input.stop_hook_active === true) return;
 
+	// Stop時点ではトランスクリプトへの書き込みが間に合わず、1つ前の回答を読むことがある。
+	// 入力に含まれる last_assistant_message を優先する。
 	const transcriptPath: string =
 		typeof input.transcript_path === "string" ? input.transcript_path : "";
-	if (!transcriptPath) return;
-
-	const text = await readLastAssistantText(transcriptPath);
+	const text: string =
+		typeof input.last_assistant_message === "string"
+			? input.last_assistant_message
+			: transcriptPath
+				? await readLastAssistantText(transcriptPath)
+				: "";
 	if (!JAPANESE_TEXT.test(text)) return;
 
 	const issues = findObviousIssues(text, await loadNgWords());
