@@ -383,12 +383,8 @@
                         "vendor_id": 13364
                     },
                     "ignore": false,
-                    "simple_modifications": [
-                        {
-                            "from": { "key_code": "caps_lock" },
-                            "to": [{ "key_code": "left_control" }]
-                        }
-                    ]
+                    "swap_grave_accent_and_non_us_backslash": true,
+                    "treat_as_built_in_keyboard": true
                 },
                 {
                     "identifiers": { "is_keyboard": true },
@@ -411,6 +407,15 @@
                             "to": [{ "key_code": "right_option" }]
                         }
                     ]
+                },
+                {
+                    "identifiers": {
+                        "is_keyboard": true,
+                        "is_pointing_device": true,
+                        "product_id": 1811,
+                        "vendor_id": 13364
+                    },
+                    "ignore": false
                 }
             ],
             "name": "Default profile",
