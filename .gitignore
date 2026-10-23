@@ -1,4 +1,6 @@
 flake.lock
+__pycache__/
+/home/.claude/hooks/.ja-ng-scan-stamp
 
 # yui per-machine state and backups (added by `yui init`).
 /.yui/state.json
