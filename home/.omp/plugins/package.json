@@ -2,7 +2,7 @@
   "name": "omp-plugins",
   "private": true,
   "dependencies": {
-    "@ryan_nookpi/pi-extension-headroom": "^0.1.5",
+    "@codesook/omp-headroom": "github:seenark/omp-headroom",
     "omp-fff": "https://github.com/tnmt-1/omp-fff"
   }
 }

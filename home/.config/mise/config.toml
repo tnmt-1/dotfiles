@@ -1,6 +1,6 @@
 [tools]
 node = "latest"
-python = "latest"
+python = "3.14"
 yarn = "1"
 rust = "latest"
 "npm:safe-rm" = "latest"
@@ -25,3 +25,4 @@ pitchfork = "latest"
 
 [settings]
 idiomatic_version_file_enable_tools = ["python", "node"]
+experimental = true # [daemons] は試験機能
