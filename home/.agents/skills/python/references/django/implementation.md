@@ -113,6 +113,215 @@ Serviceが表すのは業務ロジックであり、HTTPの入口とは別の単
 組み立ては専用のクラス（`_XxxParamsBuilder`など）に切り出し、クライアントクラスはそのクラスへ委譲する。
 状態を持たないなら`classmethod`や`staticmethod`だけのクラスでよく、dataclassにする必要はない。
 
+### 原則：ServiceにRequestを渡さない
+
+ServiceやModelのメソッドへ、DjangoやDRFの`request`をそのまま渡さない。
+Viewで必要な値だけを取り出して引数にする。
+ミドルウェアがセットする情報のように塊で渡す値は、TypedDictに型を付けて渡す。
+`request`を受け取るServiceは、管理コマンドのようにリクエストのない経路から呼べない。
+
+ミドルウェアを通らない経路（テストなど）で値が欠けるなら、引数を`X | None`で受ける。
+既存の`request`を受け取るメソッドは残し、TypedDictを受け取る新しいメソッドへ委譲する形で移行する。
+
+```python
+class CustomInfo(TypedDict, total=False):
+    """CustomRequestLogMiddlewareがrequest.custom_infoにセットする値
+
+    取得に失敗すると空のdictになるため、すべてのキーを任意にする
+    """
+    ip: str
+    ua: str | None
+    user_id: str
+
+
+def create_delete_request(
+    form: Form,
+    request_user_id: str,
+    request_user_email: str,
+    custom_info: CustomInfo | None,
+) -> DeleteRequest:
+    ...
+```
+
+```python
+# View
+create_delete_request(
+    form,
+    request_user_id=str(request.user.id),
+    request_user_email=request.user.email,
+    # CustomRequestLogMiddlewareを通らない経路（テストなど）ではセットされない
+    custom_info=getattr(request, "custom_info", None),
+)
+```
+
+### 原則：判定する型は例外を送出せず、応答はエントリポイントで決める
+
+ルールや検証を受け持つ型は、真偽値か結果の値オブジェクトを返すだけにする。
+業務上の例外への変換、ログレベル、HTTPステータスは、処理の入口になるクラスや関数（エントリポイント）でまとめて決める。
+判定の中で例外を選ぶと、同じ判定を別の場面で使うときに、場面ごとの応答の違いを判定側へ持ち込むことになる。
+判定のテストも、戻り値を確かめるだけで済む。
+結果の値オブジェクトは`@dataclass(frozen=True)`にし、矛盾する組み合わせを`__post_init__`で弾く。
+詳しくは`references/common/api-design.md`の「契約として使う型には不変条件の検証を入れる」を参照する。
+
+```python
+class MemberVerification:
+    """会員の判定。例外の送出とログの出力は呼び出し側が受け持つ"""
+
+    def __init__(self, user: UserDocument, tenant_id: str):
+        self.user = user
+        self.tenant_id = tenant_id
+
+    def is_active(self) -> bool:
+        return self.user.status == UserStatus.ACTIVE
+
+    def belongs_to_tenant(self) -> bool:
+        return self.tenant_id in self.user.active_tenant_ids
+```
+
+```python
+# エントリポイント
+if not verification.is_active():
+    exception = UserNotActiveException(client_id=client_id)
+    logger.warning("有効な会員ではありません", extra={**log_context, "error_code": exception.code})
+    raise exception
+```
+
+外部連携アダプタも同じ考え方で書く。
+アダプタは失敗を1種類の例外にまとめ、ステータスコード、外部のエラーコード、外部のリクエストIDを載せて送出する。
+アダプタ自身のログは`warning`までにとどめる。
+`error`にするか、どの業務上の例外に変えるかは、呼び出し側が失敗理由ごとに決める。
+ログレベルはプロジェクトの基準に従い、HTTPステータスではなく運用対応が要るかどうかで選ぶ。
+
+```python
+try:
+    return self.saml_client.post_saml_verify(...)
+except SamlApiException as e:
+    match e.error_code:
+        # 通信失敗（error_code=None）と、こちらの設定の不備は運用対応が要る
+        case None | SamlApiErrorCode.UNAUTHORIZED | SamlApiErrorCode.INVALID_REQUEST:
+            exception = VerificationRequestFailedException()
+            logger.error("検証を依頼できませんでした", extra={**log_extra, "error_code": exception.code})
+            raise exception from e
+        # 外部から任意に起こせるため、errorにせず件数で監視する
+        case SamlApiErrorCode.SIGNATURE_INVALID | SamlApiErrorCode.REPLAYED:
+            exception = AssertionUntrustedException()
+            logger.warning("アサーションを信頼できません", extra={**log_extra, "error_code": exception.code})
+            raise exception from e
+        case _:
+            exception = AssertionVerificationFailedException()
+            logger.warning("アサーションの検証に失敗しました", extra={**log_extra, "error_code": exception.code})
+            raise exception from e
+```
+
+### 原則：複数の手順を踏む処理は、処理1回分を表すクラスにする
+
+仕様に手順があり、各手順が前の手順の結果を使う処理は、処理1回分を表すクラスにする。
+分岐や手順の少ない処理は関数のままでよい。
+このクラスが前の原則のエントリポイントにあたり、例外への変換とログは各手順のメソッドの中で行う。
+
+- コンストラクタで入力を受け取り、続けて設定や外部クライアント、接続などの依存を組み立てる。両者の間に`# dependencies`の区切りを置き、依存がどれかを1か所で見分けられるようにする
+- 公開メソッドは`exec()`の1つにし、プライベートなメソッドを手順どおりに呼ぶだけにする。仕様のシーケンス図に番号があれば、コメントで対応させる
+- 手順の途中で決まる値はselfに代入せず、戻り値と引数で次の手順へ渡す。途中でselfに代入すると、後の手順が呼び出し順に依存し、`assert self.xxx`のような確認が必要になる
+
+```python
+class SamlAcs:
+    """SAMLのACS。リダイレクト先のURLを返す"""
+
+    def __init__(self, relay_state: RelayState, saml_response: SamlResponse):
+        self.relay_state = relay_state
+        self.saml_response = saml_response
+
+        # dependencies --------------
+        self.settings = SamlSettings.from_env()
+        self.saml_client = SamlServiceClient(
+            origin=self.settings.api_origin,
+            internal_api_key=self.settings.internal_api_key,
+        )
+        self.redis = CdmRedis(db_number=REDIS_DB_NUM_FOR_SAML)
+
+    def exec(self) -> str:
+        # (30) RelayStateからセッションを復元する
+        session = self._restore_session()
+        # (32) アサーションを検証する
+        assertion = self._verify_assertion(session)
+        # (42) 会員を検証する
+        user_id = self._verify_user(session, assertion)
+        # (43) 認可コードを発行する
+        return self._issue_redirect_url(session, user_id)
+```
+
+### 原則：バッチは「何を、いつまで、どう処理し、状態をどう変えるか」を別の型にする
+
+対象を順に処理し、処理の状態をレコードに記録するバッチは、次の型に分ける。
+
+| 型 | 受け持つこと | 知らないこと |
+| --- | --- | --- |
+| 管理コマンド | インフラの制約から時間を導く。手順の順番と例外の振り分けを決める | 保存先ごとの処理 |
+| 実行条件 | 開始日時、期限、外部I/Oの上限を持つ。期限はpropertyで導く | インフラの制約の数字 |
+| 対象の所在 | 保存先を`from_<元>()`で一度だけ解決する。保存先ごとの名前はpropertyにする | 処理の順番 |
+| 処理 | 保存先をどの順にどう処理するかを決める。dry run用の件数取得も持つ | 処理の状態 |
+| 状態遷移 | 遷移ごとにメソッドを1つ置く。遷移元の状態を条件に行をロックする | 保存先 |
+
+- 処理の型と状態遷移の型は互いを知らない。そのためdry runは処理の型の件数取得だけを呼び、状態を変えずに済む
+- 所在の決め方が1か所にあるので、件数の取得と削除が同じ解決結果を使う
+- インフラの制約（タスクのタイムアウトなど）は管理コマンドのクラス変数だけに置き、導き方の理由をコメントに残す。処理の型には、導いた値だけを実行条件として渡す
+
+```python
+class Command(BaseCommand):
+    # Cloud Run Jobのタスクタイムアウト。超えるとバッチは強制終了される
+    TASK_TIMEOUT_SECONDS = 10 * 60
+    # 着手済みの対象を処理し終える余裕として3分残す
+    TIME_LIMIT_SECONDS = TASK_TIMEOUT_SECONDS - 3 * 60
+    # 外部の保存先の1回の処理の上限。強制終了で結果を記録できなくなる前に打ち切る
+    EXTERNAL_TIMEOUT_SECONDS = 5 * 60
+
+    def handle(self, *args, **options):
+        context = DeletionContext(
+            started_at=timezone.now(),
+            time_limit=datetime.timedelta(seconds=self.TIME_LIMIT_SECONDS),
+            external_timeout=datetime.timedelta(seconds=self.EXTERNAL_TIMEOUT_SECONDS),
+        )
+        ...
+
+
+@dataclass(frozen=True)
+class DeletionContext:
+    started_at: datetime.datetime
+    time_limit: datetime.timedelta
+    external_timeout: datetime.timedelta
+
+    @property
+    def deadline(self) -> datetime.datetime:
+        return self.started_at + self.time_limit
+
+    def is_time_up(self) -> bool:
+        return timezone.now() >= self.deadline
+```
+
+状態遷移の型は、遷移元の状態と取得時の値を条件に行をロックし、条件が崩れていたら専用の例外を送出する。
+並行して動いた別のバッチとの二重処理は、この例外で検知する。
+
+```python
+class DeleteRequestTransition:
+    def start(self, delete_request: DeleteRequest) -> None:
+        with self._lock(delete_request, from_status=DeleteRequest.Status.RESERVED):
+            delete_request.status = DeleteRequest.Status.EXEC
+            delete_request.exec_start_date = timezone.now()
+            delete_request.save()
+
+    @contextmanager
+    def _lock(self, delete_request: DeleteRequest, from_status: int) -> Iterator[None]:
+        with transaction.atomic():
+            locked = DeleteRequest.objects.select_for_update().filter(
+                id=delete_request.id,
+                status=from_status,
+                retry_count=delete_request.retry_count,
+            ).first()
+            if locked is None:
+                raise DeleteRequestConflictError(delete_request.id)
+            yield
+```
+
 ## フェーズ別のDjango固有事項
 
 進行順序は`SKILL.md`の「実装フロー」に従う。ここには各フェーズでDjango/DRFに固有の判断とコード例だけを書く。
@@ -135,6 +344,10 @@ OpenAPIとフィールド名、`required`、`enum`、`format`を一致させる�
 `required=True`で保証される入力は`validated_data["field"]`で読む。
 Viewから追加文脈が必要なら`get_serializer_context()`を使う。
 書き込み可能なNested Serializerは`create()`または`update()`の実装要否を確認する。
+
+`create()`や`update()`から1か所でしか呼ばない処理は、privateメソッドへ切り出さず、呼び出し元に展開する。
+Serializerは入出力の変換とServiceへの受け渡しだけを担うので、切り出すほどの処理があるならServiceへ移す。
+2か所以上から呼ぶ場合に限り、privateメソッドにする。
 
 ```python
 class UserSerializer(serializers.ModelSerializer[User]):
@@ -268,6 +481,11 @@ class FooAdmin(admin.ModelAdmin):
 - モジュール間で受け渡すdictにTypedDictまたはdataclassが付いているか
 - Serviceモジュールの分割が業務の単位になっているか（ViewやSerializerと1:1に分けただけになっていないか）
 - 外部APIクライアントのクラスにパラメータ組み立てのプライベートメソッドが増えていないか
+- SerializerやViewに、1か所からしか呼ばないprivateメソッドを足していないか
+- ServiceやModelのメソッドが`request`を受け取っていないか
+- 判定を受け持つ型が、例外の送出やログレベルの決定まで抱えていないか
+- 処理1回分のクラスで、手順の途中にselfへ代入していないか
+- インフラの制約の数字が、管理コマンド以外に書かれていないか
 - パス操作に`os.path`を新たに使っていないか
 - 不在を空のdictやlistでなく`None`で返しているか
 - 引数にデフォルト値を付けていないか

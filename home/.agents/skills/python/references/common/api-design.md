@@ -55,6 +55,133 @@ ForeignKey先のPK型も、参照先モデルのフィールド定義に従う�
 `@dataclass(frozen=True)`であれば`__post_init__`、TypedDictであれば`validate()`相当の仕組みで実現する。
 検証は「この値とあの値が同時にセットされてはいけない」といった、構造上持ちえない状態を排除する。
 
+### 可変性は型の役割で選ぶ
+
+設定、実行条件、保存先の所在、処理の結果を表す型は`@dataclass(frozen=True)`にする。
+`frozen=False`にするのは、処理の途中で件数などを積み上げる集計用の型だけにする。
+frozenな型にコレクションを持たせるときは、`list`ではなく`tuple`にする。
+
+```python
+@dataclass(frozen=True)
+class ConsentValidationResult:
+    is_valid: bool
+    error_term_ids: tuple[str, ...]
+```
+
+### 保存する値は、保存形式への変換と状態遷移を自分で持つ
+
+キャッシュやKVS、JSONカラムへ保存する値は`@dataclass(frozen=True)`にし、キーの組み立てと値の変換をそのクラスに置く。
+呼び出し側には、キーのプレフィックスや`json.dumps`を書かない。
+保存形式を知っている場所が1か所になり、形式を変えるときもそのクラスだけを直せばよい。
+状態を変えるメソッドは、`dataclasses.replace`で新しいインスタンスを返す。
+
+```python
+@dataclass(frozen=True)
+class LoginSession:
+    session_id: str
+    client_id: str
+    is_authenticated: bool
+
+    def authenticate(self) -> "LoginSession":
+        return dataclasses.replace(self, is_authenticated=True)
+
+    @classmethod
+    def encode_key(cls, session_id: str) -> str:
+        return f"{REDIS_KEY_PREFIX_LOGIN_SESSION}:{session_id}"
+
+    def encode_value(self) -> str:
+        return json.dumps(dataclasses.asdict(self))
+
+    @classmethod
+    def decode_value(cls, v: str) -> "LoginSession":
+        return cls(**json.loads(v))
+```
+
+キーと値の対応だけを扱い、状態を持たない場合は、classmethodだけのクラスでよい。
+
+### 意味の違う文字列には`TypeAlias`で名前を付ける
+
+同じ`str`でも、受け渡す値の意味が違うなら`TypeAlias`で名前を付ける。
+シグネチャを読むだけで、どの文字列を渡すかが分かる。
+
+```python
+# SAMLリクエストとSAMLレスポンスを紐づけるID
+RelayState: TypeAlias = str
+# Base64でエンコードしたXML
+SamlResponse: TypeAlias = str
+
+
+def post_saml_verify(saml_code: str, saml_response: SamlResponse, relay_state: RelayState) -> SamlVerifyResponse:
+    ...
+```
+
+### 別の層の型は、使うメソッドだけを並べたProtocolで受ける
+
+別の層の具象クラスを受け取るときは、使う属性とメソッドだけを並べたProtocolを定義して、引数の型にする。
+具象クラスを型注釈で参照する必要があるときも、importは`TYPE_CHECKING`の中に限り、実行時の依存を作らない。
+テストでは`create_autospec`で作ったモックをそのまま渡せる。
+
+```python
+if TYPE_CHECKING:
+    from accounts.documents import UserDocument
+
+
+class UserAttributesProvider(Protocol):
+    def get_attributes_info(self) -> dict[str, Any]: ...
+
+
+class UserTenantsProvider(UserAttributesProvider, Protocol):
+    def get_user_pool_children_info(self, is_active: bool) -> dict[str, Any]: ...
+
+
+class TenantRule:
+    def get_country_meta(self, user: UserAttributesProvider | None) -> CountryMeta | None: ...
+
+    def has_insufficient_terms(self, require_terms: list[Term], user: "UserDocument") -> bool: ...
+```
+
+実データの型が仕様と食い違うなら、TypedDictには実際に入りうる型を書き、判定は専用の関数に任せる。
+`bool()`は`"0"`のような文字列も真と判定するため、可否の判定には使わない。
+
+```python
+class SamlUserInfo(TypedDict):
+    id: str
+    # スキーマ上はboolだが、別の型で保存されているデータがある
+    is_saml_auth: NotRequired[bool | int | str | None]
+
+
+def is_enabled_flag(value: bool | int | str | None) -> bool:
+    """True、1、"1"だけを有効として扱う"""
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, int):
+        return value == 1
+    if isinstance(value, str):
+        return value == "1"
+    return False
+```
+
+### 型に結び付く定数は型の中に置く
+
+型の定義に結び付く定数は、`ClassVar`でその型に置く。`ClassVar`にすればdataclassのフィールドにならない。
+外部APIの都合で決まる値（タイムアウト、ヘッダー名）は、外部連携アダプタのクラス変数にする。
+
+```python
+@dataclass(frozen=True)
+class AnswerResources:
+    # 回答を削除するときに0にする回答数のカラム
+    MYSQL_ANSWER_COUNT_COLUMNS: ClassVar[tuple[str, ...]] = ("ans_cnt", "ans_file_cnt")
+
+    form_id: str
+    tenant_id: str
+
+
+class SamlServiceClient:
+    API_KEY_HEADER = "X-Internal-Api-Key"
+    # 内部通信なので短くする
+    REQUEST_TIMEOUT = 3
+```
+
 ## 標準ライブラリの選び方
 
 パス操作は`os.path`ではなく`pathlib.Path`を使う。
