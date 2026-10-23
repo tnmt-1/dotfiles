@@ -1,4 +1,5 @@
 {
-  "llmModelOverride": "github-copilot/gpt-6-luna",
+  "llmModelOverride": "claude-bridge/claude-haiku-5-5",
+  "childExtensionPaths": ["~/.pi/agent/git/github.com/elidickinson/pi-claude-bridge/src/index.ts"],
   "flushOnShutdown": false
 }

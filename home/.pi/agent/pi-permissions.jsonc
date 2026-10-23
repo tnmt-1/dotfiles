@@ -1,4 +1,3 @@
-
 {
   "defaultPolicy": {
     "tools": "allow",
@@ -8,6 +7,7 @@
     "special": "allow"
   },
   "bash": {
-    "rm *": "ask"
+    "rm *": "ask",
+    "gcloud*": "ask"
   }
 }
