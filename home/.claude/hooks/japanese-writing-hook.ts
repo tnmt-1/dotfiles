@@ -454,6 +454,9 @@ async function handlePostTool(): Promise<void> {
 	);
 }
 
+// pi (claude-bridge) 経由では pi 拡張が同じ処理をするので何もしない
+if (process.env.PI_CODING_AGENT) process.exit(0);
+
 const mode = process.argv[2];
 if (mode === "prompt") {
 	await handlePromptSubmit();

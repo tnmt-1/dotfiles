@@ -323,6 +323,7 @@ function findObviousIssues(text: string, ngWords: NgWordEntry[]): string[] {
 
 export default function japaneseWritingHooks(pi: ExtensionAPI) {
 	// 書式の注入: ユーザープロンプトに応じて規約をシステムプロンプトへ追加する
+	// systemPrompt を返すと claude-bridge が捨てるので、sections に入れる
 	pi.on("before_agent_start", (event) => {
 		const technicalWriting =
 			TECHNICAL_WRITING_HINT.test(event.prompt) && !CODE_TASK_HINT.test(event.prompt);
@@ -331,9 +332,7 @@ export default function japaneseWritingHooks(pi: ExtensionAPI) {
 				? `${JAPANESE_WRITING_POLICY}${TECHNICAL_WRITING_POLICY}`
 				: JAPANESE_WRITING_POLICY) + buildNgWordsPolicy(loadNgWords());
 
-		return {
-			systemPrompt: event.systemPrompt + "\n\n" + policy,
-		};
+		event.systemPromptOptions.sections["japanese-writing"] = policy;
 	});
 
 	// 書き直し要求はユーザープロンプト(extension 由来でない input)ごとに1回まで。
