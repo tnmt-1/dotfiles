@@ -1,0 +1,8 @@
+# JTF 2.1.6 カタカナの長音の辞書から、ユーザーが長音なしを選んだ語を除く。
+version: 1
+imports:
+  - path: node_modules/textlint-rule-preset-jtf-style/dict/2.1.6.yml
+    ignoreRules:
+      - expected: リポジトリー$1
+      - expected: ディレクトリー$1
+      - expected: フォルダー$1

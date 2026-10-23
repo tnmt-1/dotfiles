@@ -1,9 +1,12 @@
 {
-  "plugins": ["@textlint/textlint-plugin-markdown"],
+  "plugins": [
+    "@textlint/textlint-plugin-markdown"
+  ],
   "rules": {
     "preset-jtf-style": {
-      "2.1.6.カタカナの長音": {},
-      "2.2.1.ひらがなと漢字の使い分け": {}
+      "2.1.6.カタカナの長音": false,
+      "2.2.1.ひらがなと漢字の使い分け": {},
+      "4.2.7.コロン(：)": false
     },
     "preset-ja-technical-writing": {
       "max-kanji-continuous-len": false,
@@ -14,6 +17,18 @@
         "preferInList": "である",
         "strict": true
       }
+    },
+    "prh": {
+      "rulePaths": [
+        "./prh-katakana.yml"
+      ]
+    }
+  },
+  "filters": {
+    "allowlist": {
+      "allow": [
+        "/\\[\\[[^\\]\\n]+\\]\\]/"
+      ]
     }
   }
 }
