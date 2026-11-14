@@ -1,0 +1,37 @@
+font-size = 16
+font-blending = "linear"
+theme = "Nord"
+theme-dark = "Nord"
+foreground = "#f1f6ff"
+background = "#2e3440"
+palette-0 = "#3b4252"
+palette-1 = "#bf616a"
+palette-2 = "#a3be8c"
+palette-3 = "#ebcb8b"
+palette-4 = "#81a1c1"
+palette-5 = "#b48ead"
+palette-6 = "#88c0d0"
+palette-7 = "#e5e9f0"
+palette-8 = "#4c566a"
+palette-9 = "#bf616a"
+palette-10 = "#a3be8c"
+palette-11 = "#ebcb8b"
+palette-12 = "#81a1c1"
+palette-13 = "#b48ead"
+palette-14 = "#8fbcbb"
+palette-15 = "#eceff4"
+selection-foreground = "#2e3440"
+selection-background = "#e5e9f0"
+cursor-color = "#e5e9f0"
+cursor-text = "#2e3440"
+
+# text-blink = true (reset to default)
+
+# text-underline = false (reset to default)
+
+agent-command = "omp=/Users/tnmt/.local/share/mise/installs/github-can1357-oh-my-pi/latest/omp"
+
+copy-on-select = true
+
+open-with-app = "VS Code|com.microsoft.VSCode"
+open-with-app = "Zed|dev.zed.Zed"

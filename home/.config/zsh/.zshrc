@@ -1,0 +1,167 @@
+# ~/.config/zsh/.zshrc
+# Uses:
+#   Plugins:      fast-syntax-highlighting, zsh-autosuggestions,
+#                 zsh-history-substring-search
+#   Prompt:       starship
+#   Navigation:   zoxide, fzf, fd
+#   CLI tools:    eza, bat, nvim, ripgrep
+#   Node:         nvm
+
+# .zshenvを読み込んでくれないので.zshrcから明示的に読み込む
+if [[ -f ./.zshenv ]]; then
+    source ./.zshenv
+fi
+
+# =========================================================
+# History
+# =========================================================
+
+HISTFILE="$XDG_STATE_HOME/zsh/history"
+HISTSIZE=100000
+SAVEHIST=100000
+
+setopt APPEND_HISTORY
+setopt SHARE_HISTORY
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_SPACE
+setopt HIST_EXPIRE_DUPS_FIRST
+setopt HIST_FIND_NO_DUPS
+
+# =========================================================
+# Shell behaviour
+# =========================================================
+
+setopt AUTOCD
+setopt NOBEEP
+setopt NUMERIC_GLOB_SORT  # sort file10 after file9, not after file1
+
+# =========================================================
+# Smart directory navigation
+# =========================================================
+
+eval "$(fzf --zsh)"
+eval "$(zoxide init zsh)"
+
+# =========================================================
+# Completion
+# =========================================================
+
+# 高度な自動補完システム（compinit）を自動ロードするように設定
+autoload -Uz compinit
+
+# 補完のキャッシュファイルの出力先を指定して補完システムを初期化
+compinit -d "$XDG_CACHE_HOME/zsh/zcompdump"
+
+# 補完候補を矢印キーで選択できるメニューモードを有効化
+zstyle ':completion:*' menu select
+
+# タブキーを1回押した時点で即座にメニュー選択モードに入るように設定
+zstyle ':completion:*:default' menu select=1
+
+# 補完候補のグループ名（見出し）を [説明文] の形式で表示
+zstyle ':completion:*:descriptions' format '[%d]'
+
+# 補完時に大文字と小文字を区別しない（小文字入力で大文字もマッチさせる）
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+
+# =========================================================
+# Fuzzy finder
+# =========================================================
+
+# macOS / Homebrew (Apple Silicon)
+if [[ -f /opt/homebrew/opt/fzf/shell/key-bindings.zsh ]]; then
+  source /opt/homebrew/opt/fzf/shell/key-bindings.zsh
+  source /opt/homebrew/opt/fzf/shell/completion.zsh
+fi
+
+# Ubuntu
+if [[ -f /usr/share/doc/fzf/examples/key-bindings.zsh ]]; then
+  source /usr/share/doc/fzf/examples/key-bindings.zsh
+  source /usr/share/doc/fzf/examples/completion.zsh
+fi
+
+# =========================================================
+# Modular Config Files
+# =========================================================
+
+# fzf configuration
+source "$ZDOTDIR/fzf.zsh"
+
+# Aliases
+source "$ZDOTDIR/aliases.zsh"
+
+# Custom keybindings
+source "$ZDOTDIR/bindings.zsh"
+
+# Plugins and plugin manager
+source "$ZDOTDIR/plugins.zsh"
+
+# Prompt/theme
+source "$ZDOTDIR/prompt.zsh"
+
+# Functions
+source "$ZDOTDIR/functions.zsh"
+
+# =========================================================
+# Paths
+# =========================================================
+_reorder_path() {
+  typeset -gU PATH
+  PATH="${HOME}/.local/bin:${PATH}"
+}
+add-zsh-hook precmd _reorder_path
+
+# =========================================================
+# Smart directory navigation
+# =========================================================
+
+eval "$(mise activate zsh)"
+
+# Claude Codeでmcpの読み込みに失敗するようになったため止め
+# mise activate は出力をバックグラウンドで生成し、初回コマンド実行時に適用する
+# 起動とプロンプト表示のクリティカルパスから mise のバイナリ起動を除外する
+#if command -v mise > /dev/null; then
+#  _mise_act_file="${TMPDIR:-/tmp}/zsh-mise-activate.$$.zsh"
+#  ( command mise activate zsh > "$_mise_act_file" 2>/dev/null ) &!
+#  # コマンド実行前に適用されずに終了する場合（Ctrl-Dなど）のゴミ掃除
+#  trap 'rm -f "$_mise_act_file"' EXIT
+#  _mise_apply() {
+#    add-zsh-hook -d preexec _mise_apply
+#    unfunction _mise_apply
+#    local i
+#    # 生成完了を待つ（通常はコマンド入力中に完了済みでループは回らない）
+#    for i in {1..30}; do
+#      [[ -s "$_mise_act_file" ]] && break
+#      command sleep 0.1
+#    done
+#    [[ -s "$_mise_act_file" ]] && source "$_mise_act_file"
+#    rm -f "$_mise_act_file"
+#  }
+#  add-zsh-hook preexec _mise_apply
+#fi
+
+# omp completions は出力が決定論的なのでキャッシュして読み込む（初回のみ生成）
+_omp_comp="$XDG_CACHE_HOME/zsh/omp-completions.zsh"
+if command -v omp > /dev/null; then
+  if [[ ! -f "$_omp_comp" ]] || [[ "$(command -v omp)" -nt "$_omp_comp" ]]; then
+    mkdir -p "${_omp_comp:h}"
+    omp completions zsh > "$_omp_comp"
+  fi
+fi
+[[ -f "$_omp_comp" ]] && source "$_omp_comp"
+unset _omp_comp
+
+# opencode
+export PATH=/Users/tnmt/.opencode/bin:$PATH
+
+# tty
+[[ -t 0 ]] && stty -ixon
+
+# =========================================================
+# Zellij
+# =========================================================
+# zellijを起動する。既存セッションがあれば自動でアタッチする
+#eval "$(zellij setup --generate-auto-start zsh)"
+
+# kitty 使うと claude code 終了時にハングするのでそのための処置
+claude() { command claude "$@"; printf '\e[<u'; }

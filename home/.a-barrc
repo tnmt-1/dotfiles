@@ -1,0 +1,376 @@
+{
+  "activeProfileId" : "8FF59A79-18CB-4089-A4EE-0E1C81602AF6",
+  "global" : {
+    "aerospacePath" : "\/opt\/homebrew\/bin\/aerospace",
+    "barBackgroundBlur" : false,
+    "barCornerRadius" : 6,
+    "barDistanceFromEdges" : 0,
+    "barElementGap" : 4,
+    "barElementsBackgroundOpacity" : 100,
+    "barElementsCornerRadius" : 4,
+    "barEnabled" : true,
+    "barHeight" : 34,
+    "barHorizontalPadding" : 8,
+    "barOpacity" : 0,
+    "barVerticalPadding" : 0,
+    "enableNotifications" : true,
+    "fontName" : "",
+    "fontSize" : 11,
+    "grayscaleAppIcons" : false,
+    "launchAtLogin" : false,
+    "noColorInDataWidgets" : false,
+    "showBorder" : true,
+    "showElementsBorder" : true,
+    "windowManager" : "aerospace",
+    "yabaiPath" : "\/opt\/homebrew\/bin\/yabai"
+  },
+  "profiles" : [
+    {
+      "id" : "8FF59A79-18CB-4089-A4EE-0E1C81602AF6",
+      "isDefault" : true,
+      "multiDisplayLayout" : {
+        "displays" : [
+          {
+            "displayIndex" : 0,
+            "id" : "1F5B2B0B-A7D7-4B3B-94A5-68B4CC0635E8",
+            "name" : "Main Display",
+            "topBar" : {
+              "center" : [
+
+              ],
+              "left" : [
+                {
+                  "enabled" : true,
+                  "id" : "CEBF46C8-F077-4CEA-8048-0A4AF6D3430D",
+                  "identifier" : "aerospace-spaces",
+                  "showIcon" : true
+                },
+                {
+                  "enabled" : false,
+                  "id" : "DCDF728F-A51D-4F2B-AF8A-1CD3507BF648",
+                  "identifier" : "aerospace-process",
+                  "showIcon" : true
+                }
+              ],
+              "right" : [
+                {
+                  "enabled" : true,
+                  "id" : "93294B37-0C7E-4CC8-AF8F-5944F79C54D8",
+                  "identifier" : "user-widget",
+                  "showIcon" : true,
+                  "userWidgetIndex" : 0
+                },
+                {
+                  "enabled" : true,
+                  "id" : "4033BA06-0AFC-418A-BCBE-6306C32F4A15",
+                  "identifier" : "weather",
+                  "showIcon" : true
+                },
+                {
+                  "enabled" : true,
+                  "id" : "8990F72C-9F03-4C50-B242-EA9B320670BD",
+                  "identifier" : "keyboard",
+                  "showIcon" : true
+                },
+                {
+                  "enabled" : true,
+                  "id" : "BA05FCC4-B768-4144-927E-FA8F5A26A584",
+                  "identifier" : "sound",
+                  "showIcon" : true
+                },
+                {
+                  "enabled" : true,
+                  "id" : "7DC2162F-5DC2-4668-B4F2-CE0038685C2B",
+                  "identifier" : "date-display",
+                  "showIcon" : true
+                },
+                {
+                  "enabled" : true,
+                  "id" : "E1EE7A81-93ED-44A8-B07E-DD08D484EDAB",
+                  "identifier" : "time",
+                  "showIcon" : true
+                }
+              ]
+            }
+          },
+          {
+            "displayIndex" : 1,
+            "id" : "A33DFC9F-F302-4BF4-B197-7F07C6D3F19C",
+            "name" : "Sub Display",
+            "topBar" : {
+              "center" : [
+
+              ],
+              "left" : [
+                {
+                  "enabled" : true,
+                  "id" : "3AF079DD-1B3B-43D6-BA4D-A8AAE8456896",
+                  "identifier" : "aerospace-spaces",
+                  "showIcon" : true
+                }
+              ],
+              "right" : [
+                {
+                  "enabled" : true,
+                  "id" : "290EFAE8-3D65-4806-A628-EB5A2120DF0B",
+                  "identifier" : "user-widget",
+                  "showIcon" : true,
+                  "userWidgetIndex" : 0
+                },
+                {
+                  "enabled" : true,
+                  "id" : "BF3C18D4-5E9C-45D2-80FA-8300297289B6",
+                  "identifier" : "cpu",
+                  "showIcon" : true
+                },
+                {
+                  "enabled" : true,
+                  "id" : "A34E7B0E-BC05-4790-B13F-60E89FB77768",
+                  "identifier" : "memory",
+                  "showIcon" : true
+                },
+                {
+                  "enabled" : true,
+                  "id" : "28B091FA-8EC7-4720-B6AA-96A8621B3A4A",
+                  "identifier" : "weather",
+                  "showIcon" : true
+                },
+                {
+                  "enabled" : true,
+                  "id" : "0CBE9FBF-8840-4C51-9582-E28B2B5929B5",
+                  "identifier" : "keyboard",
+                  "showIcon" : true
+                },
+                {
+                  "enabled" : true,
+                  "id" : "237ED2C6-67DC-4A60-A951-41E8E5BF6884",
+                  "identifier" : "sound",
+                  "showIcon" : true
+                },
+                {
+                  "enabled" : true,
+                  "id" : "A7DD46F8-694D-4CAF-BADB-BD1049393B17",
+                  "identifier" : "date-display",
+                  "showIcon" : true
+                },
+                {
+                  "enabled" : true,
+                  "id" : "57DB78D9-2210-4150-9205-77CFEBAD3939",
+                  "identifier" : "time",
+                  "showIcon" : true
+                }
+              ]
+            }
+          },
+          {
+            "displayIndex" : 2,
+            "id" : "426CBB8B-C2B5-40D5-9A69-FF0A1DC2FC4F",
+            "name" : "Sub Display 2",
+            "topBar" : {
+              "center" : [
+
+              ],
+              "left" : [
+                {
+                  "enabled" : true,
+                  "id" : "3946DEB0-DAFD-4FA3-9EBB-2E4DD8C1B1D2",
+                  "identifier" : "aerospace-spaces",
+                  "showIcon" : true
+                }
+              ],
+              "right" : [
+                {
+                  "enabled" : true,
+                  "id" : "B7977D7C-C59D-47FE-B00A-2BDC7ED77717",
+                  "identifier" : "user-widget",
+                  "showIcon" : true,
+                  "userWidgetIndex" : 0
+                },
+                {
+                  "enabled" : true,
+                  "id" : "0D8C5C5C-D9FB-40A7-8F91-8E929FDE2DAD",
+                  "identifier" : "cpu",
+                  "showIcon" : true
+                },
+                {
+                  "enabled" : true,
+                  "id" : "679267E5-BB87-4871-8447-9F19BD2F7E15",
+                  "identifier" : "memory",
+                  "showIcon" : true
+                },
+                {
+                  "enabled" : true,
+                  "id" : "A798839C-7C40-448A-84C2-121EA1E57F84",
+                  "identifier" : "weather",
+                  "showIcon" : true
+                },
+                {
+                  "enabled" : true,
+                  "id" : "B1C64DA5-20BA-44B3-8BE5-27EFCC6E0434",
+                  "identifier" : "keyboard",
+                  "showIcon" : true
+                },
+                {
+                  "enabled" : true,
+                  "id" : "9DF311C6-B409-49AA-AF34-218C5DBDE0D3",
+                  "identifier" : "sound",
+                  "showIcon" : true
+                },
+                {
+                  "enabled" : true,
+                  "id" : "B51521CD-519B-4D78-AAA9-9D1AFFF275D2",
+                  "identifier" : "date-display",
+                  "showIcon" : true
+                },
+                {
+                  "enabled" : true,
+                  "id" : "960DDBFD-367B-44AC-8C1C-26394C37DF74",
+                  "identifier" : "time",
+                  "showIcon" : true
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "name" : "Default"
+    }
+  ],
+  "theme" : {
+    "appearance" : "auto",
+    "colorOverrides" : {
+
+    },
+    "darkTheme" : "night-shift",
+    "lightTheme" : "day-shift"
+  },
+  "userWidgets" : [
+    {
+      "backgroundColor" : "main",
+      "command" : "test -f ~\/.cache\/aerospace-mode && cat ~\/.cache\/aerospace-mode || echo main",
+      "cycleDuration" : 4,
+      "hideWhenEmpty" : false,
+      "id" : "B61ED584-1862-436F-A9B7-128C6E74522F",
+      "isActive" : true,
+      "name" : "Mode",
+      "refreshInterval" : 1
+    }
+  ],
+  "widgets" : {
+    "battery" : {
+      "backgroundColor" : "magenta",
+      "caffeinateOption" : "systemSleep",
+      "refreshInterval" : 10,
+      "showIcon" : true,
+      "toggleCaffeinateOnClick" : true
+    },
+    "cpu" : {
+      "graphColor" : "yellow",
+      "monitorApp" : "Activity Monitor",
+      "refreshInterval" : 2,
+      "showIcon" : true
+    },
+    "date" : {
+      "backgroundColor" : "cyan",
+      "calendarApp" : "Calendar",
+      "locale" : "en-UK",
+      "refreshInterval" : 30,
+      "shortFormat" : false,
+      "showIcon" : true
+    },
+    "diskActivity" : {
+      "readColor" : "blue",
+      "refreshInterval" : 4,
+      "showIcon" : true,
+      "writeColor" : "red"
+    },
+    "github" : {
+      "ghBinaryPath" : "\/opt\/homebrew\/bin\/gh",
+      "hideWhenNoNotifications" : false,
+      "notificationUrl" : "https:\/\/github.com\/notifications",
+      "refreshInterval" : 600,
+      "showIcon" : true
+    },
+    "gpu" : {
+      "graphColor" : "cyan",
+      "refreshInterval" : 4,
+      "showIcon" : true
+    },
+    "hackerNews" : {
+      "maxTitleLength" : 50,
+      "refreshInterval" : 600,
+      "rotationInterval" : 20,
+      "showIcon" : true,
+      "showPoints" : true
+    },
+    "keyboard" : {
+      "backgroundColor" : "mainAlt",
+      "refreshInterval" : 5,
+      "showIcon" : true
+    },
+    "memory" : {
+      "monitorApp" : "Activity Monitor",
+      "refreshInterval" : 4
+    },
+    "mic" : {
+      "backgroundColor" : "orange",
+      "refreshInterval" : 2,
+      "showIcon" : true
+    },
+    "netstats" : {
+      "downloadColor" : "magenta",
+      "refreshInterval" : 4,
+      "showIcon" : true,
+      "uploadColor" : "blue"
+    },
+    "process" : {
+      "displayOnlyIcon" : false,
+      "hideWindowTitle" : false,
+      "showCurrentSpaceOnly" : true,
+      "showLayoutMode" : true
+    },
+    "sound" : {
+      "backgroundColor" : "blue",
+      "refreshInterval" : 2,
+      "showIcon" : true
+    },
+    "spaces" : {
+      "displayStickyWindowsSeparately" : true,
+      "exclusions" : "",
+      "exclusionsAsRegex" : false,
+      "hideCreateSpaceButton" : false,
+      "hideDuplicateApps" : true,
+      "hideEmptySpaces" : false,
+      "showAllSpacesOnAllScreens" : false,
+      "switchSpacesWithoutYabai" : false,
+      "titleExclusions" : ""
+    },
+    "storage" : {
+      "refreshInterval" : 60
+    },
+    "time" : {
+      "backgroundColor" : "yellow",
+      "hour12" : false,
+      "refreshInterval" : 1,
+      "showDayProgress" : false,
+      "showIcon" : true,
+      "showSeconds" : false
+    },
+    "weather" : {
+      "customLocation" : "tajimi, gifu",
+      "hideLocation" : true,
+      "refreshInterval" : 1800,
+      "showIcon" : true,
+      "unit" : "C"
+    },
+    "wifi" : {
+      "backgroundColor" : "red",
+      "hideNetworkName" : false,
+      "hideWhenDisabled" : false,
+      "networkDevice" : "en0",
+      "refreshInterval" : 20,
+      "showIcon" : true,
+      "toggleOnClick" : true
+    }
+  }
+}

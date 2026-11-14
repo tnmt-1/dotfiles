@@ -1,0 +1,219 @@
+tap "egoist/tap", trusted: { casks: ["kero"] }
+tap "erikhellman/tap", "https://github.com/ErikHellman/homebrew-tap", trusted: true
+tap "felixkratz/formulae", "https://github.com/FelixKratz/homebrew-formulae", trusted: true
+tap "jean-tinland/a-bar", "https://github.com/Jean-Tinland/homebrew-a-bar", trusted: true
+tap "jnsahaj/lumen", trusted: true
+tap "k1low/tap", "https://github.com/k1LoW/homebrew-tap", trusted: true
+tap "muxy-app/tap", trusted: true
+tap "nikitabobko/tap", trusted: true
+tap "olets/tap", trusted: true
+# Automatic configure script builder
+brew "autoconf"
+# Automatically restart SSH sessions and tunnels
+brew "autossh"
+# GNU internationalization (i18n) and localization (l10n) library
+brew "gettext"
+# Bourne-Again SHell, a UNIX command interpreter
+brew "bash"
+# Clone of cat(1) with syntax highlighting and Git integration
+brew "bat"
+# User-friendly launcher for Bazel
+brew "bazelisk"
+# Freely available high-quality data compressor
+brew "bzip2"
+# Manage your dotfiles across multiple diverse machines, securely
+brew "chezmoi"
+# Cross-platform make
+brew "cmake"
+# Container runtimes on MacOS (and Linux) with minimal setup
+brew "colima"
+# Pack, ship and run any application as a lightweight container
+brew "docker"
+# Docker CLI plugin for extended build capabilities with BuildKit
+brew "docker-buildx"
+# Disk Usage/Free Utility - a better 'df' alternative
+brew "duf"
+# Modern, maintained replacement for ls
+brew "eza"
+# Simple, fast and user-friendly alternative to find
+brew "fd"
+# Play, record, convert, and stream select audio and video codecs
+brew "ffmpeg"
+# Text editor for your terminal: easy, powerful and fast
+brew "fresh-editor"
+# Command-line fuzzy finder written in Go
+brew "fzf"
+# GitHub command-line tool
+brew "gh"
+# Interpreter for PostScript and PDF
+brew "ghostscript"
+# Remote repository management made easy
+brew "ghq"
+# Syntax-highlighting pager for git and diff output
+brew "git-delta"
+# GNU Privacy Guard (OpenPGP)
+brew "gnupg"
+# Agent multiplexer that lives in your terminal
+brew "herdr"
+# Improved top (interactive process viewer)
+brew "htop"
+# Review-first terminal diff viewer for agent-authored changesets
+brew "hunk"
+# Tools and libraries to manipulate images in select formats
+brew "imagemagick"
+# Git-compatible distributed version control system
+brew "jj"
+# Lightweight and flexible command-line JSON processor
+brew "jq"
+# Library to render SVG files using Cairo
+brew "librsvg"
+# Polyglot runtime manager (asdf rust clone)
+brew "mise"
+# Open source relational database management system
+brew "mysql-client"
+# Open source relational database management system
+brew "mysql@8.0"
+# Ambitious Vim-fork focused on extensibility and agility
+brew "neovim"
+# Network Kanji code conversion Filter (NKF)
+brew "nkf"
+# Swiss-army knife of markup format conversion
+brew "pandoc"
+# Package compiler and linker metadata toolkit
+brew "pkgconf"
+# PNG image optimizing utility
+brew "pngquant"
+# Search tool like grep and The Silver Searcher
+brew "ripgrep"
+# Command-line interface for SQLite
+brew "sqlite"
+# Cross-shell prompt for astronauts
+brew "starship"
+# Text interface for Git repositories
+brew "tig"
+# Terminal multiplexer
+brew "tmux"
+# Program that allows you to count code, quickly
+brew "tokei"
+# Internet file retriever
+brew "wget"
+# Blazing fast terminal file manager written in Rust, based on async I/O
+brew "yazi"
+# Process YAML, JSON, XML, CSV and properties documents from the CLI
+brew "yq"
+# Pluggable terminal workspace, with terminal multiplexer as the base feature
+brew "zellij"
+# Shell extension to navigate your filesystem faster
+brew "zoxide"
+# Fish-like fast/unobtrusive autosuggestions for zsh
+brew "zsh-autosuggestions"
+# Fish shell like syntax highlighting for zsh
+brew "zsh-syntax-highlighting"
+# Terminal text editor
+brew "erikhellman/tap/txt"
+# lumen is a command-line tool that can show pretty diff, generate commit messages with AI, summarise diffs / commits, and more without requiring an API key.
+brew "jnsahaj/lumen/lumen"
+# mo is a Markdown viewer that opens .md files in a browser.
+brew "k1low/tap/mo"
+# Password manager that keeps all passwords secure behind one password
+cask "1password"
+# Command-line interface for 1Password
+cask "1password-cli"
+# Status bar working on top of yabai and AeroSpace written in Swift
+cask "jean-tinland/a-bar/a-bar"
+# AeroSpace is an i3-like tiling window manager for macOS
+cask "nikitabobko/tap/aerospace"
+# AI Coding Agent IDE
+cask "antigravity-ide"
+# Application uninstaller
+cask "appcleaner"
+# Japanese input method
+cask "azookey"
+# Compact TeX distribution as alternative to the full TeX Live / MacTeX
+cask "basictex"
+# Screen capturing and editing tool
+cask "bettershot"
+# OpenAI's official ChatGPT desktop app
+cask "chatgpt"
+# OpenAI's previous ChatGPT desktop app
+cask "chatgpt-classic"
+# Terminal-based AI coding assistant
+cask "claude-code@latest"
+# OpenAI's coding agent that runs in your terminal
+cask "codex"
+# Plain-text editor for web pages, program source codes and more
+cask "coteditor"
+# Write, edit, and chat about your code with AI
+cask "cursor"
+# Database manager for MySQL, PostgreSQL, SQL Server, MongoDB, SQLite and others
+cask "dbgate"
+# Online diagram software
+cask "drawio"
+# Web browser
+cask "firefox"
+# Privacy-focused Firefox-based browser
+cask "floorp"
+cask "font-hack-nerd-font"
+cask "font-jetbrains-mono-nerd-font"
+# Native client for GitHub Copilot
+cask "github-copilot-app"
+# Web browser
+cask "google-chrome"
+# Keyboard customiser
+cask "karabiner-elements"
+# Terminal multiplexer for macOS
+cask "muxy-app/tap/muxy"
+# App to write, plan, collaborate, and get organised
+cask "notion"
+# Knowledge base that works on top of a local folder of plain text Markdown files
+cask "obsidian"
+# IDE for professional Python development
+cask "pycharm"
+# Control your tools with a few keystrokes
+cask "raycast"
+# Team communication and collaboration software
+cask "slack"
+# CSV editor
+cask "smoothcsv"
+# Open-source code editor
+cask "visual-studio-code"
+# Web browser with built-in email client focusing on customization and control
+cask "vivaldi"
+# Binary releases of VS Code without MS branding/telemetry/licensing
+cask "vscodium"
+# GPU-accelerated cross-platform terminal emulator and multiplexer
+cask "wezterm"
+# Multiplayer code editor
+cask "zed"
+# Video communication and virtual meeting platform
+cask "zoom"
+vscode "arcticicestudio.nord-visual-studio-code"
+vscode "batisteo.vscode-django"
+vscode "bierner.markdown-footnotes"
+vscode "billaferd.vscode-deflist"
+vscode "catppuccin.catppuccin-vsc-icons"
+vscode "charliermarsh.ruff"
+vscode "davidanson.vscode-markdownlint"
+vscode "donjayamanne.githistory"
+vscode "eamodio.gitlens"
+vscode "editorconfig.editorconfig"
+vscode "github.vscode-github-actions"
+vscode "kevinrose.vsc-python-indent"
+vscode "ms-ceintl.vscode-language-pack-ja"
+vscode "ms-python.mypy-type-checker"
+vscode "ms-python.python"
+vscode "ms-python.vscode-pylance"
+vscode "ms-python.vscode-python-envs"
+vscode "njpwerner.autodocstring"
+vscode "oderwat.indent-rainbow"
+vscode "sgryjp.japanese-word-handler"
+vscode "shardulm94.trailing-spaces"
+vscode "shuworks.vscode-table-formatter"
+vscode "streetsidesoftware.code-spell-checker"
+vscode "tomoki1207.pdf"
+vscode "visualjj.visualjj"
+vscode "yahyabatulu.vscode-markdown-alert"
+vscode "yzane.markdown-pdf"
+vscode "yzhang.markdown-all-in-one"
+uv "trafilatura"
+uv "virtualenv"

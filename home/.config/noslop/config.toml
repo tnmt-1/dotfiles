@@ -1,0 +1,364 @@
+# noslop のユーザーの設定 (~/.config/noslop/config.toml)
+#
+# このマシンでは、どのディレクトリで実行してもこのファイルを読みます。
+# プロジェクトの設定 (noslop.toml) に書いた項目はそちらが優先され、CLI で指定した値はさらに優先されます。
+# 書き方はプロジェクトの設定と同じです。どの項目も、書かなければ既定値が使われます。
+# 手元のマシンでだけ使う設定 (辞書の選び方や、手元で止めたいルールなど) を書いてください。
+
+# 文書のジャンル: general / tech / business / essay (別名 blog / minutes)
+# genre = "general"
+
+[morphology]
+# 形態素解析の辞書 (P15・P16 を品詞で判定する)
+#   auto (既定): HASAMI_DICT → hasami の share ディレクトリ (既定は ~/.local/share/hasami) の辞書を
+#                推奨順 (ipadic-neologd-sudachi → ipadic-neologd → ipadic) → 同梱の IPAdic
+#   bundled: 同梱の IPAdic (P15・P16 を校正した辞書)
+#   share:<名前>: noslop dict download <名前> で取得した辞書
+#   ファイルのパス (相対パスはこのファイルのあるディレクトリ基準、~/ はホームディレクトリ)
+# dictionary = "auto"
+
+[rules]
+# 手元で止めるルール・動かすルール (プロジェクトの設定で触れたルールは、そちらに従います)
+# disable = ["R03"]
+# enable = ["P04"]
+
+# 箇条書きの割合 (既定は 0.35)。箇条書きの多い文書を好むため、ほぼすべてが箇条書きのときだけ指摘する
+[rules.S02]
+ratio_threshold = 0.95
+
+[files]
+# 検査する文書の拡張子 (既定は次のすべて)。プロジェクトの設定に extensions があれば、こちらは使いません
+# extensions = ["md", "markdown", "txt"]
+# 除外するパス (.gitignore と同じ書式)。ユーザーの設定では、noslop check に渡したディレクトリが基準です。
+# プロジェクトの設定に exclude があれば、こちらは使いません
+# exclude = ["drafts/"]
+
+[code]
+# 静的な文字列・JSX/HTML の文言も読む (既定)。false ならコメントと Python の docstring だけ。
+# static_text = true
+# コードの文言を検査する拡張子 (フックと、ディレクトリをたどるときに集める。既定は空)。
+# プロジェクトの設定に extensions があれば、こちらは使いません。
+# 次は noslop がコメントを読めるすべての拡張子です。使うものだけを残して、行頭の # を外してください
+# extensions = [
+#   "rs",                                    # Rust
+#   "js", "mjs", "cjs", "jsx",               # JavaScript
+#   "ts", "mts", "cts",                      # TypeScript
+#   "tsx",                                   # TSX
+#   "py", "pyi",                             # Python
+#   "go",                                    # Go
+#   "java",                                  # Java
+#   "c", "h",                                # C
+#   "cc", "cpp", "cxx", "hh", "hpp", "hxx",  # C++
+#   "cs",                                    # C#
+#   "rb",                                    # Ruby
+#   "php",                                   # PHP
+#   "swift",                                 # Swift
+#   "kt", "kts",                             # Kotlin
+#   "sh", "bash", "zsh",                     # Bash
+#   "yaml", "yml",                           # YAML
+#   "toml",                                  # TOML
+#   "html", "htm",                           # HTML
+#   "css",                                   # CSS
+#   "lua",                                   # Lua
+# ]
+
+# 手元で使う独自ルール (プロジェクトの設定に同じ ID があれば、そちらで置き換わります)
+# [[custom]]
+# id = "X01"
+# name = "BANNED_TERM"
+# pattern = "ユーザー様"
+# message = "「ユーザー様」ではなく「利用者」と書きます"
+# severity = "warning"
+
+# 直訳造語の辞書。id が JA で始まる [[custom]] は、omp の拡張 japanese-writing-hooks.ts が
+# システムプロンプトの「使わない語」の一覧にも使う (name が NG 語、hint が言い換え)。
+# 漢字で始まる語は、直前も漢字なら熟語の一部とみなして外す (「派生値」の「生値」など)。
+# 「の直後にある語は言及とみなして外す (「生値」は外れ、「この生値」は外れない)。
+
+# raw value の直訳
+[[custom]]
+id = "JA01"
+name = "生値"
+pattern = "(?:^|[^\\p{Han}「])生値"
+regex = true
+message = "直訳造語「生値」を使っている"
+hint = "ハッシュ化前、暗号化前、エンコード前、入力されたままの値など、何をする前の値かを書く"
+severity = "warning"
+
+# bare/naked value の直訳
+[[custom]]
+id = "JA02"
+name = "裸の値"
+pattern = "(?:^|[^\\p{Han}「])裸の値"
+regex = true
+message = "直訳造語「裸の値」を使っている"
+hint = "ラップしていない値、型変換前の値など、何をしていない値かを書く"
+severity = "warning"
+
+# lazy evaluation の直訳
+[[custom]]
+id = "JA03"
+name = "怠惰な評価"
+pattern = "(?:^|[^\\p{Han}「])怠惰な評価"
+regex = true
+message = "直訳造語「怠惰な評価」を使っている"
+hint = "遅延評価"
+severity = "warning"
+
+# happy path の直訳
+[[custom]]
+id = "JA04"
+name = "幸せな経路"
+pattern = "(?:^|[^\\p{Han}「])幸せな経路"
+regex = true
+message = "直訳造語「幸せな経路」を使っている"
+hint = "正常系"
+severity = "warning"
+
+# sad path の直訳
+[[custom]]
+id = "JA05"
+name = "悲しい経路"
+pattern = "(?:^|[^\\p{Han}「])悲しい経路"
+regex = true
+message = "直訳造語「悲しい経路」を使っている"
+hint = "異常系"
+severity = "warning"
+
+# hot path の直訳
+[[custom]]
+id = "JA06"
+name = "熱い経路"
+pattern = "(?:^|[^\\p{Han}「])熱い経路"
+regex = true
+message = "直訳造語「熱い経路」を使っている"
+hint = "ホットパス"
+severity = "warning"
+
+# cold start の直訳
+[[custom]]
+id = "JA07"
+name = "冷たい起動"
+pattern = "(?:^|[^\\p{Han}「])冷たい起動"
+regex = true
+message = "直訳造語「冷たい起動」を使っている"
+hint = "コールドスタート"
+severity = "warning"
+
+# soft delete の直訳
+[[custom]]
+id = "JA08"
+name = "柔らかい削除"
+pattern = "(?:^|[^\\p{Han}「])柔らかい削除"
+regex = true
+message = "直訳造語「柔らかい削除」を使っている"
+hint = "論理削除"
+severity = "warning"
+
+# hard delete の直訳
+[[custom]]
+id = "JA09"
+name = "堅い削除"
+pattern = "(?:^|[^\\p{Han}「])堅い削除"
+regex = true
+message = "直訳造語「堅い削除」を使っている"
+hint = "物理削除"
+severity = "warning"
+
+# self-registration の直訳
+[[custom]]
+id = "JA10"
+name = "自己登録"
+pattern = "(?:^|[^\\p{Han}「])自己登録"
+regex = true
+message = "直訳造語「自己登録」を使っている"
+hint = "利用者自身による登録"
+severity = "warning"
+
+# 「全子テナント」「全子の集約」のような省略
+[[custom]]
+id = "JA11"
+name = "全子"
+pattern = "(?:^|[^\\p{Han}「])全子"
+regex = true
+message = "直訳造語「全子」を使っている"
+hint = "すべての子テナント、すべての子プロセスなど、何の子かを省略せずに書く"
+severity = "warning"
+
+# factory の直訳
+[[custom]]
+id = "JA12"
+name = "生成口"
+pattern = "(?:^|[^\\p{Han}「])生成口"
+regex = true
+message = "直訳造語「生成口」を使っている"
+hint = "ファクトリメソッド、生成用のクラスメソッド"
+severity = "warning"
+
+# set of failures の直訳
+[[custom]]
+id = "JA13"
+name = "失敗集合"
+pattern = "(?:^|[^\\p{Han}「])失敗集合"
+regex = true
+message = "直訳造語「失敗集合」を使っている"
+hint = "失敗したテストの一覧"
+severity = "warning"
+
+# untracked の直訳
+[[custom]]
+id = "JA14"
+name = "追跡外"
+pattern = "(?:^|[^\\p{Han}「])追跡外"
+regex = true
+message = "直訳造語「追跡外」を使っている"
+hint = "未追跡（untracked）"
+severity = "warning"
+
+# representative child の直訳
+[[custom]]
+id = "JA15"
+name = "代表子"
+pattern = "(?:^|[^\\p{Han}「])代表子"
+regex = true
+message = "直訳造語「代表子」を使っている"
+hint = "代表の子テナントなど、何の子かを省略せずに書く"
+severity = "warning"
+
+# secret value の直訳
+[[custom]]
+id = "JA16"
+name = "秘密の値"
+pattern = "(?:^|[^\\p{Han}「])秘密の値"
+regex = true
+message = "直訳造語「秘密の値」を使っている"
+hint = "認証情報、シークレット、暗号化が必要な値など、何の値かを書く"
+severity = "warning"
+
+# authenticate の直訳
+[[custom]]
+id = "JA17"
+name = "本人を確かめ"
+pattern = "(?:^|[^\\p{Han}「])本人を確かめ"
+regex = true
+message = "直訳造語「本人を確かめ」を使っている"
+hint = "認証する。コードの名前が authenticate なら「認証」と書く"
+severity = "warning"
+
+# authentication method の直訳
+[[custom]]
+id = "JA18"
+name = "本人の確かめ方"
+pattern = "(?:^|[^\\p{Han}「])本人の確かめ方"
+regex = true
+message = "直訳造語「本人の確かめ方」を使っている"
+hint = "認証方式、ログインの経路など、何で分けているかを書く"
+severity = "warning"
+
+# look up a user の直訳
+[[custom]]
+id = "JA19"
+name = "会員を引く"
+pattern = "(?:^|[^\\p{Han}「])会員を引く"
+regex = true
+message = "直訳造語「会員を引く」を使っている"
+hint = "会員を取得する、会員を検索する"
+severity = "warning"
+
+# look up a user の直訳
+[[custom]]
+id = "JA20"
+name = "会員を引け"
+pattern = "(?:^|[^\\p{Han}「])会員を引け"
+regex = true
+message = "直訳造語「会員を引け」を使っている"
+hint = "会員を取得できた、会員が見つかった"
+severity = "warning"
+
+# pair of login type の直訳
+[[custom]]
+id = "JA21"
+name = "ログイン方法の組"
+pattern = "(?:^|[^「])ログイン方法の組"
+regex = true
+message = "直訳造語「ログイン方法の組」を使っている"
+hint = "ログイン方法とのタプル、ログイン方法とのペア"
+severity = "warning"
+
+# row（DBの1件）の直訳。「行う」「実行」や文章の行に当たらないよう、DBの文脈の形だけを検査する
+[[custom]]
+id = "JA22"
+name = "DBの1件を指す「行」"
+pattern = "(?:(?:^|[^「])(?:設定|ユーザープール|テナント|会員|DB|データベース|モデル)の?行(?:$|[^いうえおかきくけこっわ\\p{Han}])|(?:^|[^\\d\\p{Han}「])[1１一]行(?:で|ずつ|だけ)持|(?:^|[^\\p{Han}「])行を作)"
+regex = true
+message = "DBの1件を「行」と書いている"
+hint = "レコード（例: 設定の行→設定のレコード、1行で持つ→1レコードで持つ、行を作らない→レコードを作らない）"
+severity = "warning"
+
+# marker / flag の直訳。目印・矢印・印刷・印象のような熟語に当たらないよう、前後が漢字でない「印」だけを検査する
+[[custom]]
+id = "JA23"
+name = "マーカーを指す「印」"
+pattern = "(?:^|[^\\p{Han}「])印(?:$|[^\\p{Han}」])"
+regex = true
+message = "marker・flagを「印」と訳している"
+hint = "何が書かれているかを具体的に書く（例: 要確認の印が残っているメモリー→[要確認]と書いたメモリー、完了の印を付ける→完了と書く・完了フラグを立てる）"
+severity = "warning"
+
+# add の直訳。満足・補足・不足のような熟語と「足りる」に当たらないよう、前が漢字でない「足す」の活用形だけを検査する
+[[custom]]
+id = "JA24"
+name = "足す"
+pattern = "(?:^|[^\\p{Han}「])足[さしすせそ]"
+regex = true
+message = "「足す」を使っている"
+hint = "加える、追加する"
+severity = "warning"
+
+# timing の訳語として見慣れない語。同時機能・臨時機関のような別の熟語に当たらないよう、前後が漢字でない「時機」だけを検査する
+[[custom]]
+id = "JA25"
+name = "時機"
+pattern = "(?:^|[^\\p{Han}「])時機(?:$|[^\\p{Han}」])"
+regex = true
+message = "見慣れない語「時機」を使っている"
+hint = "タイミング"
+severity = "warning"
+
+# 長音の表記。「リポジトリ」「ディレクトリ」「フォルダ」と長音なしで書く
+[[custom]]
+id = "JA26"
+name = "リポジトリー"
+pattern = "(?:^|[^「])リポジトリー"
+regex = true
+message = "「リポジトリー」と長音付きで書いている"
+hint = "リポジトリ"
+severity = "warning"
+
+[[custom]]
+id = "JA27"
+name = "ディレクトリー"
+pattern = "(?:^|[^「])ディレクトリー"
+regex = true
+message = "「ディレクトリー」と長音付きで書いている"
+hint = "ディレクトリ"
+severity = "warning"
+
+[[custom]]
+id = "JA28"
+name = "フォルダー"
+pattern = "(?:^|[^「])フォルダー"
+regex = true
+message = "「フォルダー」と長音付きで書いている"
+hint = "フォルダ"
+severity = "warning"
+
+# 人が読む資料では response を「応答」と訳さない。自動応答・無応答のような熟語に当たらないよう、前が漢字でない「応答」だけを検査する
+[[custom]]
+id = "JA29"
+name = "応答"
+pattern = "(?:^|[^\\p{Han}「])応答(?:$|[^」])"
+regex = true
+message = "「応答」と書いている"
+hint = "レスポンス"
+severity = "warning"
