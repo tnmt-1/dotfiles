@@ -17,9 +17,13 @@
  * 可視化: 注入のたびにチャットに 🧠 カードを表示する。
  * カードは展開すると注入した全文を確認できる。全文は details に保持され、LLM コンテキストには含まれない
  * （カードの1行サマリのみ content として記録される）。
+ *
+ * 再開: ターンごとにカウンタを custom エントリー（metacog-state）へ保存し、resume・/new・分岐・/tree の
+ * たびに今のブランチから読み直す。保存エントリーのない古いセッションは、最後の 🧠 カードと
+ * それ以降のユーザーメッセージの数から推定する。
  */
 
-import type { ExtensionAPI } from "@oh-my-pi/pi-coding-agent";
+import type { ExtensionAPI, ExtensionContext } from "@oh-my-pi/pi-coding-agent";
 import { Box, Text } from "@oh-my-pi/pi-tui";
 
 // ════════════════════════════════════════════════════════════════════════
@@ -92,6 +96,59 @@ function getComboPrompt(keys: [PromptKey, PromptKey]): string {
 }
 
 // ════════════════════════════════════════════════════════════════════════
+// Session restore
+// ════════════════════════════════════════════════════════════════════════
+
+const STATE_ENTRY_TYPE = "metacog-state";
+const CARD_MESSAGE_TYPE = "metacog-injection";
+
+interface MetacogState {
+	turn: number;
+	count: number;
+}
+
+/** The SessionEntry fields read when restoring counters. */
+interface BranchEntry {
+	type: string;
+	customType?: string;
+	message?: { role: string };
+	details?: unknown;
+	data?: unknown;
+}
+
+function readState(value: unknown): MetacogState | undefined {
+	if (!value || typeof value !== "object" || !("turn" in value) || !("count" in value)) return undefined;
+	const { turn, count } = value;
+	return typeof turn === "number" && typeof count === "number" ? { turn, count } : undefined;
+}
+
+/**
+ * Rebuilds counters from the active branch. The last metacog-state entry wins; sessions saved
+ * before that entry existed fall back to the last 🧠 card plus the user messages after it
+ * (a card is appended after its own turn's user message).
+ */
+export function restoreCounts(entries: readonly BranchEntry[]): MetacogState {
+	for (let i = entries.length - 1; i >= 0; i--) {
+		const entry = entries[i];
+		if (entry.type !== "custom" || entry.customType !== STATE_ENTRY_TYPE) continue;
+		const state = readState(entry.data);
+		if (state) return state;
+	}
+
+	let userMessagesAfter = 0;
+	for (let i = entries.length - 1; i >= 0; i--) {
+		const entry = entries[i];
+		if (entry.type === "message" && entry.message?.role === "user") {
+			userMessagesAfter++;
+		} else if (entry.type === "custom_message" && entry.customType === CARD_MESSAGE_TYPE) {
+			const card = readState(entry.details);
+			if (card) return { turn: card.turn + userMessagesAfter, count: card.count };
+		}
+	}
+	return { turn: userMessagesAfter, count: 0 };
+}
+
+// ════════════════════════════════════════════════════════════════════════
 // Extension
 // ════════════════════════════════════════════════════════════════════════
 
@@ -103,7 +160,7 @@ export default function metaCognitiveHooks(pi: ExtensionAPI) {
 	// ── Chat card: make injections visible in the transcript ───────────────
 
 	pi.registerMessageRenderer<MetacogInjectionDetails>(
-		"metacog-injection",
+		CARD_MESSAGE_TYPE,
 		(message, { expanded }, theme) => {
 			const d = message.details;
 			if (!d) return new Text(theme.fg("dim", "🧠 metacog"));
@@ -128,6 +185,18 @@ export default function metaCognitiveHooks(pi: ExtensionAPI) {
 	const INJECTION_INTERVAL = 5; // Every N turns
 	const INJECT_FIRST_TURN = true;
 
+	// ── Restore counters when the session (or its active branch) changes ──
+
+	const restore = (ctx: ExtensionContext) => {
+		({ turn: turnCount, count: injectionCount } = restoreCounts(ctx.sessionManager.getBranch()));
+		ctx.ui.setStatus("metacog", enabled && injectionCount > 0 ? `🧠 ${injectionCount}` : undefined);
+	};
+
+	pi.on("session_start", (_event, ctx) => restore(ctx));
+	pi.on("session_switch", (_event, ctx) => restore(ctx));
+	pi.on("session_branch", (_event, ctx) => restore(ctx));
+	pi.on("session_tree", (_event, ctx) => restore(ctx));
+
 	// ── Periodic injection via before_agent_start ──────────────────────
 
 	pi.on("before_agent_start", async (event, ctx) => {
@@ -139,9 +208,10 @@ export default function metaCognitiveHooks(pi: ExtensionAPI) {
 			(INJECT_FIRST_TURN && turnCount === 1) ||
 			(turnCount > 1 && turnCount % INJECTION_INTERVAL === 0);
 
-		if (!shouldInject) return;
+		if (shouldInject) injectionCount++;
+		pi.appendEntry<MetacogState>(STATE_ENTRY_TYPE, { turn: turnCount, count: injectionCount });
 
-		injectionCount++;
+		if (!shouldInject) return;
 
 		// Pick what to inject
 		let promptBlock: string;
@@ -172,7 +242,7 @@ export default function metaCognitiveHooks(pi: ExtensionAPI) {
 		// Render a durable chat card. The full block stays in details (never sent
 		// to the LLM); only the one-line summary is carried in content.
 		pi.sendMessage<MetacogInjectionDetails>({
-			customType: "metacog-injection",
+			customType: CARD_MESSAGE_TYPE,
 			content: `🧠 metacog #${injectionCount} (turn ${turnCount}): ${label}`,
 			display: true,
 			details: {
