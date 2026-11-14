@@ -1,40 +1,27 @@
-# ~/.config/fish/conf.d/fzf.fish
-# ~/.config/zsh/fzf.zsh と同期している(zshが真)。
-# Ctrl+T / Ctrl+R / Alt+C のキーバインド本体は config.fish の `fzf --fish | source` が提供する。
-
-# デフォルトの検索コマンド（fdを使用、隠しファイルも含める）
-set -gx FZF_DEFAULT_COMMAND 'fd --type f --hidden --strip-cwd-prefix'
-
-# Ctrl+T で使用するコマンド（デフォルトと同じ）
-set -gx FZF_CTRL_T_COMMAND $FZF_DEFAULT_COMMAND
-
-# UI・見た目のカスタマイズ
-set -gx FZF_DEFAULT_OPTS '
-  --height=60%
-  --layout=reverse
-  --border=rounded
-  --prompt="  "
-  --pointer="  "
-  --preview-window=right:65%:wrap:border-left
-'
-
-# プレビュー用コマンド（batを使用、最初の500行を表示）
-set -g _fzf_preview_cmd 'bat --color=always --style=plain,numbers --line-range=:500 {}'
-set -gx FZF_CTRL_T_OPTS "--preview '$_fzf_preview_cmd'"
-
-# 【Ctrl+F】隠しファイルを除外したファイル選択
-function _fzf_file_no_hidden
-    # デフォルトコマンドから '--hidden ' を削除して隠しファイルを除外
-    set -l cmd (string replace -- '--hidden ' '' $FZF_DEFAULT_COMMAND)
-
-    # fzfを実行し、選択されたらカーソル位置に挿入
-    set -l result (eval $cmd | fzf --preview $_fzf_preview_cmd)
-    if test -n "$result"
-        commandline -i -- "$result "  # 次の入力のために末尾にスペースを付与
-    end
-    commandline -f repaint
+# fzf.fish is only meant to be used in interactive mode. If not in interactive mode and not in CI, skip the config to speed up shell startup
+if not status is-interactive && test "$CI" != true
+    exit
 end
 
-if status is-interactive
-    bind \cf _fzf_file_no_hidden
+# Because of scoping rules, to capture the shell variables exactly as they are, we must read
+# them before even executing _fzf_search_variables. We use psub to store the
+# variables' info in temporary files and pass in the filenames as arguments.
+# This variable is global so that it can be referenced by fzf_configure_bindings and in tests
+set --global _fzf_search_vars_command '_fzf_search_variables (set --show | psub) (set --names | psub)'
+
+# Install the default bindings, which are mnemonic and minimally conflict with fish's preset bindings
+fzf_configure_bindings
+
+# Doesn't erase autoloaded _fzf_* functions because they are not easily accessible once key bindings are erased
+function _fzf_uninstall --on-event fzf_uninstall
+    _fzf_uninstall_bindings
+
+    set --erase _fzf_search_vars_command
+    functions --erase _fzf_uninstall _fzf_migration_message _fzf_uninstall_bindings fzf_configure_bindings
+    complete --erase fzf_configure_bindings
+
+    set_color cyan
+    echo "fzf.fish uninstalled."
+    echo "You may need to manually remove fzf_configure_bindings from your config.fish if you were using custom key bindings."
+    set_color normal
 end

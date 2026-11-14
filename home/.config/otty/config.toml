@@ -35,3 +35,5 @@ copy-on-select = true
 
 open-with-app = "VS Code|com.microsoft.VSCode"
 open-with-app = "Zed|dev.zed.Zed"
+
+# window-layout = "tabs-top" (reset to default)

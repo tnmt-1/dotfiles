@@ -17,7 +17,7 @@ fi
 # =========================================================
 
 HISTFILE="$XDG_STATE_HOME/zsh/history"
-HISTSIZE=100000
+HISTSIZE=120000
 SAVEHIST=100000
 
 setopt APPEND_HISTORY
@@ -26,6 +26,7 @@ setopt HIST_IGNORE_DUPS
 setopt HIST_IGNORE_SPACE
 setopt HIST_EXPIRE_DUPS_FIRST
 setopt HIST_FIND_NO_DUPS
+setopt HIST_REDUCE_BLANKS
 
 # =========================================================
 # Shell behaviour
@@ -151,17 +152,5 @@ fi
 [[ -f "$_omp_comp" ]] && source "$_omp_comp"
 unset _omp_comp
 
-# opencode
-export PATH=/Users/tnmt/.opencode/bin:$PATH
-
 # tty
 [[ -t 0 ]] && stty -ixon
-
-# =========================================================
-# Zellij
-# =========================================================
-# zellijを起動する。既存セッションがあれば自動でアタッチする
-#eval "$(zellij setup --generate-auto-start zsh)"
-
-# kitty 使うと claude code 終了時にハングするのでそのための処置
-claude() { command claude "$@"; printf '\e[<u'; }
