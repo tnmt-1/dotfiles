@@ -1,10 +1,5 @@
 {
   "plugins": {
-    "@ryan_nookpi/pi-extension-headroom": {
-      "version": "0.1.5",
-      "enabledFeatures": null,
-      "enabled": true
-    },
     "omp-fff": {
       "version": "0.1.0",
       "enabledFeatures": null,
@@ -15,8 +10,18 @@
       "enabledFeatures": null,
       "enabled": true
     },
-    "i-have-adhd": {
-      "version": "0.3.0",
+    "@codesook/omp-headroom": {
+      "version": "1.0.0",
+      "enabledFeatures": null,
+      "enabled": true
+    },
+    "diagram-design": {
+      "version": "2.6.164",
+      "enabledFeatures": null,
+      "enabled": true
+    },
+    "brag": {
+      "version": "0.5.0",
       "enabledFeatures": null,
       "enabled": true
     }

@@ -8,7 +8,7 @@
     "barElementGap" : 4,
     "barElementsBackgroundOpacity" : 100,
     "barElementsCornerRadius" : 4,
-    "barEnabled" : true,
+    "barEnabled" : false,
     "barHeight" : 34,
     "barHorizontalPadding" : 8,
     "barOpacity" : 0,
@@ -17,7 +17,7 @@
     "fontName" : "",
     "fontSize" : 11,
     "grayscaleAppIcons" : false,
-    "launchAtLogin" : false,
+    "launchAtLogin" : true,
     "noColorInDataWidgets" : false,
     "showBorder" : true,
     "showElementsBorder" : true,
@@ -236,6 +236,7 @@
       "name" : "Default"
     }
   ],
+  "schemaVersion" : 1,
   "theme" : {
     "appearance" : "auto",
     "colorOverrides" : {
@@ -263,6 +264,17 @@
       "refreshInterval" : 10,
       "showIcon" : true,
       "toggleCaffeinateOnClick" : true
+    },
+    "bluetooth" : {
+      "backgroundColor" : "accent",
+      "batteryRefreshInterval" : 60,
+      "hideWhenDisabled" : false,
+      "maxDeviceNameLength" : 15,
+      "refreshInterval" : 5,
+      "showBatteryInBar" : false,
+      "showConnectedCount" : false,
+      "showConnectedDeviceName" : true,
+      "showIcon" : true
     },
     "cpu" : {
       "graphColor" : "yellow",
@@ -367,10 +379,12 @@
       "backgroundColor" : "red",
       "hideNetworkName" : false,
       "hideWhenDisabled" : false,
+      "maxNetworkNameLength" : 15,
       "networkDevice" : "en0",
       "refreshInterval" : 20,
+      "scanInterval" : 15,
       "showIcon" : true,
-      "toggleOnClick" : true
+      "showSignalStrength" : true
     }
   }
 }
