@@ -21,8 +21,6 @@ brew "bat"
 brew "bazelisk"
 # Freely available high-quality data compressor
 brew "bzip2"
-# Manage your dotfiles across multiple diverse machines, securely
-brew "chezmoi"
 # Cross-platform make
 brew "cmake"
 # Container runtimes on MacOS (and Linux) with minimal setup

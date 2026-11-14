@@ -17,8 +17,6 @@ brew "awscli"
 brew "bat"
 # Freely available high-quality data compressor
 brew "bzip2"
-# Manage your dotfiles across multiple diverse machines, securely
-brew "chezmoi"
 # Container runtimes on MacOS (and Linux) with minimal setup
 brew "colima", restart_service: :changed
 # Pixel-perfect terminal diff viewer
