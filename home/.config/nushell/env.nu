@@ -116,5 +116,5 @@ source ~/.local/share/nushell/starship.nu
 # =========================================================
 # Local overrides
 # =========================================================
-# マシン固有の環境変数は env.local.nu に置く(chezmoi 管理外)
+# マシン固有の環境変数は env.local.nu に置く(dotfiles 管理外)
 source ~/.config/nushell/env.local.nu

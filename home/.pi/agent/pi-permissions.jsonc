@@ -42,7 +42,7 @@
       "~/.gnupg",
       "~/.aws",
       "~/.config/gcloud",
-      // この設定ファイル（chezmoi で管理している実体も含む）
+      // この設定ファイル（dotfiles リポジトリにある実体も含む）
       "~/.pi/agent/pi-permissions.jsonc",
       // 作業ディレクトリなどの秘密ファイル
       ".env",
