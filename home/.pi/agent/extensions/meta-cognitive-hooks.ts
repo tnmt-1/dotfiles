@@ -8,7 +8,7 @@
  * Piのイベントフック（before_agent_start）を使って実現。
  *
  * Usage:
- *   自動: 3ターンに1回、メタ認知プロンプトがシステムプロンプトに追加される
+ *   自動: 1ターン目と、5ターンに1回、メタ認知プロンプトがシステムプロンプトに追加される
  *   手動: /metacog        → 今のターンにメタ認知を注入
  *         /metacog status → 現在の状態を表示
  *         /metacog off    → 自動注入を一時停止
@@ -121,7 +121,7 @@ export default function metaCognitiveHooks(pi: ExtensionAPI) {
 		return box;
 	});
 
-	const INJECTION_INTERVAL = 3; // Every N turns
+	const INJECTION_INTERVAL = 5; // Every N turns
 	const INJECT_FIRST_TURN = true;
 
 	// ── Periodic injection via before_agent_start ──────────────────────
