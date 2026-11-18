@@ -540,8 +540,8 @@ show_startup_tips false
 terminal {
 //    font "JetBrainsMono Nerd Font Mono"
     font "Firge"
-    font_size 17
-    line_height 1.1
+    font_size 16
+    line_height 1.25
     padding 16
     ligatures false
 }
