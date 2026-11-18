@@ -92,12 +92,6 @@
     },
     "git:github.com/itisbryan/pi-add-dir",
     "git:github.com/nicobailon/pi-web-access",
-    {
-      "source": "git:github.com/tnmt-1/pi-permission-system",
-      "extensions": [
-        "-index.ts"
-      ]
-    },
     "git:github.com/chandra447/pi-hermes-memory",
     "git:github.com/edlsh/pi-ask-user",
     "git:github.com/default-anton/pi-review",
@@ -111,7 +105,8 @@
     "git:github.com/elpapi42/pi-observational-memory@3.1.4",
     "https://github.com/earendil-works/pi-claude-code",
     "npm:pi-rtk-optimizer",
-    "npm:@benvargas/pi-ancestor-discovery"
+    "npm:@benvargas/pi-ancestor-discovery",
+    "npm:pi-permission-system"
   ],
   "collapseChangelog": true,
   "treeFilterMode": "default",
