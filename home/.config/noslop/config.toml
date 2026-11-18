@@ -37,7 +37,7 @@ disable = ["S02"]
 # コードの文言を検査する拡張子 (フックと、ディレクトリをたどるときに集める。既定は空)。
 # プロジェクトの設定に extensions があれば、こちらは使いません。
 # 次は noslop がコメントを読めるすべての拡張子です。使うものだけを残して、行頭の # を外してください
-# extensions = [
+extensions = [
 #   "rs",                                    # Rust
 #   "js", "mjs", "cjs", "jsx",               # JavaScript
 #   "ts", "mts", "cts",                      # TypeScript
@@ -55,10 +55,10 @@ disable = ["S02"]
 #   "sh", "bash", "zsh",                     # Bash
 #   "yaml", "yml",                           # YAML
 #   "toml",                                  # TOML
-#   "html", "htm",                           # HTML
+  "html", "htm",                           # HTML
 #   "css",                                   # CSS
 #   "lua",                                   # Lua
-# ]
+]
 
 # 手元で使う独自ルール (プロジェクトの設定に同じ ID があれば、そちらで置き換わります)
 # [[custom]]
