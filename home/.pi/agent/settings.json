@@ -7,7 +7,6 @@
   "packages": [
     "npm:@ryan_nookpi/pi-extension-headroom",
     "npm:@ff-labs/pi-fff",
-    "git:github.com/DietrichGebert/ponytail",
     "https://github.com/ayghri/i-have-adhd",
     "git:github.com/nicobailon/visual-explainer",
     {

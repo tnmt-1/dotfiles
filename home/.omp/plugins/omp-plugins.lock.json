@@ -5,11 +5,6 @@
       "enabledFeatures": null,
       "enabled": true
     },
-    "@dietrichgebert/ponytail": {
-      "version": "4.9.0",
-      "enabledFeatures": null,
-      "enabled": true
-    },
     "@codesook/omp-headroom": {
       "version": "1.0.0",
       "enabledFeatures": null,
