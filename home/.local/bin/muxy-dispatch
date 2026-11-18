@@ -1,0 +1,65 @@
+#!/bin/bash
+# muxyで、エージェントを動かすセッションを作り、入力欄が出るまで待つ。
+# 最初の指示があればmuxy-sayで送り、受け付けを確かめる。
+# 使い方: muxy-dispatch [--name <名前>] <作業ディレクトリ> <起動コマンド> [<最初の指示>]
+# 起動コマンドは、新しいセッションのシェルに打ち込む。PATHやmiseの設定は、ふだんのシェルと同じになる。
+# セッションは、実行しているターミナルと同じmuxyのプロジェクトに作る。muxyのターミナルの外では、プロジェクトを決められないので失敗する。
+# 作ったセッションは、使っている人の画面を切り替えずに、デスクトップアプリの別のタブで開く（session show --background）。
+# --nameは、セッションの名前にする。
+# 標準出力には、新しいセッションのIDだけを出す。起動したあとで失敗しても、IDは出す。
+set -euo pipefail
+
+# shellcheck source-path=SCRIPTDIR source=muxy-say
+source "$(dirname "$(readlink -f "$0")")/muxy-say"
+
+usage='使い方: muxy-dispatch [--name <名前>] <作業ディレクトリ> <起動コマンド> [<最初の指示>]'
+name=
+while [ $# -gt 0 ]; do
+  case $1 in
+    --name) name=${2:?$usage}; shift 2 ;;
+    --) shift; break ;;
+    -*) echo "知らないオプションです: $1" >&2; echo "$usage" >&2; exit 2 ;;
+    *) break ;;
+  esac
+done
+directory=${1:?$usage}
+command=${2:?$usage}
+msg=${3-}
+
+if [ ! -d "$directory" ]; then
+  echo "作業ディレクトリがありません: $directory" >&2
+  exit 2
+fi
+directory=$(cd "$directory" && pwd)
+
+if ! id=$(muxy session create --directory "$directory" -- "$command") || ! valid_id "$id"; then
+  echo "セッションを作れませんでした。muxyのターミナルの中で実行しているか確かめてください" >&2
+  exit 3
+fi
+echo "$id"
+
+if [ -n "$name" ]; then
+  muxy session rename "$id" "$name" >/dev/null || echo "セッション $id に名前を付けられませんでした" >&2
+fi
+muxy session show "$id" --background >/dev/null || echo "セッション $id をデスクトップアプリのタブで開けませんでした" >&2
+
+# 入力欄が出るまで、1秒おきに最長60秒待つ。
+for _ in $(seq 60); do
+  if input_text "$id" >/dev/null; then
+    if [ -z "$msg" ]; then
+      exit 0
+    fi
+    # mainは、送れたかどうかに応じた終了コードで、このスクリプトを終える。
+    main "$id" "$msg" >/dev/null
+  fi
+  if [ "$(session_status "$id" || true)" = "Ended" ]; then
+    break
+  fi
+  sleep 1
+done
+
+{
+  echo "セッション $id で、入力欄が出ませんでした（60秒待ったか、起動コマンドが終わった）。セッションは残しています。画面の最後の行:"
+  dump_screen "$id" 2>/dev/null | awk NF | tail -n 5
+} >&2
+exit 4

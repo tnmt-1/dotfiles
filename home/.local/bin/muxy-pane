@@ -1,0 +1,46 @@
+#!/bin/bash
+# muxy-dispatchで起動したセッションの状態を見る、画面を読む、閉じる。
+# 使い方: muxy-pane status <ID>           Live（動いている）かEnded（終わった、または見つからない）を出す
+#         muxy-pane screen <ID> [<行数>]  画面の最後の行を出す。行数を省くと40行
+#         muxy-pane end <ID>              セッションを終える。開いているタブも閉じる
+# IDは、muxyのセッションID（数字だけ）。
+set -euo pipefail
+
+# shellcheck source-path=SCRIPTDIR source=muxy-say
+source "$(dirname "$(readlink -f "$0")")/muxy-say"
+
+usage() {
+  sed -n '3,5s/^# \{0,9\}//p' "$0" >&2
+  exit 2
+}
+
+[ $# -ge 2 ] || usage
+sub=$1
+id=$2
+if ! valid_id "$id"; then
+  echo "IDは、muxyのセッションID（数字だけ）で書いてください（受け取った値: ${id}）" >&2
+  exit 2
+fi
+
+case $sub in
+  status)
+    if ! session_status "$id"; then
+      echo "muxyから、セッション $id の状態を取れませんでした" >&2
+      exit 1
+    fi
+    ;;
+  screen)
+    lines=${3:-40}
+    # 画面の下に残る空行を除いてから、最後の行を出す。
+    dump_screen "$id" | awk '{ rows[NR] = $0; if (NF) last = NR } END { for (i = 1; i <= last; i++) print rows[i] }' | tail -n "$lines"
+    ;;
+  end)
+    if [ "$(session_status "$id" || true)" != "Live" ]; then
+      echo "セッション $id は動いていません。閉じるものはありません"
+      exit 0
+    fi
+    muxy session end "$id" --yes >/dev/null
+    echo "閉じました: $id"
+    ;;
+  *) usage ;;
+esac

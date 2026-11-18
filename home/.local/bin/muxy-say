@@ -1,0 +1,113 @@
+#!/bin/bash
+# muxyのターミナルで動いているエージェントの入力欄へ1行を送る。
+# 使い方: muxy-say <ID> "<1行の指示>"
+# IDは、muxyのセッションID（数字だけ）。muxy-dispatchが出す。自分のIDは"$MUXY_SESSION_ID"。
+# 入力欄に文字があるあいだは送らずに待つ。送ったあとは、入力欄が空になったことで受け付けを確かめる。
+# muxy-dispatchとmuxy-paneは、このファイルをsourceして関数を使う。
+set -euo pipefail
+
+# IDがmuxyのセッションIDの形なら0で終わる。
+valid_id() {
+  [[ $1 =~ ^[0-9]+$ ]]
+}
+
+# セッションが動いていればLive、終わっているか見つからなければEndedを出す。
+# muxyから状態を取れなければ、何も出さずに1で終わる。
+session_status() {
+  local json
+  if ! json=$(muxy session inspect "$1" --json 2>&1); then
+    case $json in
+      *"not found"* | *UnknownSession*) echo Ended; return 0 ;;
+      *) return 1 ;;
+    esac
+  fi
+  jq -r 'if .status == "Live" then "Live" else "Ended" end' <<<"$json" 2>/dev/null || return 1
+}
+
+# セッションの画面（見えている範囲）を出す。
+dump_screen() {
+  muxy session read-screen "$1" --lines 500
+}
+
+# 入力欄の文字を、枠と空白を除いて出す。入力欄が見つからなければ1で終わる。
+# omp：最後の「╭──」で始まる行から、次の「╰─」で始まる行まで。
+# Claude Code：「─」だけの行の直後にある「❯」で始まる行から、次の「─」だけの行の手前まで。
+# Claude Codeは、空の入力欄のカーソルの位置にNO-BREAK SPACE（U+00A0）を出すので、それも空白として除く。
+# 画面の内容が少ないと入力欄は画面の上のほうに寄り、下に空行が残るので、画面の高さいっぱいを読む。
+input_text() {
+  local nbsp=$'\xc2\xa0' screen
+  screen=$(dump_screen "$1") || return 1
+  awk '
+    /^╭──/ { box = ""; omp = 1; found = 0; next }
+    omp { box = box $0; if ($0 ~ /^╰─/) { omp = 0; found = 1 }; next }
+    /^(─)+$/ { if (cc) { cc = 0; found = 1 } else rule = NR; next }
+    /^❯/ && rule == NR - 1 { box = $0; sub(/^❯/, "", box); cc = 1; found = 0; next }
+    cc { box = box $0 }
+    END { if (!found) exit 1; print box }
+  ' <<<"$screen" | sed -e 's/╰//g' -e 's/╯//g' -e 's/│//g' -e 's/─//g' -e "s/${nbsp}//g" -e 's/[[:space:]]//g'
+}
+
+# 文字を打ち込み、Enterを押す。
+type_line() {
+  muxy session send "$1" "$2" >/dev/null
+  press_enter "$1"
+}
+
+press_enter() {
+  muxy session send-keys "$1" Enter >/dev/null
+}
+
+main() {
+  local usage='使い方: muxy-say <ID> "<1行の指示>"'
+  local id=${1:?$usage} msg=${2:?$usage} status text
+  case $msg in
+    *$'\n'* | *$'\r'*) echo "指示に改行を含めないでください" >&2; exit 2 ;;
+  esac
+  if ! valid_id "$id"; then
+    echo "IDは、muxyのセッションID（数字だけ）で書いてください（受け取った値: ${id}）" >&2
+    exit 2
+  fi
+
+  if ! status=$(session_status "$id"); then
+    echo "muxyから、セッション $id の状態を取れませんでした" >&2
+    exit 3
+  fi
+  if [ "$status" != "Live" ]; then
+    echo "セッション $id が動いていません（状態: ${status}）" >&2
+    exit 3
+  fi
+
+  # 入力欄が見つかり、空になるまで、3秒おきに最長10分待つ。
+  local waited=0
+  until text=$(input_text "$id") && [ -z "$text" ]; do
+    if [ "$waited" -ge 600 ]; then
+      echo "10分待っても、セッション $id の入力欄が空になりませんでした" >&2
+      exit 4
+    fi
+    sleep 3
+    waited=$((waited + 3))
+  done
+
+  type_line "$id" "$msg"
+
+  # 補完メニューが開いていると、Enterは補完を選ぶだけで、文字が入力欄に残る。
+  # 残っていればEnterを押し直す。入力欄が見えないときは、何が出ているか分からないので押さない。
+  for attempt in 1 2 3; do
+    sleep 2
+    if text=$(input_text "$id"); then
+      if [ -z "$text" ]; then
+        echo "送りました: $id"
+        exit 0
+      elif [ "$attempt" -lt 3 ]; then
+        press_enter "$id"
+      fi
+    fi
+  done
+
+  echo "送った指示を受け付けたことを確かめられません。セッション $id の入力欄を muxy-pane screen $id で見てください" >&2
+  exit 5
+}
+
+if [ "${BASH_SOURCE[0]}" = "$0" ]; then
+  main "$@"
+fi
