@@ -266,6 +266,23 @@ plugins {
     welcome-screen location="zellij:session-manager" {
         welcome_screen true
     }
+    radar location="file:~/.config/zellij/plugins/zj_radar.wasm" {
+        density "cards"         // cards · comfortable · compact
+        naming "managed"        // off · managed · force
+        notify true             // desktop notifications (macOS + Linux)
+        notify_done true        // per-status toggles (done · error · pending)
+        notify_error true
+        notify_pending true
+        notify_remote true         // a remote session (ssh, mosh) disconnecting
+        notify_when_focused false  // suppress when the pane is focused
+        interactive_commands ""    // extra editors/pagers/TUIs to keep quiet
+        remote_commands ""         // extra remote-session launchers
+        spinner_fps 4              // working-spinner frames/s (1 = once a second)
+        task_lines "lines"         // background tasks: lines · count · off
+        ledger true                // recent completions under ─ earlier ─
+        session_tree false         // expand other sessions into tabs + agents
+        show_mode false            // Zellij mode on the footer (status bar optional)
+    }
 }
 
 // Plugins to load in the background when a new session starts
