@@ -73,7 +73,7 @@ jj-worktree remove <親リポジトリ> <名前> [--hooks]
 - `-r`には分岐元のリビジョンか、続きを積む既存のブックマークを渡す。省くと、親リポジトリの作業コピーと同じ親にする。
 - 親リポジトリがgitと同居していれば、gitのworktreeも作られる。workspaceの中でも`git`と`gh`が使える。
 - workspaceは親リポジトリと同じjjのリポジトリなので、workspaceで作ったコミットは親リポジトリの`jj log`にも出る。
-- `--hooks`は、親リポジトリの`.muxy/worktree.json`のsetup（add）かteardown（remove）のコマンドを、workspaceの中で実行する。使う前にユーザーに確認する。スキルや作業指示が確認を省いてよいとしているときは省く。
+- `--hooks`は、親リポジトリの`.jj-worktree/hooks.json`のsetup（add）かteardown（remove）のコマンドを、workspaceの中で実行する。`hooks.json`がないとき、addはworkspaceを作らず、エラーで止まり、removeはteardownを飛ばしてworkspaceを消す。使う前にユーザーに確認する。スキルや作業指示が確認を省いてよいとしているときは省く。
 - `remove`は、作業コピーにコミットしていない変更があれば止まる。`jj workspace forget`のあとでディレクトリを消す。
 
 ## zellijのコマンドを直接使うとき
