@@ -1,0 +1,8 @@
+{
+	"name": "meta-cognitive-hooks",
+	"private": true,
+	"type": "module",
+	"omp": {
+		"extensions": ["./index.ts"]
+	}
+}

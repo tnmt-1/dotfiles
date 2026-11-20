@@ -4,19 +4,26 @@
  * 元ツイート: Solは「メタ認知を意識して過去のバイアスに引っ張られずに作業を複数回自己監査すること」
  * という感じに、メタ認知をプロンプトに直接ぶち込んだらだいぶFableっぽくなる
  *
- * 数回に一回、システムプロンプトにメタ認知・全体最適・長期的視点の指示を強制注入する。
- * oh-my-piの拡張イベント（before_agent_start）を使って実現。
+ * 1ターン目と、ファイルを編集する前に、メタ認知・全体最適・長期的視点の指示を差し込む。
+ * システムプロンプトは変えない。変えるとプロンプトキャッシュが先頭から作り直されるため（D-0634）。
  *
  * Usage:
- *   自動: 1ターン目と、5ターンに1回、メタ認知プロンプトがシステムプロンプトに追加される
+ *   自動: 1ターン目に、4つの指示の全文をユーザーのメッセージのあとへ加える（before_agent_startのmessage）。
+ *         各ターンで最初のファイル編集（edit・write）を1回止め、止めた理由として「影響範囲」「変更コスト」の指示を返す。
+ *         同じ応答で並べて呼んだ編集もまとめて止め、次の応答からは止めない。
  *   手動: /metacog        → 今のターンにメタ認知を注入
  *         /metacog status → 現在の状態を表示
  *         /metacog off    → 自動注入を一時停止
  *         /metacog on     → 自動注入を再開
  *
- * 可視化: 注入のたびにチャットに 🧠 カードを表示する。
- * カードは展開すると注入した全文を確認できる。全文は details に保持され、LLM コンテキストには含まれない
- * （カードの1行サマリのみ content として記録される）。
+ * ターン: ユーザーの入力（inputイベント）を受けた始まりだけを数える。noslopの続きのような自動の続きは数えない。
+ * inputイベントを一度も受けないセッション（サブエージェント、omp -p）では、始まりをすべて数える。
+ *
+ * 可視化: 1ターン目の注入はチャットに 🧠 カードとして表示し、展開すると全文を確認できる。
+ * 編集を止めたことは、止めたツール呼び出しの結果に表示される。
+ *
+ * 評価用の記録: 編集を止めるたびにcustomエントリー（metacog-edit-check）へ、ターン、注入の回数、
+ * 止めたツール呼び出しのIDを保存する。止めたあとの呼び出しと比べると、点検で編集が変わったかを確かめられる。
  *
  * 再開: ターンごとにカウンタを custom エントリー（metacog-state）へ保存し、resume・/new・分岐・/tree の
  * たびに今のブランチから読み直す。保存エントリーのない古いセッションは、最後の 🧠 カードと
@@ -68,31 +75,41 @@ const META_PROMPTS = {
 - 自分の変更を過大に評価しない。動作未確認のものは未確認と書く。`,
 };
 
-type PromptKey = keyof typeof META_PROMPTS;
-
 interface MetacogInjectionDetails {
 	turn: number;
 	count: number;
 	label: string;
-	block: string;
 }
-
-const PROMPT_KEYS = Object.keys(META_PROMPTS) as PromptKey[];
 
 const ALL_PROMPTS_COMBINED = Object.values(META_PROMPTS).join("\n\n");
 
-// Paired combos for mid-session variety
-const PAIRED_COMBOS: [PromptKey, PromptKey][] = [
-	["metacognition", "globalOptimization"],
-	["longTermPerspective", "thinkingQuality"],
-	["globalOptimization", "longTermPerspective"],
-	["metacognition", "thinkingQuality"],
-	["metacognition", "longTermPerspective"],
-	["globalOptimization", "thinkingQuality"],
-];
+const FIRST_TURN_MESSAGE = `以下は、拡張機能（meta-cognitive-hooks）がこのセッションの作業全体に加える指示です。
 
-function getComboPrompt(keys: [PromptKey, PromptKey]): string {
-	return keys.map((k) => META_PROMPTS[k]).join("\n\n");
+${ALL_PROMPTS_COMBINED}`;
+
+const EDIT_CHECK_REASON = `この編集はまだ実行していません。拡張機能（meta-cognitive-hooks）が、このターンで最初のファイル編集の前に、次の点検を求めています。
+
+${META_PROMPTS.globalOptimization}
+
+${META_PROMPTS.longTermPerspective}
+
+点検したうえで、次のどれかを選んでください。
+- 編集が必要なら、同じ編集をもう一度呼び出す
+- 変えるべき点が見つかったら、直した編集を呼び出す
+- 編集が要らないと分かったら、呼び出さない
+
+同じ応答で並べて呼んだ編集も、まとめて止めています。必要なものを呼び出し直してください。`;
+
+const EDIT_TOOLS: Record<string, true> = { edit: true, write: true };
+
+/** edit・writeのうち、ファイルへの書き込みを判定する。xd://・local://などの内部URLへの書き込みは含めない。 */
+function isFileEdit(toolName: string, input: object): boolean {
+	if (!EDIT_TOOLS[toolName]) return false;
+	const paths = [
+		"path" in input ? input.path : undefined,
+		...("paths" in input && Array.isArray(input.paths) ? input.paths : []),
+	].filter((p): p is string => typeof p === "string");
+	return paths.length === 0 ? toolName === "edit" : paths.some((p) => !p.includes("://"));
 }
 
 // ════════════════════════════════════════════════════════════════════════
@@ -101,6 +118,7 @@ function getComboPrompt(keys: [PromptKey, PromptKey]): string {
 
 const STATE_ENTRY_TYPE = "metacog-state";
 const CARD_MESSAGE_TYPE = "metacog-injection";
+const EDIT_CHECK_ENTRY_TYPE = "metacog-edit-check";
 
 interface MetacogState {
 	turn: number;
@@ -156,6 +174,11 @@ export default function metaCognitiveHooks(pi: ExtensionAPI) {
 	let turnCount = 0;
 	let injectionCount = 0;
 	let enabled = true;
+	// inputイベントを一度でも受けたら、ユーザーの入力のあとの始まりだけをターンに数える
+	let receivesInput = false;
+	let inputPending = false;
+	let editCheckedTurn = 0;
+	let blockingEdits = false;
 
 	// ── Chat card: make injections visible in the transcript ───────────────
 
@@ -174,16 +197,15 @@ export default function metaCognitiveHooks(pi: ExtensionAPI) {
 				),
 			);
 
-			if (expanded && d.block) {
-				box.addChild(new Text(theme.fg("dim", d.block), 0, 0));
+			if (expanded && typeof message.content === "string") {
+				box.addChild(new Text(theme.fg("dim", message.content), 0, 0));
 			}
 
 			return box;
 		},
 	);
 
-	const INJECTION_INTERVAL = 5; // Every N turns
-	const INJECT_FIRST_TURN = true;
+	const recordState = () => pi.appendEntry<MetacogState>(STATE_ENTRY_TYPE, { turn: turnCount, count: injectionCount });
 
 	// ── Restore counters when the session (or its active branch) changes ──
 
@@ -197,65 +219,60 @@ export default function metaCognitiveHooks(pi: ExtensionAPI) {
 	pi.on("session_branch", (_event, ctx) => restore(ctx));
 	pi.on("session_tree", (_event, ctx) => restore(ctx));
 
-	// ── Periodic injection via before_agent_start ──────────────────────
+	pi.on("input", () => {
+		receivesInput = true;
+		inputPending = true;
+	});
 
-	pi.on("before_agent_start", async (event, ctx) => {
+	// ── First-turn injection via before_agent_start ────────────────────
+
+	pi.on("before_agent_start", async (_event, ctx) => {
 		if (!enabled) return;
+		if (receivesInput && !inputPending) return;
+		inputPending = false;
 
 		turnCount++;
-
-		const shouldInject =
-			(INJECT_FIRST_TURN && turnCount === 1) ||
-			(turnCount > 1 && turnCount % INJECTION_INTERVAL === 0);
-
+		const shouldInject = turnCount === 1;
 		if (shouldInject) injectionCount++;
-		pi.appendEntry<MetacogState>(STATE_ENTRY_TYPE, { turn: turnCount, count: injectionCount });
-
+		recordState();
 		if (!shouldInject) return;
 
-		// Pick what to inject
-		let promptBlock: string;
-
-		if (turnCount === 1) {
-			// First turn: full combined prompt as initial conditioning
-			promptBlock = ALL_PROMPTS_COMBINED;
-		} else {
-			// Subsequent injections: cycle through paired combos, then singles
-			const cycleIndex = injectionCount - 2; // 0-indexed, offset by first-turn special case
-			if (cycleIndex < PAIRED_COMBOS.length) {
-				promptBlock = getComboPrompt(PAIRED_COMBOS[cycleIndex]);
-			} else {
-				// After cycling through all combos, use singles (deterministic)
-				const singleIndex = (cycleIndex - PAIRED_COMBOS.length) % PROMPT_KEYS.length;
-				promptBlock = META_PROMPTS[PROMPT_KEYS[singleIndex]];
-			}
-		}
-
-		// Update status indicator
+		const label = "all prompts (first turn)";
 		ctx.ui.setStatus("metacog", `🧠 ${injectionCount}`);
-
-		// Notify so the user feels the injection happening
-		const label =
-			turnCount === 1 ? "all prompts (first turn)" : promptBlock.match(/^## (.+)/)?.[1] ?? "";
 		ctx.ui.notify(`🧠 Meta-cognitive prompt injected (${injectionCount}): ${label}`, "info");
 
-		// Render a durable chat card. The full block stays in details (never sent
-		// to the LLM); only the one-line summary is carried in content.
-		pi.sendMessage<MetacogInjectionDetails>({
-			customType: CARD_MESSAGE_TYPE,
-			content: `🧠 metacog #${injectionCount} (turn ${turnCount}): ${label}`,
-			display: true,
-			details: {
+		return {
+			message: {
+				customType: CARD_MESSAGE_TYPE,
+				content: FIRST_TURN_MESSAGE,
+				display: true,
+				details: { turn: turnCount, count: injectionCount, label } satisfies MetacogInjectionDetails,
+			},
+		};
+	});
+
+	// ── Edit check: block the first file edit of each turn once ─────────
+
+	pi.on("turn_start", () => {
+		blockingEdits = false;
+	});
+
+	pi.on("tool_call", (event, ctx) => {
+		if (!enabled || !isFileEdit(event.toolName, event.input)) return;
+		if (editCheckedTurn !== turnCount) {
+			editCheckedTurn = turnCount;
+			blockingEdits = true;
+			injectionCount++;
+			recordState();
+			pi.appendEntry(EDIT_CHECK_ENTRY_TYPE, {
 				turn: turnCount,
 				count: injectionCount,
-				label,
-				block: promptBlock,
-			},
-		});
-
-		return {
-			systemPrompt: [...event.systemPrompt, promptBlock],
-		};
+				toolCallId: event.toolCallId,
+				toolName: event.toolName,
+			});
+			ctx.ui.setStatus("metacog", `🧠 ${injectionCount}`);
+		}
+		if (blockingEdits) return { block: true, reason: EDIT_CHECK_REASON };
 	});
 
 	// ── /metacog command ───────────────────────────────────────────────
@@ -266,12 +283,8 @@ export default function metaCognitiveHooks(pi: ExtensionAPI) {
 			const arg = args.trim().toLowerCase();
 
 			if (arg === "status") {
-				const nextTurn =
-					turnCount === 0
-						? 1
-						: turnCount + (INJECTION_INTERVAL - (turnCount % INJECTION_INTERVAL));
 				ctx.ui.notify(
-					`Metacog: ${enabled ? "ON" : "OFF"} | Turns: ${turnCount} | Injected: ${injectionCount} | Next inject: turn ${nextTurn} | Interval: every ${INJECTION_INTERVAL}`,
+					`Metacog: ${enabled ? "ON" : "OFF"} | Turns: ${turnCount} | Injected: ${injectionCount} | Edit check this turn: ${editCheckedTurn === turnCount ? "done" : "pending"}`,
 					"info",
 				);
 				return;
@@ -293,12 +306,8 @@ export default function metaCognitiveHooks(pi: ExtensionAPI) {
 
 			if (arg === "" || arg === "now") {
 				// Force injection: queue a steer message asking the model to self-apply
-				const lines = [
-					"## メタ認知・全体最適・長期的視点",
-					...PROMPT_KEYS.map((k) => META_PROMPTS[k]),
-				];
 				pi.sendUserMessage(
-					`【メタ認知強制注入】以下の指示をシステムプロンプトに追加してから応答してください。\n\n${lines.join("\n\n")}`,
+					`【メタ認知強制注入】以下の指示をシステムプロンプトに追加してから応答してください。\n\n## メタ認知・全体最適・長期的視点\n\n${ALL_PROMPTS_COMBINED}`,
 					{ deliverAs: "steer" },
 				);
 				ctx.ui.notify("🧠 Meta-cognitive prompt manually injected (all prompts)", "info");
