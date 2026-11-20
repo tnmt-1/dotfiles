@@ -392,6 +392,11 @@ run = 'move-node-to-workspace G'
 if.app-id = 'com.google.antigravity-ide'
 run = 'move-node-to-workspace O'
 
+# Obsidian → workspace O
+[[on-window-detected]]
+if.app-id = 'md.obsidian'
+run = 'move-node-to-workspace O'
+
 # Slack(Vivaldi for work) → workspace S
 [[on-window-detected]]
 if.app-id = 'com.vivaldi.Vivaldi.app.kmobppamafbflhhbfbonccdeaocfdllj'
