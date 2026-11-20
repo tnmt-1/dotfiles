@@ -59,6 +59,24 @@ alias reload="exec $SHELL -l"
 alias mdfixclip='pbpaste > /tmp/clipboard.md && markdownlint --fix --config ~/.config/markdownlint/.markdownlint.jsonc /tmp/clipboard.md && pbcopy < /tmp/clipboard.md'
 alias zl="zellij"
 
+# Claude Codeに、祖先のディレクトリの .claude/skills を --add-dir で渡す。
+# --add-dir は後ろの引数も値として取り込むので、= でつなぐ。サブコマンドのときは渡さない。
+claude() {
+  case "$1" in
+    agents|attach|auth|auto-mode|doctor|gateway|import|install|logs|mcp|plugin|plugins|purge|respawn|rm|setup-token|stop|kill|ultrareview|update|upgrade)
+      command claude "$@"
+      return
+      ;;
+  esac
+  local dir
+  dir=$(command bun "$HOME/.claude/bin/ancestor-skills.ts" "$PWD" 2>/dev/null)
+  if [[ -n "$dir" ]]; then
+    command claude --add-dir="$dir" "$@"
+  else
+    command claude "$@"
+  fi
+}
+
 # --- .aliases の読み込み ---
 if [ -f "$ZDOTDIR/aliases.local.zsh" ]; then
   source "$ZDOTDIR/aliases.local.zsh"
