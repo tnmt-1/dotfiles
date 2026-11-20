@@ -309,6 +309,8 @@ run "$bin/muxy-dispatch" "$work/repo" "agent" "指示"
 assert_eq "muxy-dispatch: 入力欄が出なければ終了コード4" 4 "$rc"
 assert_eq "muxy-dispatch: 入力欄が出なくてもIDを出す" "77" "$out"
 assert_contains "muxy-dispatch: 画面の最後の行を出す" "起動しています" "$err"
+assert_contains "muxy-dispatch: 最初の1行を送っていないことを伝える" "最初の1行は送っていません" "$err"
+assert_not_contains "muxy-dispatch: 入力欄が出なければ最初の1行を送らない" "session send 77" "$log"
 teardown
 
 setup
