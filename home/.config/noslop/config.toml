@@ -24,6 +24,13 @@
 # 箇条書きの割合 (S02) は、箇条書きの多い文書を好むため止める
 disable = ["S02"]
 
+[scope]
+# 語句ルールをリスト・表・引用にも当てるか (既定は地の文の段落だけ)
+# 参考の欄は箇条書きで書くため、独自ルールが当たるようにリストを有効にする
+lists = true
+# tables = false
+# blockquotes = false
+
 [files]
 # 検査する文書の拡張子 (既定は次のすべて)。プロジェクトの設定に extensions があれば、こちらは使いません
 # extensions = ["md", "markdown", "txt"]
@@ -409,3 +416,4 @@ regex = true
 message = "直訳に近い語「入口」を使っている"
 hint = "何を指すかを書く（例: 入口のスキル→最初に呼ぶスキル、依頼を振り分けるスキル）"
 severity = "warning"
+
