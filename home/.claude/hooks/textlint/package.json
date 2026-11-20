@@ -1,0 +1,12 @@
+{
+	"name": "claude-japanese-writing-textlint",
+	"private": true,
+	"type": "module",
+	"dependencies": {
+		"@cffnpwr/textlint-plugin-comments": "1.0.0",
+		"textlint": "15.8.0",
+		"textlint-plugin-html": "1.0.1",
+		"textlint-rule-preset-ja-technical-writing": "12.0.2",
+		"textlint-rule-preset-jtf-style": "3.0.3"
+	}
+}

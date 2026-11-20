@@ -4,9 +4,11 @@
  *
  * 文体の方針はAGENTS.md(~/.claude/CLAUDE.md)に書き、このフックは次だけを受け持つ:
  *
- *   bun japanese-writing-hook.ts prompt    # UserPromptSubmit: 直訳造語の一覧をコンテキストに注入
+ *   bun japanese-writing-hook.ts prompt    # UserPromptSubmit: 直訳造語の一覧とtextlintの方針をコンテキストに注入
  *   bun japanese-writing-hook.ts stop      # Stop: 最終回答をnoslopで検査し、重い指摘があれば書き直しを要求
- *   bun japanese-writing-hook.ts posttool  # PostToolUse(Write|Edit): 書き込んだファイルの指摘をnoslopから渡す
+ *   bun japanese-writing-hook.ts posttool  # PostToolUse(Write|Edit): 書き込んだファイルの指摘をnoslopとtextlintから渡す
+ *
+ * textlintの検査は、隣の textlint/ にある。textlintとプラグインは textlint/node_modules に入れる（cd textlint && bun install）。
  *
  * 直訳造語の辞書はnoslopのユーザー設定 ~/.config/noslop/config.toml にある。
  * idがJAで始まる[[custom]]のnameがNG語、hintが言い換え。
@@ -14,6 +16,7 @@
 
 import { homedir } from "node:os";
 import { join } from "node:path";
+import { type ChangedLines, lintChangedFile } from "./textlint/textlint";
 
 const NOSLOP_CONFIG_PATH = join(homedir(), ".config", "noslop", "config.toml");
 const NG_WORD_RULE_PREFIX = "JA";
@@ -149,14 +152,29 @@ async function readLastAssistantText(transcriptPath: string): Promise<string> {
 	return "";
 }
 
-async function handlePromptSubmit(): Promise<void> {
-	const policy = await buildNgWordsPolicy();
-	if (!policy) return;
+// textlintでよく指摘され、文で説明できるルールだけを事前に指示する。ompの拡張と同じ内容にする
+const TEXTLINT_POLICY = `## 日本語の表記(textlintで検査する)
 
+日本語の文章は、書いたあとにtextlintで検査される。次の書き方は指摘されるので、最初から避ける。
+
+- 「することができる」「することが可能」と書かず、「できる」と書く(冗長な表現)
+- 一文の中で同じ助詞(は、に、が、を)を2回使わない。文を分けるか、言い換える
+- 二重否定(「〜しないわけではない」など)を使わない
+- ら抜き言葉(「見れる」「来れる」など)を使わない
+`;
+
+export function buildPromptContext(ngWordsPolicy: string | undefined): string {
+	return [ngWordsPolicy, TEXTLINT_POLICY].filter(Boolean).join("\n");
+}
+
+async function handlePromptSubmit(): Promise<void> {
 	console.log(
 		JSON.stringify({
 			suppressOutput: true,
-			hookSpecificOutput: { hookEventName: "UserPromptSubmit", additionalContext: policy },
+			hookSpecificOutput: {
+				hookEventName: "UserPromptSubmit",
+				additionalContext: buildPromptContext(await buildNgWordsPolicy()),
+			},
 		}),
 	);
 }
@@ -194,23 +212,98 @@ async function handleStop(raw: string): Promise<void> {
 	);
 }
 
-// noslop hook claude-code が書き込んだファイルの変わった行を検査し、指摘をadditionalContextで返す
-function handlePostTool(raw: string): void {
-	const stdout = runNoslop(["hook", "claude-code"], undefined, raw);
-	if (stdout?.trim()) process.stdout.write(stdout);
+interface PostToolInput {
+	tool_name?: string;
+	tool_input?: { file_path?: unknown };
+	tool_response?: { structuredPatch?: { newStart: number; lines: string[] }[] };
+	cwd?: string;
 }
 
-// pi (claude-bridge) 経由では pi 拡張が同じ処理をするので何もしない
-if (process.env.PI_CODING_AGENT) process.exit(0);
+// Writeはファイル全体、Edit・MultiEditはstructuredPatchで追加した行を、新しいファイルの行番号で返す
+export function changedLinesFromHookInput(input: PostToolInput): Map<string, ChangedLines> {
+	const changed = new Map<string, ChangedLines>();
+	const path = input.tool_input?.file_path;
+	if (typeof path !== "string") return changed;
 
-const mode = process.argv[2];
-if (mode === "prompt") {
-	await handlePromptSubmit();
-} else if (mode === "stop") {
-	await handleStop(await Bun.stdin.text());
-} else if (mode === "posttool") {
-	handlePostTool(await Bun.stdin.text());
-} else {
-	console.error(`unknown mode: ${mode ?? "(none)"} — use "prompt", "stop", or "posttool"`);
-	process.exit(1);
+	if (input.tool_name === "Write") {
+		changed.set(path, "all");
+	} else if (input.tool_name === "Edit" || input.tool_name === "MultiEdit") {
+		const patch = input.tool_response?.structuredPatch;
+		if (!Array.isArray(patch)) return changed;
+		const lines = new Set<number>();
+		for (const hunk of patch) {
+			let line = hunk.newStart;
+			for (const patchLine of hunk.lines) {
+				if (patchLine.startsWith("-")) continue;
+				if (patchLine.startsWith("+")) lines.add(line);
+				line++;
+			}
+		}
+		changed.set(path, lines);
+	}
+	return changed;
+}
+
+export async function textlintReport(changedFiles: Map<string, ChangedLines>, cwd: string): Promise<string | undefined> {
+	if (changedFiles.size === 0) return undefined;
+	const lines: string[] = [];
+	for (const [path, changed] of changedFiles) {
+		for (const issue of await lintChangedFile(path, changed, cwd)) {
+			lines.push(`- ${path}:${issue.line} ${issue.ruleId}: ${issue.message}`);
+		}
+	}
+	return lines.length > 0 ? `textlintの指摘（今回書き換えた行）:\n${lines.join("\n")}` : undefined;
+}
+
+// noslopの出力(hookSpecificOutputのJSON)に、textlintの指摘を加えて1つのadditionalContextにする
+export function mergePostToolContext(noslopStdout: string | undefined, textlint: string | undefined): string | undefined {
+	const noslop = noslopStdout?.trim() ? noslopStdout : undefined;
+	if (!textlint) return noslop;
+
+	let context: string | undefined;
+	if (noslop) {
+		try {
+			context = (JSON.parse(noslop) as { hookSpecificOutput?: { additionalContext?: string } }).hookSpecificOutput
+				?.additionalContext;
+		} catch {
+			context = undefined;
+		}
+	}
+	return JSON.stringify({
+		hookSpecificOutput: {
+			hookEventName: "PostToolUse",
+			additionalContext: [context, textlint].filter(Boolean).join("\n\n"),
+		},
+	});
+}
+
+// noslop hook claude-code とtextlintで、書き込んだファイルの変わった行を検査し、指摘をadditionalContextで返す
+async function handlePostTool(raw: string): Promise<void> {
+	const noslopStdout = runNoslop(["hook", "claude-code"], undefined, raw);
+	let input: PostToolInput;
+	try {
+		input = JSON.parse(raw) as PostToolInput;
+	} catch {
+		input = {};
+	}
+	const textlint = await textlintReport(changedLinesFromHookInput(input), input.cwd ?? process.cwd());
+	const output = mergePostToolContext(noslopStdout, textlint);
+	if (output) process.stdout.write(output);
+}
+
+if (import.meta.main) {
+	// pi (claude-bridge) 経由では pi 拡張が同じ処理をするので何もしない
+	if (process.env.PI_CODING_AGENT) process.exit(0);
+
+	const mode = process.argv[2];
+	if (mode === "prompt") {
+		await handlePromptSubmit();
+	} else if (mode === "stop") {
+		await handleStop(await Bun.stdin.text());
+	} else if (mode === "posttool") {
+		await handlePostTool(await Bun.stdin.text());
+	} else {
+		console.error(`unknown mode: ${mode ?? "(none)"} — use "prompt", "stop", or "posttool"`);
+		process.exit(1);
+	}
 }
