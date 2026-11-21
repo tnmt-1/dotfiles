@@ -1,0 +1,25 @@
+{
+  "plugins": {
+    "omp-fff": {
+      "version": "0.1.0",
+      "enabledFeatures": null,
+      "enabled": true
+    },
+    "@codesook/omp-headroom": {
+      "version": "1.0.0",
+      "enabledFeatures": null,
+      "enabled": true
+    },
+    "diagram-design": {
+      "version": "2.6.164",
+      "enabledFeatures": null,
+      "enabled": true
+    },
+    "brag": {
+      "version": "0.5.0",
+      "enabledFeatures": null,
+      "enabled": true
+    }
+  },
+  "settings": {}
+}

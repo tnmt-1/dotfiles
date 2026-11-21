@@ -1,0 +1,38 @@
+// zellij の組み込みの default レイアウトに、zj-radar のサイドバーを左に加えたもの
+layout {
+  default_tab_template {
+    pane size=1 borderless=true {
+      plugin location="zellij:tab-bar"
+    }
+    pane split_direction="vertical" {
+      pane size=32 borderless=true {
+        plugin location="radar"
+      }
+      children
+    }
+    pane size=1 borderless=true {
+      plugin location="zellij:status-bar"
+    }
+  }
+
+  // 新しく開いたタブ。サイドバーの右にターミナルを1つ開く
+  new_tab_template {
+    pane size=1 borderless=true {
+      plugin location="zellij:tab-bar"
+    }
+    pane split_direction="vertical" {
+      pane size=32 borderless=true {
+        plugin location="radar"
+      }
+      pane focus=true
+    }
+    pane size=1 borderless=true {
+      plugin location="zellij:status-bar"
+    }
+  }
+
+  // 最初のタブ。default_tab_template の children の位置にターミナルを1つ開く
+  tab focus=true {
+    pane focus=true
+  }
+}

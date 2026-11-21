@@ -1,0 +1,5 @@
+{
+  "llmModelOverride": "claude-code/claude-haiku-5-5",
+  "childExtensionPaths": ["~/.pi/agent/git/github.com/earendil-works/pi-claude-code"],
+  "flushOnShutdown": false
+}

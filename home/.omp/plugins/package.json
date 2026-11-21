@@ -1,0 +1,8 @@
+{
+  "name": "omp-plugins",
+  "private": true,
+  "dependencies": {
+    "@codesook/omp-headroom": "github:seenark/omp-headroom",
+    "omp-fff": "https://github.com/tnmt-1/omp-fff"
+  }
+}

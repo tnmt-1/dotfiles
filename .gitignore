@@ -1,0 +1,14 @@
+flake.lock
+__pycache__/
+/home/.claude/hooks/.ja-ng-scan-stamp
+node_modules/
+*.bak-*
+
+# yui per-machine state and backups (added by `yui init`).
+/.yui/state.json
+/.yui/state.json.tmp
+/.yui/backup/
+config.local.toml
+
+# >>> yui rendered (auto-managed, do not edit) >>>
+# <<< yui rendered (auto-managed) <<<

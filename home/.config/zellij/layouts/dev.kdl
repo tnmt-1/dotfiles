@@ -1,0 +1,30 @@
+layout {
+  // 上: タブバー
+  pane size=1 borderless=true {
+    plugin location="zellij:tab-bar"
+  }
+
+  // 画面全体を上下に分割
+  pane split_direction="horizontal" {
+    // 上: yazi（幅=100%）
+    pane size="70%" {
+      command "yazi"
+    }
+
+    // 下: 左 lazygit / 右 ターミナル
+    pane split_direction="vertical" size="65%" {
+      pane size="30%" {
+        command "lazygit"
+      }
+      pane {
+        // 好きなシェル。fish なら:
+        // command "fish"
+      }
+    }
+  }
+
+  // 下: ステータスバー（モード & キー案内）
+  pane size=2 borderless=true {
+    plugin location="zellij:status-bar"
+  }
+}

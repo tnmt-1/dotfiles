@@ -1,0 +1,54 @@
+{
+  "defaultPolicy": {
+    "tools": "allow",
+    "bash": "allow",
+    "mcp": "allow",
+    "skills": "allow",
+    "special": "allow"
+  },
+  // 連結されたコマンドは単純コマンドに分けて、それぞれに当てる
+  "bash": {
+    "rm *": "ask",
+    "gcloud *": "ask"
+  },
+  // rm・mv・cp・リダイレクトなどの書き込み先で判定する
+  // - denyWrite に当たれば確認なしで拒否（allowWrite より優先）
+  // - 書き込み先がすべて allowWrite の中なら、上の ask より優先して確認なしで通す
+  // - それ以外は確認
+  // パスは指定したパスとその配下に当たる。シンボリックリンクは解決して比べる（/etc → /private/etc）
+  "bashPaths": {
+    "allowWrite": [
+      // 作業ディレクトリ
+      ".",
+      // /tmp と macOS の一時ディレクトリ（$TMPDIR の実体）
+      "/tmp",
+      "/private/tmp",
+      "/var/folders"
+    ],
+    "denyWrite": [
+      // SIP で守られるが、確認を出さずに止める
+      "/System",
+      "/bin",
+      "/sbin",
+      "/usr",
+      // SIP の対象外
+      "/Library",
+      "/Applications",
+      "/private/etc",
+      "/private/var/db",
+      "/opt",
+      // ホームの秘密情報
+      "~/.ssh",
+      "~/.gnupg",
+      "~/.aws",
+      "~/.config/gcloud",
+      // この設定ファイル（dotfiles リポジトリにある実体も含む）
+      "~/.pi/agent/pi-permissions.jsonc",
+      // 作業ディレクトリなどの秘密ファイル
+      ".env",
+      ".env.*",
+      "*.pem",
+      "*.key"
+    ]
+  }
+}

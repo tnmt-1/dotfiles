@@ -1,0 +1,30 @@
+[tools]
+node = "latest"
+python = "3.14"
+yarn = "1"
+rust = "latest"
+"npm:safe-rm" = "latest"
+uv = "latest"
+bun = "latest"
+"npm:pyright" = "latest"
+"npm:ccusage" = "latest"
+"cargo:yui-cli" = "latest"
+# "npm:@helpfeel/cosense-cli" = "latest"
+"npm:@earendil-works/pi-coding-agent" = { version = "latest", minimum_release_age = "0s" }
+"npm:markdownlint-cli" = "latest"
+aws-cli = { version = "latest", symlink_bins = "true" }
+"pipx:httpie" = "latest"
+"pipx:headroom-ai" = { version = "latest", extras = ["all"] }
+"pipx:poetry" = "1.8"
+redis = "latest"
+"npm:@opencode-ai/cli" = "latest"
+micro = "latest"
+pnpm = "latest"
+pitchfork = "latest"
+"github:can1357/oh-my-pi" = { version = "latest", minimum_release_age = "0s" }
+"npm:lazydsh" = "latest"
+"pipx:pipenv" = "latest"
+
+[settings]
+idiomatic_version_file_enable_tools = ["python", "node"]
+experimental = true # [daemons] は試験機能
